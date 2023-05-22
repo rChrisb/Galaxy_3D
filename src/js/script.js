@@ -3,6 +3,7 @@ import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import * as dat from "dat.gui";
 import moon from "../images/moon.jpg";
 import earth from "../images/earth.jpg";
+import * as TWEEN from "tween.js";
 
 // set the render
 const renderer = new THREE.WebGLRenderer();
@@ -117,53 +118,12 @@ for (let i = 0; i < numberOfParticules; i++) {
 //   camera.position.copy(newPosition);
 // });
 
-let isMouseDown = false;
-let initialMousePosition = new THREE.Vector2();
-
-// Event listeners for mouse down and up
-document.addEventListener("mousedown", function (event) {
-  isMouseDown = true;
-  initialMousePosition.x = event.clientX;
-  initialMousePosition.y = event.clientY;
-});
-
-document.addEventListener("mouseup", function () {
-  isMouseDown = false;
-});
-
-// Event listener for mouse move
-document.addEventListener("mousemove", function (event) {
-  if (isMouseDown) {
-    const currentMousePosition = new THREE.Vector2(
-      event.clientX,
-      event.clientY
-    );
-    const delta = new THREE.Vector2().subVectors(
-      currentMousePosition,
-      initialMousePosition
-    );
-    const zoomSpeed = 0.1; // Adjust the zoom speed here
-    const zoomAmount = delta.y * zoomSpeed;
-
-    // Calculate the zoom factor based on the mouse movement
-    const zoomFactor = Math.pow(0.95, zoomAmount) * 1.1;
-
-    // Zoom towards the specific spot
-    const zoomDirection = camera.position.clone().normalize();
-    const newPosition = camera.position
-      .clone()
-      .add(zoomDirection.multiplyScalar(zoomAmount));
-    camera.position.copy(newPosition);
-
-    // Update the initial mouse position for the next frame
-    initialMousePosition.copy(currentMousePosition);
-  }
-});
 // animation of the scene
 function animate() {
   sphere.rotation.z += 0.02;
   particles.forEach((particle) => (particle.rotation.x += 0.06));
   orbit.update();
+  TWEEN.update();
   renderer.render(scene, camera);
 }
 

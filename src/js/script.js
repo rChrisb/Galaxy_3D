@@ -31,7 +31,7 @@ const orbit = new OrbitControls(camera, renderer.domElement);
 orbit.enableZoom = true;
 const axesHelper = new THREE.AxesHelper(2);
 scene.add(axesHelper);
-camera.position.set(0, 0, -10);
+camera.position.set(0, 0, 100);
 orbit.update();
 
 // lighting
@@ -56,7 +56,7 @@ const sphereMaterial = new THREE.MeshStandardMaterial({
 });
 const sphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
 scene.add(sphere);
-sphere.position.set(10, 10, 10);
+sphere.position.set(10, 10, 60);
 
 // particules array
 const particles = [];
@@ -70,7 +70,7 @@ function createParticle() {
   const particle = new THREE.Mesh(geometry, material);
 
   // Randomly position the particle within a sphere
-  const radius = Math.random() * 40 + 40;
+  const radius = Math.random() * 100 + 40;
   const theta = Math.random() * Math.PI * 2;
   const phi = Math.random() * Math.PI * 2;
   particle.position.set(
@@ -84,11 +84,11 @@ function createParticle() {
   particles.push(particle);
 }
 // create X number of particules
-const numberOfParticules = 1500;
+const numberOfParticules = 4500;
 for (let i = 0; i < numberOfParticules; i++) {
   createParticle();
 }
-
+const collidableObjects = [sphere];
 // renderer.domElement.addEventListener("mousedown", function () {
 //   gsap.to(camera.position, {
 //     duration: 1,
@@ -96,6 +96,37 @@ for (let i = 0; i < numberOfParticules; i++) {
 //     ease: "power3.inOut",
 //   });
 // });
+// animation of the scene
+function animate() {
+  /* const targetX = (mouseX / window.innerWidth) * 2 - 1;
+  const targetY = -(mouseY / window.innerHeight) * 2 + 1; */
+
+  if (leftZoomDirection !== 0) {
+    const leftZoomSpeed = -0.3; // Adjust the zoom speed as needed
+    const newCameraZ = camera.position.z + leftZoomSpeed * leftZoomDirection;
+
+    camera.position.z = newCameraZ;
+
+    /* camera.lookAt(0, 0, 0); */
+  }
+
+  // Update camera position based on zoom direction for right button
+  if (rightZoomDirection !== 0) {
+    const rightZoomSpeed = -0.3; // Adjust the zoom speed as needed
+    const newCameraZ = camera.position.z + rightZoomSpeed * rightZoomDirection;
+    camera.position.z = newCameraZ;
+
+    /* camera.lookAt(0, 0, 0); */
+  }
+  /* camera.position.x = targetX * 6;
+  camera.position.y = targetY * 6; */
+  sphere.rotation.y += 0.007;
+  /* particles.forEach((particle) => (particle.rotation.x += 0.06)); */
+  orbit.update();
+  TWEEN.update();
+  renderer.render(scene, camera);
+}
+renderer.setAnimationLoop(animate);
 
 // Variables to keep track of the zoom direction for each mouse button
 let leftZoomDirection = 0;
@@ -158,31 +189,18 @@ gsap.ticker.add(animate);
 //   camera.position.copy(newPosition);
 // });
 
-// animation of the scene
-function animate() {
-  const targetX = (mouseX / window.innerWidth) * 2 - 1;
-  const targetY = -(mouseY / window.innerHeight) * 2 + 1;
-
-  if (leftZoomDirection !== 0) {
-    const leftZoomSpeed = -0.3; // Adjust the zoom speed as needed
-    camera.position.z += leftZoomSpeed * leftZoomDirection;
-    /* camera.lookAt(0, 0, 0); */
-  }
-
-  // Update camera position based on zoom direction for right button
-  if (rightZoomDirection !== 0) {
-    const rightZoomSpeed = -0.3; // Adjust the zoom speed as needed
-    camera.position.z += rightZoomSpeed * rightZoomDirection;
-    /* camera.lookAt(0, 0, 0); */
-  }
-  camera.position.x = targetX;
-  camera.position.y = targetY;
-  sphere.rotation.z += 0.02;
-  particles.forEach((particle) => (particle.rotation.x += 0.06));
-  orbit.update();
-  TWEEN.update();
-  renderer.render(scene, camera);
-} // Function to zoom the camera towards the mouse position
+// Function to zoom the camera towards the mouse position
 
 // renderer of the animated scene
-renderer.setAnimationLoop(animate);
+const backgroundMusic = document.getElementById("backgroundMusic");
+
+function playBackgroundMusic() {
+  backgroundMusic.play();
+}
+
+function pauseBackgroundMusic() {
+  backgroundMusic.pause();
+}
+document.addEventListener("DOMContentLoaded", () => {
+  document.documentElement.addEventListener("click", playBackgroundMusic);
+});

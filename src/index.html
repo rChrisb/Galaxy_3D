@@ -8,5 +8,16 @@
   </head>
   <body>
     <script src="./js/script.js" type="module"></script>
+    <audio id="backgroundMusic" src="./sound2.mp3" loop></audio>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const backgroundMusic = document.getElementById("backgroundMusic");
+        backgroundMusic.play();
+      });
+      document.addEventListener("DOMContentLoaded", () => {
+        document.documentElement.addEventListener("click", playBackgroundMusic);
+      });
+    </script>
   </body>
 </html>

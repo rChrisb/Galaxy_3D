@@ -95,18 +95,30 @@ for (let i = 0; i < numberOfParticules; i++) {
 //     z: camera.position.z - 10,
 //     ease: "power3.inOut",
 //   });
-//   console.log("hi");
 // });
 
-window.addEventListener("mousedown", function () {
-  gsap.to(camera.position, {
-    z: camera.position.z - 10,
-    duration: 1.5,
-    onUpdate: function () {
-      camera.lookAt(0, 0, 0);
-    },
-  });
+// Variables to keep track of the zoom direction for each mouse button
+let leftZoomDirection = 0;
+let rightZoomDirection = 0;
+
+// Register mousedown and mouseup events
+window.addEventListener("mousedown", function (event) {
+  if (event.button === 0) {
+    leftZoomDirection = -1; // Zoom in when the left button is held down
+  } else if (event.button === 2) {
+    rightZoomDirection = 1; // Zoom out when the right button is held down
+    leftZoomDirection = 0;
+  }
 });
+window.addEventListener("mouseup", function (event) {
+  if (event.button === 0) {
+    leftZoomDirection = 0; // Stop zooming when the left button is released
+  } else if (event.button === 2) {
+    rightZoomDirection = 0; // Stop zooming when the right button is released
+  }
+});
+// Animation of the scene using GSAP's ticker
+gsap.ticker.add(animate);
 // Event listener for mouse scroll
 // document.addEventListener("wheel", function (event) {
 //   event.preventDefault();
@@ -140,6 +152,18 @@ window.addEventListener("mousedown", function () {
 
 // animation of the scene
 function animate() {
+  if (leftZoomDirection !== 0) {
+    const leftZoomSpeed = -0.3; // Adjust the zoom speed as needed
+    camera.position.z += leftZoomSpeed * leftZoomDirection;
+    /* camera.lookAt(0, 0, 0); */
+  }
+
+  // Update camera position based on zoom direction for right button
+  if (rightZoomDirection !== 0) {
+    const rightZoomSpeed = -0.3; // Adjust the zoom speed as needed
+    camera.position.z += rightZoomSpeed * rightZoomDirection;
+    /* camera.lookAt(0, 0, 0); */
+  }
   sphere.rotation.z += 0.02;
   particles.forEach((particle) => (particle.rotation.x += 0.06));
   orbit.update();

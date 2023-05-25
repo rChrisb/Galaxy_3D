@@ -192,15 +192,10 @@ gsap.ticker.add(animate);
 // Function to zoom the camera towards the mouse position
 
 // renderer of the animated scene
-const backgroundMusic = document.getElementById("backgroundMusic");
-
-function playBackgroundMusic() {
+function playBackgroundSound() {
+  const backgroundMusic = document.getElementById("backgroundMusic");
   backgroundMusic.play();
 }
-
-function pauseBackgroundMusic() {
-  backgroundMusic.pause();
-}
-document.addEventListener("DOMContentLoaded", () => {
-  document.documentElement.addEventListener("click", playBackgroundMusic);
-});
+document.addEventListener("contextmenu", playBackgroundSound);
+document.addEventListener("click", playBackgroundSound);
+document.addEventListener("keydown", playBackgroundSound);

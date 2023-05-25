@@ -109,6 +109,8 @@ window.addEventListener("mousedown", function (event) {
     rightZoomDirection = 1; // Zoom out when the right button is held down
     leftZoomDirection = 0;
   }
+  mouseX = event.clientX;
+  mouseY = event.clientY;
 });
 window.addEventListener("mouseup", function (event) {
   if (event.button === 0) {
@@ -116,6 +118,12 @@ window.addEventListener("mouseup", function (event) {
   } else if (event.button === 2) {
     rightZoomDirection = 0; // Stop zooming when the right button is released
   }
+});
+
+// Register mousemove event to track mouse position
+window.addEventListener("mousemove", function (event) {
+  mouseX = event.clientX;
+  mouseY = event.clientY;
 });
 // Animation of the scene using GSAP's ticker
 gsap.ticker.add(animate);
@@ -152,6 +160,9 @@ gsap.ticker.add(animate);
 
 // animation of the scene
 function animate() {
+  const targetX = (mouseX / window.innerWidth) * 2 - 1;
+  const targetY = -(mouseY / window.innerHeight) * 2 + 1;
+
   if (leftZoomDirection !== 0) {
     const leftZoomSpeed = -0.3; // Adjust the zoom speed as needed
     camera.position.z += leftZoomSpeed * leftZoomDirection;
@@ -164,12 +175,14 @@ function animate() {
     camera.position.z += rightZoomSpeed * rightZoomDirection;
     /* camera.lookAt(0, 0, 0); */
   }
+  camera.position.x = targetX;
+  camera.position.y = targetY;
   sphere.rotation.z += 0.02;
   particles.forEach((particle) => (particle.rotation.x += 0.06));
   orbit.update();
   TWEEN.update();
   renderer.render(scene, camera);
-}
+} // Function to zoom the camera towards the mouse position
 
 // renderer of the animated scene
 renderer.setAnimationLoop(animate);

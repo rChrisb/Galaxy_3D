@@ -3,6 +3,9 @@ import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import * as dat from "dat.gui";
 import moon from "../images/moon.jpg";
 import earth from "../images/earth.jpg";
+import rocks from "../images/rocks-stones-with-rough-surface.jpg";
+import rocks2 from "../images/rocks2.jpg";
+import pink from "../images/pink-red-mix-paints-paper.jpg";
 import * as TWEEN from "tween.js";
 import { gsap } from "/node_modules/gsap/index";
 
@@ -28,7 +31,7 @@ const camera = new THREE.PerspectiveCamera(
 
 // to allow and see camera rotation
 const orbit = new OrbitControls(camera, renderer.domElement);
-orbit.enableZoom = true;
+orbit.enableZoom = false;
 const axesHelper = new THREE.AxesHelper(2);
 scene.add(axesHelper);
 camera.position.set(0, 0, 100);
@@ -49,14 +52,16 @@ const randomColor = new THREE.Color(
 const textureLoader = new THREE.TextureLoader();
 
 // create a simple object
-const sphereGeometry = new THREE.SphereGeometry(4);
+const sphereGeometry = new THREE.SphereGeometry(8, 32, 32);
 const sphereMaterial = new THREE.MeshStandardMaterial({
-  map: textureLoader.load(moon),
+  map: textureLoader.load(rocks),
   color: randomColor,
 });
 const sphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
 scene.add(sphere);
 sphere.position.set(10, 10, 60);
+
+console.log(randomColor);
 
 // particules array
 const particles = [];
@@ -108,7 +113,7 @@ function animate() {
     // Calculate the distance between the camera and the sphere
     const distance = camera.position.distanceTo(sphere.position);
 
-    if (distance <= 5 && newCameraZ <= sphere.position.z + 5) {
+    if (distance <= 10 && newCameraZ <= sphere.position.z + 10) {
       camera.position.z = sphere.position.z + 10; // Limit the zoom when in front of the sphere
     } else {
       camera.position.z = newCameraZ; // Allow zooming otherwise
@@ -125,7 +130,7 @@ function animate() {
     // Calculate the distance between the camera and the sphere
     const distance = camera.position.distanceTo(sphere.position);
 
-    if (distance <= 5 && newCameraZ <= sphere.position.z + 5) {
+    if (distance <= 10 && newCameraZ <= sphere.position.z + 10) {
       camera.position.z = sphere.position.z + 10; // Limit the zoom when in front of the sphere
     } else {
       camera.position.z = newCameraZ; // Allow zooming otherwise

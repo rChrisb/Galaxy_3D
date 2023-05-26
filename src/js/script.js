@@ -114,7 +114,11 @@ function animate() {
     const distance = camera.position.distanceTo(sphere.position);
 
     if (distance <= 10 && newCameraZ <= sphere.position.z + 10) {
-      camera.position.z = sphere.position.z + 10; // Limit the zoom when in front of the sphere
+      gsap.to(camera.position, {
+        duration: 1,
+        z: sphere.position.z + 5,
+        ease: "power3.inOut",
+      }); // Limit the zoom when in front of the sphere
     } else {
       camera.position.z = newCameraZ; // Allow zooming otherwise
     }
@@ -131,7 +135,11 @@ function animate() {
     const distance = camera.position.distanceTo(sphere.position);
 
     if (distance <= 10 && newCameraZ <= sphere.position.z + 10) {
-      camera.position.z = sphere.position.z + 10; // Limit the zoom when in front of the sphere
+      gsap.to(camera.position, {
+        duration: 1.5,
+        z: camera.position.z + 5,
+        ease: "power3.inOut",
+      }); // Limit the zoom when in front of the sphere
     } else {
       camera.position.z = newCameraZ; // Allow zooming otherwise
     }

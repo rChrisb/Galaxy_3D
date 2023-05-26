@@ -88,7 +88,7 @@ const numberOfParticules = 4500;
 for (let i = 0; i < numberOfParticules; i++) {
   createParticle();
 }
-const collidableObjects = [sphere];
+
 // renderer.domElement.addEventListener("mousedown", function () {
 //   gsap.to(camera.position, {
 //     duration: 1,
@@ -105,7 +105,14 @@ function animate() {
     const leftZoomSpeed = -0.3; // Adjust the zoom speed as needed
     const newCameraZ = camera.position.z + leftZoomSpeed * leftZoomDirection;
 
-    camera.position.z = newCameraZ;
+    // Calculate the distance between the camera and the sphere
+    const distance = camera.position.distanceTo(sphere.position);
+
+    if (distance <= 10 && newCameraZ <= sphere.position.z + 10) {
+      camera.position.z = sphere.position.z + 10; // Limit the zoom when in front of the sphere
+    } else {
+      camera.position.z = newCameraZ; // Allow zooming otherwise
+    }
 
     /* camera.lookAt(0, 0, 0); */
   }
@@ -114,7 +121,15 @@ function animate() {
   if (rightZoomDirection !== 0) {
     const rightZoomSpeed = -0.3; // Adjust the zoom speed as needed
     const newCameraZ = camera.position.z + rightZoomSpeed * rightZoomDirection;
-    camera.position.z = newCameraZ;
+
+    // Calculate the distance between the camera and the sphere
+    const distance = camera.position.distanceTo(sphere.position);
+
+    if (distance <= 10 && newCameraZ <= sphere.position.z + 10) {
+      camera.position.z = sphere.position.z + 10; // Limit the zoom when in front of the sphere
+    } else {
+      camera.position.z = newCameraZ; // Allow zooming otherwise
+    }
 
     /* camera.lookAt(0, 0, 0); */
   }

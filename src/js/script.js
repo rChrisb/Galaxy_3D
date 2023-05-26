@@ -108,7 +108,7 @@ function animate() {
     // Calculate the distance between the camera and the sphere
     const distance = camera.position.distanceTo(sphere.position);
 
-    if (distance <= 10 && newCameraZ <= sphere.position.z + 10) {
+    if (distance <= 5 && newCameraZ <= sphere.position.z + 5) {
       camera.position.z = sphere.position.z + 10; // Limit the zoom when in front of the sphere
     } else {
       camera.position.z = newCameraZ; // Allow zooming otherwise
@@ -125,7 +125,7 @@ function animate() {
     // Calculate the distance between the camera and the sphere
     const distance = camera.position.distanceTo(sphere.position);
 
-    if (distance <= 10 && newCameraZ <= sphere.position.z + 10) {
+    if (distance <= 5 && newCameraZ <= sphere.position.z + 5) {
       camera.position.z = sphere.position.z + 10; // Limit the zoom when in front of the sphere
     } else {
       camera.position.z = newCameraZ; // Allow zooming otherwise

@@ -52,7 +52,7 @@ const randomColor = new THREE.Color(
 const textureLoader = new THREE.TextureLoader();
 
 // create a simple object
-const sphereGeometry = new THREE.SphereGeometry(8, 1, 1);
+const sphereGeometry = new THREE.SphereGeometry(8, 32, 32);
 const sphereMaterial = new THREE.MeshStandardMaterial({
   map: textureLoader.load(rocks),
   color: randomColor,

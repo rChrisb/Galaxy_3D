@@ -8,6 +8,7 @@ import rocks2 from "../images/rocks2.jpg";
 import pink from "../images/pink-red-mix-paints-paper.jpg";
 import * as TWEEN from "tween.js";
 import { gsap } from "/node_modules/gsap/index";
+import * as dat from "dat.gui";
 
 // set the render
 const renderer = new THREE.WebGLRenderer();
@@ -107,8 +108,9 @@ function animate() {
   /* const targetX = (mouseX / window.innerWidth) * 2 - 1;
   const targetY = -(mouseY / window.innerHeight) * 2 + 1; */
 
+  const speed = options.speed;
   if (leftZoomDirection !== 0) {
-    const leftZoomSpeed = -0.3; // Adjust the zoom speed as needed
+    const leftZoomSpeed = -1 * speed; // Adjust the zoom speed as needed
     const newCameraZ = camera.position.z + leftZoomSpeed * leftZoomDirection;
 
     // Calculate the distance between the camera and the sphere
@@ -129,7 +131,7 @@ function animate() {
 
   // Update camera position based on zoom direction for right button
   if (rightZoomDirection !== 0) {
-    const rightZoomSpeed = -0.3; // Adjust the zoom speed as needed
+    const rightZoomSpeed = -1 * speed; // Adjust the zoom speed as needed
     const newCameraZ = camera.position.z + rightZoomSpeed * rightZoomDirection;
 
     // Calculate the distance between the camera and the sphere
@@ -220,6 +222,12 @@ gsap.ticker.add(animate);
 
 // Function to zoom the camera towards the mouse position
 
+// gui options
+const gui = new dat.GUI();
+const options = {
+  speed: 0.3,
+};
+gui.add(options, "speed", 0.1, 1.1);
 // renderer of the animated scene
 function playBackgroundSound() {
   const backgroundMusic = document.getElementById("backgroundMusic");

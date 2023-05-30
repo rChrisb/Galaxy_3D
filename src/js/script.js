@@ -9,7 +9,10 @@ import pink from "../images/pink-red-mix-paints-paper.jpg";
 import * as TWEEN from "tween.js";
 import { gsap } from "/node_modules/gsap/index";
 import * as dat from "dat.gui";
+import { FBXLoader } from "three/examples/jsm/loaders/FBXLoader.js";
 
+// import 3D model
+const spaceship = new URL("../models/spaceship.fbx", import.meta.url);
 // set the render
 const renderer = new THREE.WebGLRenderer();
 renderer.setSize(window.innerWidth, window.innerHeight);
@@ -54,8 +57,8 @@ const randomColor = new THREE.Color(
 const textureLoader = new THREE.TextureLoader();
 
 // create a simple object
-const sphereGeometry = new THREE.SphereGeometry(8, 32, 32);
-const sphereMaterial = new THREE.MeshStandardMaterial({
+const sphereGeometry = new THREE.SphereGeometry(8, 50, 50);
+const sphereMaterial = new THREE.MeshPhysicalMaterial({
   map: textureLoader.load(rocks),
   color: randomColor,
 });
@@ -63,6 +66,29 @@ const sphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
 scene.add(sphere);
 sphere.position.set(10, 10, 60);
 
+const modelLoader = new FBXLoader();
+let spaceshipModel;
+const spaceshipOffset = new THREE.Vector3(0, -1, -5);
+
+modelLoader.load(
+  spaceship.href,
+  function (model) {
+    spaceshipModel = model;
+    spaceshipModel.traverse(function (child) {
+      if (child.isMesh) {
+        // Change the color of the spaceship's material
+        child.material.color.set(0x4a4714); // Set the color to red (adjust the color value as needed)
+      }
+    });
+    spaceshipModel.scale.set(0.8, 0.8, 0.8);
+    spaceshipModel.color;
+    scene.add(spaceshipModel);
+  },
+  undefined,
+  function (err) {
+    console.error(err);
+  }
+);
 console.log(randomColor);
 
 // particules array
@@ -149,6 +175,10 @@ function animate() {
 
     /* camera.lookAt(0, 0, 0); */
   }
+  if (spaceshipModel) {
+    const spaceshipPosition = camera.position.clone().add(spaceshipOffset);
+    spaceshipModel.position.copy(spaceshipPosition);
+  }
   /* camera.position.x = targetX * 6;
   camera.position.y = targetY * 6; */
   sphere.rotation.y += 0.007;
@@ -224,10 +254,26 @@ gsap.ticker.add(animate);
 
 // gui options
 const gui = new dat.GUI();
+// const guiContainer = document.createElement("div");
+// guiContainer.classList.add("gui-container");
+// document.body.appendChild(guiContainer);
+// guiContainer.appendChild(gui.domElement);
+
 const options = {
   speed: 0.3,
+  color: "#4a4714", // Red
+  sound: "on",
 };
 gui.add(options, "speed", 0.1, 1.1);
+gui.addColor(options, "color").onChange(function (e) {
+  spaceshipModel.traverse(function (child) {
+    if (child.isMesh) {
+      // Change the color of the spaceship's material
+      child.material.color.set(e); // Set the color to red (adjust the color value as needed)
+    }
+  });
+});
+
 // renderer of the animated scene
 function playBackgroundSound() {
   const backgroundMusic = document.getElementById("backgroundMusic");

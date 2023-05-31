@@ -264,7 +264,7 @@ const options = {
   color: "#4a4714", // Red
   sound: "on",
 };
-gui.add(options, "speed", 0.1, 1.2);
+gui.add(options, "speed", 0.1, 1.5);
 gui.addColor(options, "color").onChange(function (e) {
   spaceshipModel.traverse(function (child) {
     if (child.isMesh) {

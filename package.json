@@ -1,0 +1,26 @@
+{
+  "name": "galaxy_3d",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://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@github.com/rChrisb/Galaxy_3D.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rChrisb/Galaxy_3D/issues"
+  },
+  "homepage": "https://github.com/rChrisb/Galaxy_3D#readme",
+  "dependencies": {
+    "dat.gui": "^0.7.9",
+    "gsap": "^3.11.5",
+    "three": "^0.152.2",
+    "tween.js": "^16.6.0"
+  }
+}

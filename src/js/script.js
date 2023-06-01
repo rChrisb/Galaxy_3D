@@ -62,9 +62,9 @@ const sphereMaterial = new THREE.MeshPhysicalMaterial({
   map: textureLoader.load(rocks),
   color: randomColor,
 });
-const sphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
-scene.add(sphere);
-sphere.position.set(10, 10, 60);
+const firstPlanet = new THREE.Mesh(sphereGeometry, sphereMaterial);
+scene.add(firstPlanet);
+firstPlanet.position.set(10, 10, 60);
 
 const modelLoader = new FBXLoader();
 let spaceshipModel;
@@ -140,12 +140,12 @@ function animate() {
     const newCameraZ = camera.position.z + leftZoomSpeed * leftZoomDirection;
 
     // Calculate the distance between the camera and the sphere
-    const distance = camera.position.distanceTo(sphere.position);
+    const distance = camera.position.distanceTo(firstPlanet.position);
 
-    if (distance <= 10 && newCameraZ <= sphere.position.z + 10) {
+    if (distance <= 10 && newCameraZ <= firstPlanet.position.z + 10) {
       gsap.to(camera.position, {
         duration: 1,
-        z: sphere.position.z + 5,
+        z: firstPlanet.position.z + 5,
         ease: "power3.inOut",
       }); // Limit the zoom when in front of the sphere
     } else {
@@ -161,14 +161,14 @@ function animate() {
     const newCameraZ = camera.position.z + rightZoomSpeed * rightZoomDirection;
 
     // Calculate the distance between the camera and the sphere
-    const distance = camera.position.distanceTo(sphere.position);
+    const distance = camera.position.distanceTo(firstPlanet.position);
 
-    if (distance <= 10 && newCameraZ <= sphere.position.z + 10) {
+    if (distance <= 10 && newCameraZ <= firstPlanet.position.z + 10) {
       gsap.to(camera.position, {
         duration: 1.5,
         z: camera.position.z + 5,
         ease: "power3.inOut",
-      }); // Limit the zoom when in front of the sphere
+      }); // Limit the zoom when in front of the first Planet
     } else {
       camera.position.z = newCameraZ; // Allow zooming otherwise
     }
@@ -181,7 +181,7 @@ function animate() {
   }
   /* camera.position.x = targetX * 6;
   camera.position.y = targetY * 6; */
-  sphere.rotation.y += 0.007;
+  firstPlanet.rotation.y += 0.007;
   /* particles.forEach((particle) => (particle.rotation.x += 0.06)); */
   orbit.update();
   TWEEN.update();

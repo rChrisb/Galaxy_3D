@@ -13,9 +13,10 @@
 
 #message-button::after {
   content: "";
-  background-image: url(./images/enter-button2.jpg);
+  background-image: url(./images/enter-button2.png);
   background-size: 23px 23px; /* Adjust to fit the image appropriately */
   background-repeat: no-repeat;
+  background-position: right center;
   position: absolute;
   top: 50%;
   right: 10px; /* Adjust the right position */

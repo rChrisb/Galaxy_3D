@@ -257,6 +257,7 @@ gsap.ticker.add(animate);
 
 // gui options
 const gui = new dat.GUI();
+gui.close();
 // const guiContainer = document.createElement("div");
 // guiContainer.classList.add("gui-container");
 // document.body.appendChild(guiContainer);

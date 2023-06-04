@@ -149,6 +149,7 @@ function animate() {
         ease: "power3.inOut",
       }); // Limit the zoom when in front of the sphere
     } else {
+      hideMessageButton();
       camera.position.z = newCameraZ; // Allow zooming otherwise
     }
 
@@ -172,6 +173,8 @@ function animate() {
     } else {
       camera.position.z = newCameraZ; // Allow zooming otherwise
     }
+    if (distance <= 20) showMessageButton();
+    else hideMessageButton();
 
     /* camera.lookAt(0, 0, 0); */
   }
@@ -272,6 +275,23 @@ gui.addColor(options, "color").onChange(function (e) {
       child.material.color.set(e); // Set the color to red (adjust the color value as needed)
     }
   });
+});
+
+const messageOverlay = document.getElementById("message-overlay");
+const messageButton = document.getElementById("message-button");
+
+function showMessageButton() {
+  messageButton.style.display = "block";
+}
+
+function hideMessageButton() {
+  messageButton.style.display = "none";
+}
+document.addEventListener("keydown", function (event) {
+  if (event.code === "Enter" && messageButton.style.display === "block") {
+    messageButton.click();
+    console.log("the user wants to enter the planet!");
+  }
 });
 
 // renderer of the animated scene

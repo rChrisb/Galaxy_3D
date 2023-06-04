@@ -1,0 +1,23 @@
+.gui-container .dg.main {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+
+.gui-container .dg.main .c {
+  display: inline-block;
+  margin-right: 10px;
+}
+
+#message-button {
+  position: absolute;
+  top: 50%; /* vertical position */
+  left: 50%; /* horizontal position */
+  transform: translate(-50%, -50%); /* to center the element */
+  background-color: rgba(6, 0, 0, 0.5); /* background color and opacity */
+  padding: 20px;
+  border-radius: 10px;
+  text-align: center;
+  font-size: 18px;
+  z-index: 9999; /* the message appears above other elements */
+}

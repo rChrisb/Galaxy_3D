@@ -142,7 +142,7 @@ function animate() {
     // Calculate the distance between the camera and the sphere
     const distance = camera.position.distanceTo(firstPlanet.position);
 
-    if (distance <= 10 && newCameraZ <= firstPlanet.position.z + 10) {
+    if (distance <= 15 && newCameraZ <= firstPlanet.position.z + 15) {
       gsap.to(camera.position, {
         duration: 1,
         z: firstPlanet.position.z + 5,
@@ -163,7 +163,7 @@ function animate() {
     // Calculate the distance between the camera and the sphere
     const distance = camera.position.distanceTo(firstPlanet.position);
 
-    if (distance <= 10 && newCameraZ <= firstPlanet.position.z + 10) {
+    if (distance <= 15 && newCameraZ <= firstPlanet.position.z + 15) {
       gsap.to(camera.position, {
         duration: 1.5,
         z: camera.position.z + 5,

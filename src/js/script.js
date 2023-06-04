@@ -77,7 +77,7 @@ modelLoader.load(
     spaceshipModel.traverse(function (child) {
       if (child.isMesh) {
         // Change the color of the spaceship's material
-        child.material.color.set(0x4a4714); // Set the color to red (adjust the color value as needed)
+        child.material.color.set(0x1a0a20); // Set the color to red (adjust the color value as needed)
       }
     });
     spaceshipModel.scale.set(0.8, 0.8, 0.8);
@@ -173,7 +173,7 @@ function animate() {
     } else {
       camera.position.z = newCameraZ; // Allow zooming otherwise
     }
-    if (distance <= 20) showMessageButton();
+    if (distance <= 17) showMessageButton();
     else hideMessageButton();
 
     /* camera.lookAt(0, 0, 0); */
@@ -281,7 +281,21 @@ gui.addColor(options, "color").onChange(function (e) {
 const messageOverlay = document.getElementById("message-overlay");
 const messageButton = document.getElementById("message-button");
 
+function updateButtonPosition() {
+  if (!camera || !messageButton) return; // Check if the camera and messageButton are defined
+
+  const cameraPosition = camera.position.clone();
+  const cameraProjection = cameraPosition.clone().project(camera);
+  const x = ((cameraProjection.x + 1) * window.innerWidth) / 2;
+  const y = ((-cameraProjection.y + 1) * window.innerHeight) / 2;
+  const buttonZ = camera.position.z - 10; // Adjust the distance between the camera and button
+
+  messageButton.style.left = x + "px";
+  messageButton.style.top = y + "px";
+}
+
 function showMessageButton() {
+  updateButtonPosition();
   messageButton.style.display = "block";
 }
 

@@ -5,6 +5,7 @@ import moon from "../images/moon.jpg";
 import earth from "../images/earth.jpg";
 import rocks from "../images/rocks-stones-with-rough-surface.jpg";
 import rocks2 from "../images/rocks2.jpg";
+import spaceshipmap from "../images/spaceship_texture.jpg";
 import pink from "../images/pink-red-mix-paints-paper.jpg";
 import * as TWEEN from "tween.js";
 import { gsap } from "/node_modules/gsap/index";
@@ -13,6 +14,11 @@ import { FBXLoader } from "three/examples/jsm/loaders/FBXLoader.js";
 
 // import 3D model
 const spaceship = new URL("../models/spaceship.fbx", import.meta.url);
+const spaceship2 = new URL("../models/3d-model.fbx", import.meta.url);
+const spaceship3 = new URL(
+  "../models/uploads_files_869754_space_shuttle_fbx_export(1).fbx",
+  import.meta.url
+);
 // set the render
 const renderer = new THREE.WebGLRenderer();
 renderer.setSize(window.innerWidth, window.innerHeight);
@@ -66,22 +72,50 @@ const firstPlanet = new THREE.Mesh(sphereGeometry, sphereMaterial);
 scene.add(firstPlanet);
 firstPlanet.position.set(10, 10, 60);
 
+// Define the array of spaceship model URLs and their corresponding scale values
+const spaceshipModels = [
+  { url: spaceship.href, scale: 0.8 },
+  {
+    url: spaceship2.href,
+    scale: 0.01,
+    rotationY: Math.PI,
+    texture: spaceshipmap,
+  },
+  /* { url: spaceship3.href, scale: 0.005, rotationY: Math.PI }, */
+  // Add more spaceship model URLs and scale values if needed
+];
+
+// Randomly select a spaceship model and its corresponding scale value
+const randomModelIndex = Math.floor(Math.random() * spaceshipModels.length);
+const selectedModel = spaceshipModels[randomModelIndex];
+
 const modelLoader = new FBXLoader();
 let spaceshipModel;
 const spaceshipOffset = new THREE.Vector3(0, -1, -5);
 
 modelLoader.load(
-  spaceship.href,
+  selectedModel.url,
   function (model) {
     spaceshipModel = model;
     spaceshipModel.traverse(function (child) {
-      if (child.isMesh) {
+      if (child.isMesh && child.material && child.material.color) {
         // Change the color of the spaceship's material
-        child.material.color.set(0x1a0a20); // Set the color to red (adjust the color value as needed)
+        child.material.color.set(0x103d19); // Set the color to red (adjust the color value as needed)
+
+        // Change the texture of the spaceship's material
       }
     });
-    spaceshipModel.scale.set(0.8, 0.8, 0.8);
+    spaceshipModel.scale.set(
+      selectedModel.scale,
+      selectedModel.scale,
+      selectedModel.scale
+    );
     spaceshipModel.color;
+
+    if (selectedModel.rotationY) {
+      spaceshipModel.rotation.y = selectedModel.rotationY;
+    }
+
     scene.add(spaceshipModel);
   },
   undefined,
@@ -181,9 +215,9 @@ function animate() {
   if (spaceshipModel) {
     const spaceshipPosition = camera.position.clone().add(spaceshipOffset);
     spaceshipModel.position.copy(spaceshipPosition);
+    spaceshipModel.rotation.x = THREE.MathUtils.degToRad(10);
   }
-  /* camera.position.x = targetX * 6;
-  camera.position.y = targetY * 6; */
+
   firstPlanet.rotation.y += 0.007;
   /* particles.forEach((particle) => (particle.rotation.x += 0.06)); */
   orbit.update();

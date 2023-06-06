@@ -24,6 +24,14 @@ const options = {
   color: "#4a4714", // Red
   sound: "on",
 };
+const menuMusic = document.getElementById("menuMusic");
+const sceneMusic = document.getElementById("sceneMusic");
+menuMusic.play();
+
+// window.addEventListener("click", () => {
+//   menuMusic.loop = true;
+//   menuMusic.play();
+// });
 
 // Menu page
 
@@ -36,6 +44,10 @@ startButton.addEventListener("click", () => {
   openingText.style.display = "none"; // Hide the opening text
   startButton.style.display = "none";
   menuContainer.parentNode.removeChild(menuContainer);
+  menuMusic.pause();
+  menuMusic.currentTime = 0;
+
+  sceneMusic.play();
   galaxyThreejs();
 });
 
@@ -330,6 +342,18 @@ const targetY = -(mouseY / window.innerHeight) * 2 + 1; */
     });
   });
 
+  //"Go Back to Menu" button
+  const goBackToTheMenu = {
+    "Home Page": function () {
+      location.reload(); // Refresh the page
+    },
+  };
+  /* gui.add(goBackToTheMenu, "Home Page"); */
+
+  //new menu folder
+  const menuFolder = gui.addFolder("Menu");
+  menuFolder.add(goBackToTheMenu, "Home Page");
+
   const messageOverlay = document.getElementById("message-overlay");
   const messageButton = document.getElementById("message-button");
 
@@ -361,12 +385,11 @@ const targetY = -(mouseY / window.innerHeight) * 2 + 1; */
     }
   });
 
-  // renderer of the animated scene
-  function playBackgroundSound() {
-    const backgroundMusic = document.getElementById("backgroundMusic");
-    backgroundMusic.play();
-  }
-  document.addEventListener("contextmenu", playBackgroundSound);
-  document.addEventListener("click", playBackgroundSound);
-  document.addEventListener("keydown", playBackgroundSound);
+  //   function playBackgroundSound() {
+  //     const backgroundMusic = document.getElementById("backgroundMusic");
+  //     backgroundMusic.play();
+  //   }
+  //   document.addEventListener("contextmenu", playBackgroundSound);
+  //   document.addEventListener("click", playBackgroundSound);
+  //   document.addEventListener("keydown", playBackgroundSound);
 }

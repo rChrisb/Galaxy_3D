@@ -11,6 +11,7 @@ import * as TWEEN from "tween.js";
 import { gsap } from "/node_modules/gsap/index";
 import * as dat from "dat.gui";
 import { FBXLoader } from "three/examples/jsm/loaders/FBXLoader.js";
+import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 
 // import 3D model
 const spaceship = new URL("../models/spaceship.fbx", import.meta.url);
@@ -36,10 +37,12 @@ menuMusic.play();
 // Menu page
 
 const startButton = document.getElementById("start-button");
-
+// const loadingScreen = document.getElementById('loading-screen');
+// const progressBar = document.getElementById('progress-bar');
 const openingText = document.getElementById("scrolling-text");
 const menuContainer = document.getElementById("menu-container");
-
+const progressBarContainer = document.querySelector(".progress-bar-container");
+const progressBar = document.getElementById("progress-bar");
 startButton.addEventListener("click", () => {
   openingText.style.display = "none"; // Hide the opening text
   startButton.style.display = "none";
@@ -49,9 +52,60 @@ startButton.addEventListener("click", () => {
 
   sceneMusic.play();
   galaxyThreejs();
+  progressBarContainer.style.display = "flex";
+  // Show the loading screen
+
+  /* progressBarContainer.style.display = "flex"; */
+  /*
+  // Start loading the 3D scene
+  const xhr = new XMLHttpRequest();
+  xhr.open("GET", "script.js", true);
+
+  xhr.addEventListener("progress", function (event) {
+    if (event.lengthComputable) {
+      const percentComplete = (event.loaded / event.total) * 100;
+      console.log("Loading progress:", percentComplete.toFixed(2) + "%");
+
+      // Update the progress bar value if you have one
+      const progressBar = document.getElementById("progress-bar");
+      progressBar.value = percentComplete;
+    }
+  });
+
+  xhr.addEventListener("load", function () {
+    console.log("Loading complete");
+
+    // Hide the loading screen
+    progressBarContainer.style.display = "none";
+
+    // Start the 3D scene
+    galaxyThreejs();
+
+    // Delay hiding the loading screen to allow more time for the scene to load
+    setTimeout(function () {
+      progressBarContainer.style.display = "none";
+    }, 10000);
+  });
+
+  xhr.addEventListener("error", function () {
+    console.log("Error loading the 3D scene");
+  });
+
+  xhr.send(); */
 });
 
+// // Function to hide the loading screen
+// function hideLoadingScreen() {
+//   loadingScreen.style.display = "none";
+// }
+
+// // Function to show the loading screen
+// function showLoadingScreen() {
+//   loadingScreen.style.display = "block";
+// }
+
 function galaxyThreejs() {
+  /* showLoadingScreen(); */
   // set the render
   const renderer = new THREE.WebGLRenderer();
   renderer.setSize(window.innerWidth, window.innerHeight);
@@ -81,6 +135,23 @@ function galaxyThreejs() {
   camera.position.set(0, 0, 100);
   orbit.update();
 
+  // // loading screen
+  // const xhr = new XMLHttpRequest();
+  // xhr.open("GET", window.location.href, true);
+  // xhr.responseType = "blob";
+
+  // xhr.addEventListener("progress", function (event) {
+  //   if (event.lengthComputable) {
+  //     const progress = (event.loaded / event.total) * 100;
+  //     console.log(`Scene loading progress: ${progress}%`);
+  //   }
+  // });
+  // xhr.addEventListener("readystatechange", function () {
+  //   if (xhr.readyState === XMLHttpRequest.LOADING) {
+  //     console.log("Scene loading in progress");
+  //   }
+  // });
+  // xhr.send();
   // lighting
   const ambientLight = new THREE.AmbientLight(0xffffff);
   scene.add(ambientLight);
@@ -93,7 +164,16 @@ function galaxyThreejs() {
   );
 
   // texture varaible that will allow to set textures of object
-  const textureLoader = new THREE.TextureLoader();
+  const loadingManager = new THREE.LoadingManager();
+  const textureLoader = new THREE.TextureLoader(loadingManager);
+  loadingManager.onProgress = function (url, loaded, total) {
+    progressBar.value = (loaded / total) * 100;
+  };
+
+  loadingManager.onLoad = function (url) {
+    progressBarContainer.style.display = "none";
+    console.log("finished loading");
+  };
 
   // create a simple object
   const sphereGeometry = new THREE.SphereGeometry(8, 50, 50);
@@ -102,6 +182,7 @@ function galaxyThreejs() {
     color: randomColor,
   });
   const firstPlanet = new THREE.Mesh(sphereGeometry, sphereMaterial);
+
   scene.add(firstPlanet);
   firstPlanet.position.set(10, 10, 60);
 
@@ -150,6 +231,7 @@ function galaxyThreejs() {
       }
 
       scene.add(spaceshipModel);
+      progressBarContainer.style.display = "none";
     },
     undefined,
     function (err) {
@@ -256,6 +338,7 @@ const targetY = -(mouseY / window.innerHeight) * 2 + 1; */
     /* particles.forEach((particle) => (particle.rotation.x += 0.06)); */
     orbit.update();
     TWEEN.update();
+
     renderer.render(scene, camera);
   }
   // Start the 3D scene or perform any other action
@@ -384,6 +467,8 @@ const targetY = -(mouseY / window.innerHeight) * 2 + 1; */
       console.log("the user wants to enter the planet!");
     }
   });
+
+  /* hideLoadingScreen(); */
 
   //   function playBackgroundSound() {
   //     const backgroundMusic = document.getElementById("backgroundMusic");

@@ -1,4 +1,24 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: black;
+  color: #ffbe00;
+  font-family: sans-serif;
+  font-size: 5vw;
+  line-height: 1.3;
+  overflow: hidden;
+}
+
 #message-button {
+  color: #ffbe00;
   position: absolute;
   top: 50%;
   left: 50%;
@@ -23,4 +43,127 @@
   transform: translateY(-50%);
   width: 20px;
   height: 20px;
+}
+
+#menu-container {
+  position: absolute;
+  display: block;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  transform: scaleY(0.9);
+  overflow: visible;
+  width: 100%;
+  height: 200px; /* Adjust as needed */
+  margin: 0 auto;
+  perspective: 380px;
+  perspective-origin: bottom;
+}
+
+#scrolling-text {
+  position: absolute;
+  /* bottom: 0; */
+  top: 0;
+  left: 13%;
+  right: 13%;
+  /* width: 100%; */
+  height: 100%;
+  /* overflow: hidden; */
+  /* white-space: nowrap; */
+  animation: scrolling-text-animation 40s infinite;
+}
+
+.headings {
+  margin-bottom: 5rem;
+}
+h1 {
+  font-size: 90px;
+  text-align: center;
+}
+p {
+  padding: 0.5rem 0;
+  font-size: 1.8rem;
+}
+
+@keyframes scrolling-text-animation {
+  0% {
+    transform: rotateX(21deg) translateY(100%);
+    opacity: 1;
+  }
+  20% {
+    opacity: 1;
+  }
+  80% {
+    opacity: 1;
+  }
+  100% {
+    transform: rotateX(21deg) translateY(-120%);
+    opacity: 0;
+  }
+}
+
+a {
+  position: fixed;
+  /* bottom: 20px; */
+  right: 20px;
+  background: rgba(105, 105, 105, 0);
+  color: #fff;
+  text-transform: uppercase;
+  text-decoration: none;
+  font-size: 0.5em;
+  letter-spacing: 0.1em;
+  font-weight: 400;
+  padding: 10px 30px;
+  transition: 0.5s;
+  display: inline-block;
+  border: 3px solid rgb(75, 0, 130, 0.6);
+}
+a:hover {
+  background: rgba(105, 105, 105, 0);
+  color: #8a0806;
+  letter-spacing: 0.25em;
+  box-shadow: 0 0 35px #8a0806;
+  font-weight: 700;
+}
+a:before {
+  content: "";
+  inset: 2px;
+  background: indigo;
+}
+a i {
+  position: absolute;
+  inset: 0;
+  display: block;
+}
+
+a i::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 80%;
+  width: 20px;
+  height: 4px;
+  background: #ffbe00;
+  transform: translateX(-50%) skewX(325deg);
+  transition: 0.5s;
+}
+a:hover i::before {
+  width: 30px;
+  left: 20%;
+}
+a i::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 20%;
+  width: 20px;
+  height: 4px;
+  background: #ffbe00;
+  transform: translateX(-50%) skewX(325deg);
+  transition: 0.5s;
+}
+a:hover i::after {
+  width: 30px;
+  left: 80%;
 }

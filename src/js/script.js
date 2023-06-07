@@ -35,7 +35,7 @@ menuMusic.play();
 // });
 
 // Menu page
-
+const messageButton = document.getElementById("message-button");
 const startButton = document.getElementById("start-button");
 // const loadingScreen = document.getElementById('loading-screen');
 // const progressBar = document.getElementById('progress-bar');
@@ -120,12 +120,21 @@ function galaxyThreejs() {
   scene.background = new THREE.Color(0x0e041b);
 
   // set the camera
+  const cameraDistance = 20; // Distance between the camera and spaceship
+  const cameraOffset = new THREE.Vector3(0, 10, -cameraDistance); // Camera offset from the spaceship
   const camera = new THREE.PerspectiveCamera(
     45,
     window.innerWidth / window.innerHeight,
     0.1,
     1000
   );
+
+  function updateCamera() {
+    const spaceshipPosition = spaceshipContainer.position;
+    const cameraPosition = spaceshipPosition.clone().add(cameraOffset);
+    camera.position.copy(cameraPosition);
+    camera.lookAt(spaceshipPosition);
+  }
 
   // to allow and see camera rotation
   const orbit = new OrbitControls(camera, renderer.domElement);
@@ -206,6 +215,8 @@ function galaxyThreejs() {
   const modelLoader = new FBXLoader();
   let spaceshipModel;
   const spaceshipOffset = new THREE.Vector3(0, -1, -5);
+  const spaceshipContainer = new THREE.Object3D();
+  scene.add(spaceshipContainer);
 
   modelLoader.load(
     selectedModel.url,
@@ -230,7 +241,7 @@ function galaxyThreejs() {
         spaceshipModel.rotation.y = selectedModel.rotationY;
       }
 
-      scene.add(spaceshipModel);
+      spaceshipContainer.add(spaceshipModel);
       progressBarContainer.style.display = "none";
     },
     undefined,
@@ -240,36 +251,36 @@ function galaxyThreejs() {
   );
   console.log(randomColor);
 
-  // particules array
-  const particles = [];
+  // // particules array
+  // const particles = [];
 
-  function createParticle() {
-    const geometry = new THREE.SphereGeometry(0.04); // size as parameter
-    const material = new THREE.MeshBasicMaterial({
-      color: new THREE.Color(Math.random(), Math.random(), Math.random()),
-      map: textureLoader.load(earth),
-    }); // each particule has a random color, different of the randomcolor variable
-    const particle = new THREE.Mesh(geometry, material);
+  // function createParticle() {
+  //   const geometry = new THREE.SphereGeometry(0.04); // size as parameter
+  //   const material = new THREE.MeshBasicMaterial({
+  //     color: new THREE.Color(Math.random(), Math.random(), Math.random()),
+  //     map: textureLoader.load(earth),
+  //   }); // each particule has a random color, different of the randomcolor variable
+  //   const particle = new THREE.Mesh(geometry, material);
 
-    // Randomly position the particle within a sphere
-    const radius = Math.random() * 100 + 40;
-    const theta = Math.random() * Math.PI * 2;
-    const phi = Math.random() * Math.PI * 2;
-    particle.position.set(
-      radius * Math.sin(theta) * Math.cos(phi),
-      radius * Math.sin(theta) * Math.sin(phi),
-      radius * Math.cos(theta)
-    );
+  //   // Randomly position the particle within a sphere
+  //   const radius = Math.random() * 100 + 40;
+  //   const theta = Math.random() * Math.PI * 2;
+  //   const phi = Math.random() * Math.PI * 2;
+  //   particle.position.set(
+  //     radius * Math.sin(theta) * Math.cos(phi),
+  //     radius * Math.sin(theta) * Math.sin(phi),
+  //     radius * Math.cos(theta)
+  //   );
 
-    // Add the particle to the scene
-    scene.add(particle);
-    particles.push(particle);
-  }
-  // create X number of particules
-  const numberOfParticules = 4500;
-  for (let i = 0; i < numberOfParticules; i++) {
-    createParticle();
-  }
+  //   // Add the particle to the scene
+  //   scene.add(particle);
+  //   particles.push(particle);
+  // }
+  // // create X number of particules
+  // const numberOfParticules = 4500;
+  // for (let i = 0; i < numberOfParticules; i++) {
+  //   createParticle();
+  // }
 
   // renderer.domElement.addEventListener("mousedown", function () {
   //   gsap.to(camera.position, {
@@ -284,53 +295,53 @@ function galaxyThreejs() {
 const targetY = -(mouseY / window.innerHeight) * 2 + 1; */
 
     const speed = options.speed;
-    if (leftZoomDirection !== 0) {
-      const leftZoomSpeed = -1 * speed; // Adjust the zoom speed as needed
-      const newCameraZ = camera.position.z + leftZoomSpeed * leftZoomDirection;
+    // if (leftZoomDirection !== 0) {
+    //   const leftZoomSpeed = -1 * speed; // Adjust the zoom speed as needed
+    //   const newCameraZ = camera.position.z + leftZoomSpeed * leftZoomDirection;
 
-      // Calculate the distance between the camera and the sphere
-      const distance = camera.position.distanceTo(firstPlanet.position);
+    // Calculate the distance between the camera and the sphere
+    const distance = camera.position.distanceTo(firstPlanet.position);
 
-      if (distance <= 15 && newCameraZ <= firstPlanet.position.z + 15) {
-        gsap.to(camera.position, {
-          duration: 1,
-          z: firstPlanet.position.z + 5,
-          ease: "power3.inOut",
-        }); // Limit the zoom when in front of the sphere
-      } else {
-        hideMessageButton();
-        camera.position.z = newCameraZ; // Allow zooming otherwise
-      }
+    //   if (distance <= 15 && newCameraZ <= firstPlanet.position.z + 15) {
+    //     gsap.to(camera.position, {
+    //       duration: 1,
+    //       z: firstPlanet.position.z + 5,
+    //       ease: "power3.inOut",
+    //     }); // Limit the zoom when in front of the sphere
+    //   } else {
+    //     hideMessageButton();
+    //     camera.position.z = newCameraZ; // Allow zooming otherwise
+    //   }
 
-      /* camera.lookAt(0, 0, 0); */
-    }
+    //   /* camera.lookAt(0, 0, 0); */
+    // }
 
-    // Update camera position based on zoom direction for right button
-    if (rightZoomDirection !== 0) {
-      const rightZoomSpeed = -1 * speed; // Adjust the zoom speed as needed
-      const newCameraZ =
-        camera.position.z + rightZoomSpeed * rightZoomDirection;
+    // // Update camera position based on zoom direction for right button
+    // if (rightZoomDirection !== 0) {
+    //   const rightZoomSpeed = -1 * speed; // Adjust the zoom speed as needed
+    //   const newCameraZ =
+    //     camera.position.z + rightZoomSpeed * rightZoomDirection;
 
-      // Calculate the distance between the camera and the sphere
-      const distance = camera.position.distanceTo(firstPlanet.position);
+    //   // Calculate the distance between the camera and the sphere
+    //   const distance = camera.position.distanceTo(firstPlanet.position);
 
-      if (distance <= 15 && newCameraZ <= firstPlanet.position.z + 15) {
-        gsap.to(camera.position, {
-          duration: 1.5,
-          z: camera.position.z + 5,
-          ease: "power3.inOut",
-        }); // Limit the zoom when in front of the first Planet
-      } else {
-        camera.position.z = newCameraZ; // Allow zooming otherwise
-      }
-      if (distance <= 17) showMessageButton();
-      else hideMessageButton();
+    //   if (distance <= 15 && newCameraZ <= firstPlanet.position.z + 15) {
+    //     gsap.to(camera.position, {
+    //       duration: 1.5,
+    //       z: camera.position.z + 5,
+    //       ease: "power3.inOut",
+    //     }); // Limit the zoom when in front of the first Planet
+    //   } else {
+    //     camera.position.z = newCameraZ; // Allow zooming otherwise
+    //   }
+    if (distance <= 17) showMessageButton();
+    else hideMessageButton();
 
-      /* camera.lookAt(0, 0, 0); */
-    }
+    /* camera.lookAt(0, 0, 0); */
+    /* } */
     if (spaceshipModel) {
-      const spaceshipPosition = camera.position.clone().add(spaceshipOffset);
-      spaceshipModel.position.copy(spaceshipPosition);
+      /* const spaceshipPosition = camera.position.clone().add(spaceshipOffset);
+      spaceshipModel.position.copy(spaceshipPosition); */
       spaceshipModel.rotation.x = THREE.MathUtils.degToRad(10);
     }
 
@@ -338,6 +349,7 @@ const targetY = -(mouseY / window.innerHeight) * 2 + 1; */
     /* particles.forEach((particle) => (particle.rotation.x += 0.06)); */
     orbit.update();
     TWEEN.update();
+    updateCamera();
 
     renderer.render(scene, camera);
   }
@@ -349,29 +361,29 @@ const targetY = -(mouseY / window.innerHeight) * 2 + 1; */
   let rightZoomDirection = 0;
 
   // Register mousedown and mouseup events
-  window.addEventListener("mousedown", function (event) {
-    if (event.button === 0) {
-      leftZoomDirection = -1; // Zoom in when the left button is held down
-    } else if (event.button === 2) {
-      rightZoomDirection = 1; // Zoom out when the right button is held down
-      leftZoomDirection = 0;
-    }
-    mouseX = event.clientX;
-    mouseY = event.clientY;
-  });
-  window.addEventListener("mouseup", function (event) {
-    if (event.button === 0) {
-      leftZoomDirection = 0; // Stop zooming when the left button is released
-    } else if (event.button === 2) {
-      rightZoomDirection = 0; // Stop zooming when the right button is released
-    }
-  });
+  // window.addEventListener("mousedown", function (event) {
+  //   if (event.button === 0) {
+  //     leftZoomDirection = -1; // Zoom in when the left button is held down
+  //   } else if (event.button === 2) {
+  //     rightZoomDirection = 1; // Zoom out when the right button is held down
+  //     leftZoomDirection = 0;
+  //   }
+  //   mouseX = event.clientX;
+  //   mouseY = event.clientY;
+  // });
+  // window.addEventListener("mouseup", function (event) {
+  //   if (event.button === 0) {
+  //     leftZoomDirection = 0; // Stop zooming when the left button is released
+  //   } else if (event.button === 2) {
+  //     rightZoomDirection = 0; // Stop zooming when the right button is released
+  //   }
+  // });
 
-  // Register mousemove event to track mouse position
-  window.addEventListener("mousemove", function (event) {
-    mouseX = event.clientX;
-    mouseY = event.clientY;
-  });
+  // // Register mousemove event to track mouse position
+  // window.addEventListener("mousemove", function (event) {
+  //   mouseX = event.clientX;
+  //   mouseY = event.clientY;
+  // });
   // Animation of the scene using GSAP's ticker
   gsap.ticker.add(animate);
   // Event listener for mouse scroll
@@ -438,7 +450,6 @@ const targetY = -(mouseY / window.innerHeight) * 2 + 1; */
   menuFolder.add(goBackToTheMenu, "Home Page");
 
   const messageOverlay = document.getElementById("message-overlay");
-  const messageButton = document.getElementById("message-button");
 
   function updateButtonPosition() {
     if (!camera || !messageButton) return; // Check if the camera and messageButton are defined

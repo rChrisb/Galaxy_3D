@@ -1,4 +1,5 @@
 import * as THREE from "three";
+import * as CANNON from "cannon-es";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import * as dat from "dat.gui";
 import moon from "../images/moon.jpg";
@@ -352,9 +353,9 @@ function galaxyThreejs() {
   //     rotateRight = true; // Rotate right when mouse is on the right half of the screen
   //   }
   // });
-
+  let spaceshipDirection;
   function updateSpaceship() {
-    const spaceshipDirection = new THREE.Vector3();
+    spaceshipDirection = new THREE.Vector3();
     const spaceshipQuaternion = new THREE.Quaternion();
 
     spaceshipDirection.z = Number(moveForward) - Number(moveBackward);
@@ -425,13 +426,51 @@ function galaxyThreejs() {
   //     ease: "power3.inOut",
   //   });
   // });
+
+  // Create Cannon.js bodies for the planet and spaceship
+  const planetShape = new CANNON.Sphere(8);
+  const planetBody = new CANNON.Body({
+    shape: planetShape,
+    type: CANNON.Body.STATIC,
+  });
+  const world = new CANNON.World();
+  world.addBody(planetBody);
+
+  const spaceshipShape = new CANNON.Box(new CANNON.Vec3(1, 1, 1));
+  const spaceshipBody = new CANNON.Body({ mass: 1, shape: spaceshipShape });
+  world.addBody(spaceshipBody);
+
+  // Update the positions and rotations of the objects based on the physics simulation
+  function updateObjects() {
+    // Update planet position and rotation
+    firstPlanet.position.copy(planetBody.position);
+    firstPlanet.quaternion.copy(planetBody.quaternion);
+
+    // Update spaceship position and rotation
+    spaceshipPosition.copy(spaceshipBody.position);
+    spaceshipContainer.quaternion.copy(spaceshipBody.quaternion);
+  }
+
+  const timeStep = 1 / 60;
+
+  function checkCollision() {
+    const spaceshipBox = new THREE.Box3().setFromObject(spaceshipContainer);
+    const sphereBox = new THREE.Box3().setFromObject(firstPlanet);
+
+    if (spaceshipBox.intersectsBox(sphereBox)) {
+      // Collision detected, handle it accordingly
+      // ... Stop spaceship's movement, apply a force, or trigger a game over
+    }
+  }
+  console.log();
   // animation of the scene
   function animate() {
     /* const targetX = (mouseX / window.innerWidth) * 2 - 1;
 const targetY = -(mouseY / window.innerHeight) * 2 + 1; */
-
+    world.step(timeStep);
     const speed = options.speed;
     spaceshipSpeed = speed / 5;
+
     // if (leftZoomDirection !== 0) {
     //   const leftZoomSpeed = -1 * speed; // Adjust the zoom speed as needed
     //   const newCameraZ = camera.position.z + leftZoomSpeed * leftZoomDirection;
@@ -441,16 +480,20 @@ const targetY = -(mouseY / window.innerHeight) * 2 + 1; */
     if (firstPlanet) {
       distance = spaceshipPosition.distanceTo(firstPlanet.position);
     }
+    console.log(distance);
 
-    if (distance <= 15) {
+    if (distance <= 10) {
       gsap.to(spaceshipPosition, {
-        duration: 1,
-        z: firstPlanet.position.z + 5,
-        ease: "power3.inOut",
-      }); // Limit the zoom when in front of the sphere
-    } else {
-      hideMessageButton();
+        duration: 3,
+        z: 43,
+        /* ease: "power3.inOut", */
+      });
     }
+    // Limit the zoom when in front of the sphere
+
+    /* else {
+      hideMessageButton();
+    } */
     //     camera.position.z = newCameraZ; // Allow zooming otherwise
     //   }
 
@@ -487,11 +530,20 @@ const targetY = -(mouseY / window.innerHeight) * 2 + 1; */
     }
 
     firstPlanet.rotation.y += 0.007;
+    // Step the Cannon.js simulation forward
+    /*   world.step(1 / 60); */
+
+    // Update objects based on the physics simulation
+    /* updateObjects(); */
+
+    // // Check and handle collisions
+    // handleCollisions();
     /* particles.forEach((particle) => (particle.rotation.x += 0.06)); */
     orbit.update();
     TWEEN.update();
     updateCamera();
     updateSpaceship();
+    checkCollision();
 
     renderer.render(scene, camera);
   }

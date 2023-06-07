@@ -12,6 +12,7 @@ import { gsap } from "/node_modules/gsap/index";
 import * as dat from "dat.gui";
 import { FBXLoader } from "three/examples/jsm/loaders/FBXLoader.js";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
+import { FirstPersonControls } from "three/examples/jsm/controls/FirstPersonControls";
 
 // import 3D model
 const spaceship = new URL("../models/spaceship.fbx", import.meta.url);
@@ -128,12 +129,33 @@ function galaxyThreejs() {
     0.1,
     1000
   );
+  const controls = new FirstPersonControls(camera, renderer.domElement);
+  controls.movementSpeed = 10;
+  controls.lookSpeed = 0.2;
 
+  // 3rd person camera
+  // function updateCamera() {
+  //   const spaceshipPosition = spaceshipContainer.position;
+  //   const cameraPosition = spaceshipPosition.clone().add(cameraOffset);
+  //   camera.position.copy(cameraPosition);
+  //   camera.lookAt(spaceshipPosition);
+  // }
+
+  //1st person camera
+  // Update camera position and lookAt based on spaceshipContainer's position
   function updateCamera() {
     const spaceshipPosition = spaceshipContainer.position;
-    const cameraPosition = spaceshipPosition.clone().add(cameraOffset);
-    camera.position.copy(cameraPosition);
-    camera.lookAt(spaceshipPosition);
+    const spaceshipRotation = spaceshipContainer.rotation;
+    const distanceFromSpaceship = 6;
+
+    // Update camera position to follow the spaceshipContainer's position
+    camera.position.copy(spaceshipPosition);
+    camera.position.add(new THREE.Vector3(0, 2, -distanceFromSpaceship));
+
+    // Update camera lookAt to follow the spaceshipContainer's rotation
+    const forward = new THREE.Vector3(0, 1, -1); // Assuming the spaceship's forward direction is along the negative z-axis
+    const lookAtTarget = spaceshipContainer.position.clone().add(forward);
+    camera.lookAt(lookAtTarget);
   }
 
   // to allow and see camera rotation
@@ -250,7 +272,7 @@ function galaxyThreejs() {
     }
   );
   let spaceshipPosition = new THREE.Vector3(); // Initial spaceship position
-  const spaceshipSpeed = 0.1; // Speed at which spaceship moves
+  let spaceshipSpeed = 0.1; // Speed at which spaceship moves
   const spaceshipRotationSpeed = 0.02; // Speed at which spaceship rotates
 
   let moveForward = false;
@@ -274,6 +296,32 @@ function galaxyThreejs() {
     } else if (event.code === "ShiftLeft") {
       moveDown = true; // Move down when left shift key is pressed
     }
+    if (event.code === "KeyW" && event.code === "KeyD") {
+      moveForward = true;
+      rotateRight = true;
+    } else if (event.code === "KeyW" && event.code === "KeyA") {
+      moveForward = true;
+      rotateLeft = true;
+    } else if (event.code === "KeyS" && event.code === "KeyD") {
+      moveBackward = true;
+      rotateRight = true;
+    } else if (event.code === "KeyS" && event.code === "KeyA") {
+      moveBackward = true;
+      rotateLeft = true;
+    }
+    if (event.code === "KeyW" && event.code === "KeyD") {
+      moveForward = false;
+      rotateRight = false;
+    } else if (event.code === "KeyW" && event.code === "KeyA") {
+      moveForward = false;
+      rotateLeft = false;
+    } else if (event.code === "KeyS" && event.code === "KeyD") {
+      moveBackward = false;
+      rotateRight = false;
+    } else if (event.code === "KeyS" && event.code === "KeyA") {
+      moveBackward = false;
+      rotateLeft = false;
+    }
   });
 
   window.addEventListener("keyup", function (event) {
@@ -292,18 +340,18 @@ function galaxyThreejs() {
     }
   });
 
-  window.addEventListener("mousemove", function (event) {
-    const mouseX = event.clientX;
-    const windowHalfX = window.innerWidth / 2;
+  // window.addEventListener("mousemove", function (event) {
+  //   const mouseX = event.clientX;
+  //   const windowHalfX = window.innerWidth / 2;
 
-    if (mouseX < windowHalfX) {
-      rotateLeft = true; // Rotate left when mouse is on the left half of the screen
-      rotateRight = false;
-    } else {
-      rotateLeft = false;
-      rotateRight = true; // Rotate right when mouse is on the right half of the screen
-    }
-  });
+  //   if (mouseX < windowHalfX) {
+  //     rotateLeft = true; // Rotate left when mouse is on the left half of the screen
+  //     rotateRight = false;
+  //   } else {
+  //     rotateLeft = false;
+  //     rotateRight = true; // Rotate right when mouse is on the right half of the screen
+  //   }
+  // });
 
   function updateSpaceship() {
     const spaceshipDirection = new THREE.Vector3();
@@ -313,22 +361,28 @@ function galaxyThreejs() {
     spaceshipDirection.x = Number(rotateLeft) - Number(rotateRight);
     spaceshipDirection.y = Number(moveUp) - Number(moveDown);
 
-    spaceshipDirection.normalize(); // Normalize the direction vector
+    // Diagonal movement
+    if ((moveForward || moveBackward) && (rotateLeft || rotateRight)) {
+      const diagonalSpeed = Math.sqrt((spaceshipSpeed * spaceshipSpeed) / 2);
+      spaceshipDirection.normalize().multiplyScalar(diagonalSpeed);
+    } else {
+      spaceshipDirection.normalize().multiplyScalar(spaceshipSpeed);
+    }
 
     // Update spaceship rotation
     spaceshipQuaternion.setFromAxisAngle(
       new THREE.Vector3(0, 1, 0),
       spaceshipDirection.x * spaceshipRotationSpeed
     );
-    spaceshipQuaternion.multiply(spaceshipContainer.quaternion); // Multiply by current quaternion
-    spaceshipContainer.quaternion.copy(spaceshipQuaternion); // Update spaceship's quaternion
+    spaceshipQuaternion.multiply(spaceshipContainer.quaternion);
+    spaceshipContainer.quaternion.copy(spaceshipQuaternion);
 
     // Update spaceship position
-    const spaceshipVelocity = spaceshipDirection.multiplyScalar(spaceshipSpeed);
-    spaceshipPosition.add(spaceshipVelocity); // Update spaceship's position
+    spaceshipPosition.add(spaceshipDirection);
 
     // Update spaceship container position
     spaceshipContainer.position.copy(spaceshipPosition);
+    /* console.log(spaceshipPosition, firstPlanet.position); */
   }
 
   console.log(randomColor);
@@ -377,21 +431,26 @@ function galaxyThreejs() {
 const targetY = -(mouseY / window.innerHeight) * 2 + 1; */
 
     const speed = options.speed;
+    spaceshipSpeed = speed / 5;
     // if (leftZoomDirection !== 0) {
     //   const leftZoomSpeed = -1 * speed; // Adjust the zoom speed as needed
     //   const newCameraZ = camera.position.z + leftZoomSpeed * leftZoomDirection;
 
     // Calculate the distance between the camera and the sphere
-    const distance = camera.position.distanceTo(firstPlanet.position);
+    let distance;
+    if (firstPlanet) {
+      distance = spaceshipPosition.distanceTo(firstPlanet.position);
+    }
 
-    //   if (distance <= 15 && newCameraZ <= firstPlanet.position.z + 15) {
-    //     gsap.to(camera.position, {
-    //       duration: 1,
-    //       z: firstPlanet.position.z + 5,
-    //       ease: "power3.inOut",
-    //     }); // Limit the zoom when in front of the sphere
-    //   } else {
-    //     hideMessageButton();
+    if (distance <= 15) {
+      gsap.to(spaceshipPosition, {
+        duration: 1,
+        z: firstPlanet.position.z + 5,
+        ease: "power3.inOut",
+      }); // Limit the zoom when in front of the sphere
+    } else {
+      hideMessageButton();
+    }
     //     camera.position.z = newCameraZ; // Allow zooming otherwise
     //   }
 
@@ -407,13 +466,13 @@ const targetY = -(mouseY / window.innerHeight) * 2 + 1; */
     //   // Calculate the distance between the camera and the sphere
     //   const distance = camera.position.distanceTo(firstPlanet.position);
 
-    //   if (distance <= 15 && newCameraZ <= firstPlanet.position.z + 15) {
-    //     gsap.to(camera.position, {
-    //       duration: 1.5,
-    //       z: camera.position.z + 5,
-    //       ease: "power3.inOut",
-    //     }); // Limit the zoom when in front of the first Planet
-    //   } else {
+    // if (distance <= 15 ) {
+    //   gsap.to(camera.position, {
+    //     duration: 1.5,
+    //     z: camera.position.z + 5,
+    //     ease: "power3.inOut",
+    //   }); // Limit the zoom when in front of the first Planet
+    // } else {
     //     camera.position.z = newCameraZ; // Allow zooming otherwise
     //   }
     if (distance <= 17) showMessageButton();
@@ -505,10 +564,10 @@ const targetY = -(mouseY / window.innerHeight) * 2 + 1; */
   // gui options
   const gui = new dat.GUI();
   gui.close();
-  // const guiContainer = document.createElement("div");
-  // guiContainer.classList.add("gui-container");
-  // document.body.appendChild(guiContainer);
-  // guiContainer.appendChild(gui.domElement);
+  /* const guiContainer = document.createElement("div");
+  guiContainer.classList.add("gui-container");
+  document.body.appendChild(guiContainer);
+  guiContainer.appendChild(gui.domElement); */
 
   gui.add(options, "speed", 0.1, 1.25);
   gui.addColor(options, "color").onChange(function (e) {

@@ -249,6 +249,88 @@ function galaxyThreejs() {
       console.error(err);
     }
   );
+  let spaceshipPosition = new THREE.Vector3(); // Initial spaceship position
+  const spaceshipSpeed = 0.1; // Speed at which spaceship moves
+  const spaceshipRotationSpeed = 0.02; // Speed at which spaceship rotates
+
+  let moveForward = false;
+  let moveBackward = false;
+  let rotateLeft = false;
+  let rotateRight = false;
+  let moveUp = false;
+  let moveDown = false;
+
+  window.addEventListener("keydown", function (event) {
+    if (event.code === "KeyW") {
+      moveForward = true; // Move forward when 'W' key is pressed
+    } else if (event.code === "KeyS") {
+      moveBackward = true; // Move backward when 'S' key is pressed
+    } else if (event.code === "KeyA") {
+      rotateLeft = true; // Rotate left when 'A' key is pressed
+    } else if (event.code === "KeyD") {
+      rotateRight = true; // Rotate right when 'D' key is pressed
+    } else if (event.code === "Space") {
+      moveUp = true; // Move up when spacebar is pressed
+    } else if (event.code === "ShiftLeft") {
+      moveDown = true; // Move down when left shift key is pressed
+    }
+  });
+
+  window.addEventListener("keyup", function (event) {
+    if (event.code === "KeyW") {
+      moveForward = false; // Stop moving forward when 'W' key is released
+    } else if (event.code === "KeyS") {
+      moveBackward = false; // Stop moving backward when 'S' key is released
+    } else if (event.code === "KeyA") {
+      rotateLeft = false; // Stop rotating left when 'A' key is released
+    } else if (event.code === "KeyD") {
+      rotateRight = false; // Stop rotating right when 'D' key is released
+    } else if (event.code === "Space") {
+      moveUp = false; // Stop moving up when spacebar is released
+    } else if (event.code === "ShiftLeft") {
+      moveDown = false; // Stop moving down when left shift key is released
+    }
+  });
+
+  window.addEventListener("mousemove", function (event) {
+    const mouseX = event.clientX;
+    const windowHalfX = window.innerWidth / 2;
+
+    if (mouseX < windowHalfX) {
+      rotateLeft = true; // Rotate left when mouse is on the left half of the screen
+      rotateRight = false;
+    } else {
+      rotateLeft = false;
+      rotateRight = true; // Rotate right when mouse is on the right half of the screen
+    }
+  });
+
+  function updateSpaceship() {
+    const spaceshipDirection = new THREE.Vector3();
+    const spaceshipQuaternion = new THREE.Quaternion();
+
+    spaceshipDirection.z = Number(moveForward) - Number(moveBackward);
+    spaceshipDirection.x = Number(rotateLeft) - Number(rotateRight);
+    spaceshipDirection.y = Number(moveUp) - Number(moveDown);
+
+    spaceshipDirection.normalize(); // Normalize the direction vector
+
+    // Update spaceship rotation
+    spaceshipQuaternion.setFromAxisAngle(
+      new THREE.Vector3(0, 1, 0),
+      spaceshipDirection.x * spaceshipRotationSpeed
+    );
+    spaceshipQuaternion.multiply(spaceshipContainer.quaternion); // Multiply by current quaternion
+    spaceshipContainer.quaternion.copy(spaceshipQuaternion); // Update spaceship's quaternion
+
+    // Update spaceship position
+    const spaceshipVelocity = spaceshipDirection.multiplyScalar(spaceshipSpeed);
+    spaceshipPosition.add(spaceshipVelocity); // Update spaceship's position
+
+    // Update spaceship container position
+    spaceshipContainer.position.copy(spaceshipPosition);
+  }
+
   console.log(randomColor);
 
   // // particules array
@@ -350,6 +432,7 @@ const targetY = -(mouseY / window.innerHeight) * 2 + 1; */
     orbit.update();
     TWEEN.update();
     updateCamera();
+    updateSpaceship();
 
     renderer.render(scene, camera);
   }

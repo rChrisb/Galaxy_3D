@@ -481,7 +481,7 @@ function galaxyThreejs() {
     map: textureLoader.load(disc),
   });
   const starGeo = new THREE.BufferGeometry();
-  for (let i = 0; i < 100000; i++) {
+  for (let i = 0; i < 100010; i++) {
     const star = new THREE.Vector3(
       Math.random() * 600 - 300,
       Math.random() * 600 - 300,

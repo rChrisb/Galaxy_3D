@@ -3,11 +3,14 @@ import * as CANNON from "cannon-es";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import * as dat from "dat.gui";
 import moon from "../images/moon.jpg";
-import earth from "../images/earth.jpg";
+import earth from "../images/green-vintage-folder-paper.jpg";
 import rocks from "../images/rocks-stones-with-rough-surface.jpg";
 import rocks2 from "../images/rocks2.jpg";
+import galaxy from "../images/panoramic-view-sunset-night.jpg";
 import spaceshipmap from "../images/spaceship_texture.jpg";
 import pink from "../images/pink-red-mix-paints-paper.jpg";
+import greenTexture from "../images/grass_planet.jpg";
+import disc from "../images/disc.png";
 import * as TWEEN from "tween.js";
 import { gsap } from "/node_modules/gsap/index";
 import * as dat from "dat.gui";
@@ -119,7 +122,7 @@ function galaxyThreejs() {
   const scene = new THREE.Scene();
   // scene.fog = new THREE.FogExp2(0xffffff, 0.01);
   scene.fog = new THREE.Fog(0, 0, 700);
-  scene.background = new THREE.Color(0x0e041b);
+  scene.background = new THREE.Color(0x040312);
 
   // set the camera
   const cameraDistance = 20; // Distance between the camera and spaceship
@@ -130,6 +133,7 @@ function galaxyThreejs() {
     0.1,
     1000
   );
+  camera.frustum = new THREE.Frustum();
   const controls = new FirstPersonControls(camera, renderer.domElement);
   controls.movementSpeed = 10;
   controls.lookSpeed = 0.2;
@@ -198,6 +202,24 @@ function galaxyThreejs() {
   // texture varaible that will allow to set textures of object
   const loadingManager = new THREE.LoadingManager();
   const textureLoader = new THREE.TextureLoader(loadingManager);
+  const galaxyTexture = textureLoader.load(galaxy);
+  /* galaxyTexture.minFilter = THREE.LinearFilter;
+  galaxyTexture.magFilter = THREE.LinearFilter;
+  galaxyTexture.encoding = THREE.sRGBEncoding;
+
+  const galaxyGeometry = new THREE.SphereGeometry(380, 20, 20);
+  const galaxyMaterial = new THREE.MeshPhysicalMaterial({
+    map: galaxyTexture,
+    side: THREE.BackSide,
+  });
+
+  const galaxyScene = new THREE.Mesh(galaxyGeometry, galaxyMaterial);
+  scene.add(galaxyScene);
+  galaxyScene.position.set(0, 0, 0);
+  galaxyScene.scale.set(-1, 1, 1);
+  galaxyScene.receiveShadow = false;
+  galaxyScene.castShadow = false; */
+
   loadingManager.onProgress = function (url, loaded, total) {
     progressBar.value = (loaded / total) * 100;
   };
@@ -210,8 +232,8 @@ function galaxyThreejs() {
   // create a simple object
   const sphereGeometry = new THREE.SphereGeometry(8, 50, 50);
   const sphereMaterial = new THREE.MeshPhysicalMaterial({
-    map: textureLoader.load(rocks),
-    color: randomColor,
+    map: textureLoader.load(earth),
+    color: 0x4b4e49,
   });
   const firstPlanet = new THREE.Mesh(sphereGeometry, sphereMaterial);
 
@@ -248,7 +270,7 @@ function galaxyThreejs() {
       spaceshipModel.traverse(function (child) {
         if (child.isMesh && child.material && child.material.color) {
           // Change the color of the spaceship's material
-          child.material.color.set(0x103d19); // Set the color to red (adjust the color value as needed)
+          child.material.color.set(0x050505); // Set the color to red (adjust the color value as needed)
 
           // Change the texture of the spaceship's material
         }
@@ -392,9 +414,10 @@ function galaxyThreejs() {
   // const particles = [];
 
   // function createParticle() {
-  //   const geometry = new THREE.SphereGeometry(0.04); // size as parameter
-  //   const material = new THREE.MeshBasicMaterial({
+  //   const geometry = new THREE.BufferGeometry(); // size as parameter
+  //   const material = new THREE.PointsMaterial({
   //     color: new THREE.Color(Math.random(), Math.random(), Math.random()),
+  //     size: 0.7,
   //     map: textureLoader.load(earth),
   //   }); // each particule has a random color, different of the randomcolor variable
   //   const particle = new THREE.Mesh(geometry, material);
@@ -413,10 +436,31 @@ function galaxyThreejs() {
   //   scene.add(particle);
   //   particles.push(particle);
   // }
-  // // create X number of particules
-  // const numberOfParticules = 4500;
-  // for (let i = 0; i < numberOfParticules; i++) {
-  //   createParticle();
+  // // // create X number of particules
+  // const numberOfParticules = 500;
+  /*  for (let i = 0; i < numberOfParticules; i++) {
+    createParticle();
+  } */
+  // for (let i = 0; i < particles.length; i++) {
+  //   const particle = particles[i];
+
+  //   // Calculate the distance between the particle and the camera
+  //   const distance = particle.position.distanceTo(camera.position);
+
+  //   // Set a threshold distance to determine visibility
+  //   const visibilityThreshold = 100;
+
+  //   if (distance < visibilityThreshold) {
+  //     // Particle is within view sight, add it to the scene if it's not already added
+  //     if (scene.getObjectById(particle.id) === undefined) {
+  //       scene.add(particle);
+  //     }
+  //   } else {
+  //     // Particle is outside view sight, remove it from the scene if it's currently added
+  //     if (scene.getObjectById(particle.id) !== undefined) {
+  //       scene.remove(particle);
+  //     }
+  //   }
   // }
 
   // renderer.domElement.addEventListener("mousedown", function () {
@@ -426,6 +470,29 @@ function galaxyThreejs() {
   //     ease: "power3.inOut",
   //   });
   // });
+
+  const stars = [];
+  const starMater = new THREE.PointsMaterial({
+    color: 0xffffff,
+    size: 0.5,
+    sizeAttenuation: true,
+    alphaTest: 0.5,
+    transparent: true,
+    map: textureLoader.load(disc),
+  });
+  const starGeo = new THREE.BufferGeometry();
+  for (let i = 0; i < 400000; i++) {
+    const star = new THREE.Vector3(
+      Math.random() * 600 - 300,
+      Math.random() * 600 - 300,
+      Math.random() * 600 - 300
+    );
+    stars.push(star);
+  }
+  starGeo.setFromPoints(stars);
+  starGeo.computeVertexNormals();
+  const starss = new THREE.Points(starGeo, starMater);
+  scene.add(starss);
 
   // Create Cannon.js bodies for the planet and spaceship
   const planetShape = new CANNON.Sphere(8);
@@ -529,7 +596,7 @@ const targetY = -(mouseY / window.innerHeight) * 2 + 1; */
       spaceshipModel.rotation.x = THREE.MathUtils.degToRad(10);
     }
 
-    firstPlanet.rotation.y += 0.007;
+    firstPlanet.rotation.y += 0.001;
     // Step the Cannon.js simulation forward
     /*   world.step(1 / 60); */
 

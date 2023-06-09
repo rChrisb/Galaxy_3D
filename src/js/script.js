@@ -416,6 +416,12 @@ function galaxyThreejs() {
   //   }
   // });
   let spaceshipDirection;
+  let spaceshipVelocity = new THREE.Vector3();
+  const spaceshipAcceleration = 0.005;
+  const spaceshipInertia = 0.997;
+  const bounceAmplitude = 0.004;
+  const bounceFrequency = 0.004;
+
   function updateSpaceship() {
     spaceshipDirection = new THREE.Vector3();
 
@@ -425,8 +431,23 @@ function galaxyThreejs() {
 
     spaceshipDirection.normalize().multiplyScalar(spaceshipSpeed);
 
-    // Update spaceship position
-    spaceshipPosition.add(spaceshipDirection);
+    // Adjust the spaceship's velocity based on acceleration and direction
+    if (spaceshipDirection.lengthSq() > 0) {
+      spaceshipVelocity.add(
+        spaceshipDirection.multiplyScalar(spaceshipAcceleration)
+      );
+    }
+
+    // Apply inertia to the spaceship's velocity
+    spaceshipVelocity.multiplyScalar(spaceshipInertia);
+
+    // Apply bounce effect
+    const bounceOffset =
+      Math.sin(Date.now() * bounceFrequency) * bounceAmplitude;
+    spaceshipPosition.y = spaceshipPosition.y + bounceOffset;
+
+    // Update spaceship position based on velocity
+    spaceshipPosition.add(spaceshipVelocity);
 
     // Update spaceship container position
     spaceshipContainer.position.copy(spaceshipPosition);
@@ -575,7 +596,7 @@ const targetY = -(mouseY / window.innerHeight) * 2 + 1; */
 
     if (distance <= 10) {
       gsap.to(spaceshipPosition, {
-        duration: 3,
+        duration: 1,
         z: 43,
         /* ease: "power3.inOut", */
       });
@@ -715,7 +736,7 @@ const targetY = -(mouseY / window.innerHeight) * 2 + 1; */
   document.body.appendChild(guiContainer);
   guiContainer.appendChild(gui.domElement); */
 
-  gui.add(options, "speed", 0.1, 1.25);
+  gui.add(options, "speed", 0.3, 5);
   gui.addColor(options, "color").onChange(function (e) {
     spaceshipModel.traverse(function (child) {
       if (child.isMesh) {

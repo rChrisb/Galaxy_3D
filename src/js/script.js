@@ -151,15 +151,18 @@ function galaxyThreejs() {
   function updateCamera() {
     const spaceshipPosition = spaceshipContainer.position;
     const spaceshipRotation = spaceshipContainer.rotation;
+
+    // Set the camera's position relative to the spaceship's rotation
     const distanceFromSpaceship = 6;
+    const offset = new THREE.Vector3(0, 2, -distanceFromSpaceship);
+    offset.applyEuler(spaceshipRotation);
+    const cameraPosition = spaceshipPosition.clone().add(offset);
+    camera.position.copy(cameraPosition);
 
-    // Update camera position to follow the spaceshipContainer's position
-    camera.position.copy(spaceshipPosition);
-    camera.position.add(new THREE.Vector3(0, 2, -distanceFromSpaceship));
-
-    // Update camera lookAt to follow the spaceshipContainer's rotation
-    const forward = new THREE.Vector3(0, 1, -1); // Assuming the spaceship's forward direction is along the negative z-axis
-    const lookAtTarget = spaceshipContainer.position.clone().add(forward);
+    // Set the camera's look-at target to be in the direction of the spaceship's rotation
+    const lookAtTarget = spaceshipPosition
+      .clone()
+      .add(new THREE.Vector3(0, 1, 0));
     camera.lookAt(lookAtTarget);
   }
 
@@ -296,14 +299,49 @@ function galaxyThreejs() {
   );
   let spaceshipPosition = new THREE.Vector3(); // Initial spaceship position
   let spaceshipSpeed = 0.1; // Speed at which spaceship moves
-  const spaceshipRotationSpeed = 0.02; // Speed at which spaceship rotates
+  const spaceshipRotationSpeed = 0.2; // Speed at which spaceship rotates
 
   let moveForward = false;
   let moveBackward = false;
-  let rotateLeft = false;
-  let rotateRight = false;
+  let moveLeft = false;
+  let moveRight = false;
   let moveUp = false;
   let moveDown = false;
+
+  // Define the keyState object to track the state of each key
+  const keyState = {};
+
+  function updateKeyboardControls() {
+    // Check if the left arrow key is pressed
+    if (keyState["ArrowLeft"]) {
+      // Rotate the spaceship to the left
+      if (spaceshipModel) {
+        spaceshipContainer.rotateOnAxis(new THREE.Vector3(0, 1, 0), 0.01);
+      }
+    }
+
+    // Check if the right arrow key is pressed
+    if (keyState["ArrowRight"]) {
+      // Rotate the spaceship to the right
+      if (spaceshipModel) {
+        spaceshipContainer.rotateOnAxis(new THREE.Vector3(0, 1, 0), -0.01);
+      }
+    }
+  }
+
+  // Add event listeners for keydown and keyup events
+  document.addEventListener("keydown", handleKeyDown);
+  document.addEventListener("keyup", handleKeyUp);
+
+  // Function to handle keydown events
+  function handleKeyDown(event) {
+    keyState[event.code] = true;
+  }
+
+  // Function to handle keyup events
+  function handleKeyUp(event) {
+    keyState[event.code] = false;
+  }
 
   window.addEventListener("keydown", function (event) {
     if (event.code === "KeyW") {
@@ -311,9 +349,9 @@ function galaxyThreejs() {
     } else if (event.code === "KeyS") {
       moveBackward = true; // Move backward when 'S' key is pressed
     } else if (event.code === "KeyA") {
-      rotateLeft = true; // Rotate left when 'A' key is pressed
+      moveLeft = true; // Move left when 'A' key is pressed
     } else if (event.code === "KeyD") {
-      rotateRight = true; // Rotate right when 'D' key is pressed
+      moveRight = true; // Move right when 'D' key is pressed
     } else if (event.code === "Space") {
       moveUp = true; // Move up when spacebar is pressed
     } else if (event.code === "ShiftLeft") {
@@ -321,29 +359,29 @@ function galaxyThreejs() {
     }
     if (event.code === "KeyW" && event.code === "KeyD") {
       moveForward = true;
-      rotateRight = true;
+      moveRight = true;
     } else if (event.code === "KeyW" && event.code === "KeyA") {
       moveForward = true;
-      rotateLeft = true;
+      moveLeft = true;
     } else if (event.code === "KeyS" && event.code === "KeyD") {
       moveBackward = true;
-      rotateRight = true;
+      moveRight = true;
     } else if (event.code === "KeyS" && event.code === "KeyA") {
       moveBackward = true;
-      rotateLeft = true;
+      moveLeft = true;
     }
     if (event.code === "KeyW" && event.code === "KeyD") {
       moveForward = false;
-      rotateRight = false;
+      moveRight = false;
     } else if (event.code === "KeyW" && event.code === "KeyA") {
       moveForward = false;
-      rotateLeft = false;
+      moveLeft = false;
     } else if (event.code === "KeyS" && event.code === "KeyD") {
       moveBackward = false;
-      rotateRight = false;
+      moveRight = false;
     } else if (event.code === "KeyS" && event.code === "KeyA") {
       moveBackward = false;
-      rotateLeft = false;
+      moveLeft = false;
     }
   });
 
@@ -353,9 +391,9 @@ function galaxyThreejs() {
     } else if (event.code === "KeyS") {
       moveBackward = false; // Stop moving backward when 'S' key is released
     } else if (event.code === "KeyA") {
-      rotateLeft = false; // Stop rotating left when 'A' key is released
+      moveLeft = false; // Stop rotating left when 'A' key is released
     } else if (event.code === "KeyD") {
-      rotateRight = false; // Stop rotating right when 'D' key is released
+      moveRight = false; // Stop rotating right when 'D' key is released
     } else if (event.code === "Space") {
       moveUp = false; // Stop moving up when spacebar is released
     } else if (event.code === "ShiftLeft") {
@@ -368,7 +406,7 @@ function galaxyThreejs() {
   //   const windowHalfX = window.innerWidth / 2;
 
   //   if (mouseX < windowHalfX) {
-  //     rotateLeft = true; // Rotate left when mouse is on the left half of the screen
+  //     moveLeft = true; // Rotate left when mouse is on the left half of the screen
   //     rotateRight = false;
   //   } else {
   //     rotateLeft = false;
@@ -378,34 +416,18 @@ function galaxyThreejs() {
   let spaceshipDirection;
   function updateSpaceship() {
     spaceshipDirection = new THREE.Vector3();
-    const spaceshipQuaternion = new THREE.Quaternion();
 
     spaceshipDirection.z = Number(moveForward) - Number(moveBackward);
-    spaceshipDirection.x = Number(rotateLeft) - Number(rotateRight);
+    spaceshipDirection.x = Number(moveLeft) - Number(moveRight);
     spaceshipDirection.y = Number(moveUp) - Number(moveDown);
 
-    // Diagonal movement
-    if ((moveForward || moveBackward) && (rotateLeft || rotateRight)) {
-      const diagonalSpeed = Math.sqrt((spaceshipSpeed * spaceshipSpeed) / 2);
-      spaceshipDirection.normalize().multiplyScalar(diagonalSpeed);
-    } else {
-      spaceshipDirection.normalize().multiplyScalar(spaceshipSpeed);
-    }
-
-    // Update spaceship rotation
-    spaceshipQuaternion.setFromAxisAngle(
-      new THREE.Vector3(0, 1, 0),
-      spaceshipDirection.x * spaceshipRotationSpeed
-    );
-    spaceshipQuaternion.multiply(spaceshipContainer.quaternion);
-    spaceshipContainer.quaternion.copy(spaceshipQuaternion);
+    spaceshipDirection.normalize().multiplyScalar(spaceshipSpeed);
 
     // Update spaceship position
     spaceshipPosition.add(spaceshipDirection);
 
     // Update spaceship container position
     spaceshipContainer.position.copy(spaceshipPosition);
-    /* console.log(spaceshipPosition, firstPlanet.position); */
   }
 
   console.log(randomColor);
@@ -597,6 +619,9 @@ const targetY = -(mouseY / window.innerHeight) * 2 + 1; */
     }
 
     firstPlanet.rotation.y += 0.001;
+    updateKeyboardControls();
+    spaceshipContainer.rotation.y =
+      spaceshipContainer.rotation.y % (2 * Math.PI);
     // Step the Cannon.js simulation forward
     /*   world.step(1 / 60); */
 

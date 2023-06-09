@@ -33,6 +33,7 @@ const options = {
 const menuMusic = document.getElementById("menuMusic");
 const sceneMusic = document.getElementById("sceneMusic");
 menuMusic.play();
+menuMusic.volume = 0.05;
 
 // window.addEventListener("click", () => {
 //   menuMusic.loop = true;
@@ -56,6 +57,7 @@ startButton.addEventListener("click", () => {
   menuMusic.currentTime = 0;
 
   sceneMusic.play();
+  sceneMusic.volume = 0.05;
   galaxyThreejs();
   progressBarContainer.style.display = "flex";
   // Show the loading screen
@@ -352,9 +354,9 @@ function galaxyThreejs() {
       moveLeft = true; // Move left when 'A' key is pressed
     } else if (event.code === "KeyD") {
       moveRight = true; // Move right when 'D' key is pressed
-    } else if (event.code === "Space") {
+    } else if (event.code === "ArrowUp") {
       moveUp = true; // Move up when spacebar is pressed
-    } else if (event.code === "ShiftLeft") {
+    } else if (event.code === "ArrowDown") {
       moveDown = true; // Move down when left shift key is pressed
     }
     if (event.code === "KeyW" && event.code === "KeyD") {
@@ -394,9 +396,9 @@ function galaxyThreejs() {
       moveLeft = false; // Stop rotating left when 'A' key is released
     } else if (event.code === "KeyD") {
       moveRight = false; // Stop rotating right when 'D' key is released
-    } else if (event.code === "Space") {
+    } else if (event.code === "ArrowUp") {
       moveUp = false; // Stop moving up when spacebar is released
-    } else if (event.code === "ShiftLeft") {
+    } else if (event.code === "ArrowDown") {
       moveDown = false; // Stop moving down when left shift key is released
     }
   });

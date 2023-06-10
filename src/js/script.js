@@ -208,7 +208,7 @@ function galaxyThreejs() {
   );
 
   // Create a point light
-  const pointLight = new THREE.PointLight(0xff0000, 2, 10);
+  const pointLight = new THREE.PointLight(0xff0000, 2, 6);
   pointLight.position.set(0, 0, -5); // Adjust the position as per your spaceship
 
   // Add the point light to the spaceship container
@@ -402,9 +402,13 @@ function galaxyThreejs() {
       (moveForward && initialOpacity <= 0.6) ||
       (moveUp && initialOpacity <= 0.6)
     ) {
-      initialOpacity += 0.001;
+      initialOpacity += 0.0005;
+      pointLight.distance += 0.1;
     } else {
-      if (initialOpacity >= 0) initialOpacity -= 0.001;
+      if (initialOpacity >= 0 && pointLight.distance >= 6) {
+        initialOpacity -= 0.0005;
+        pointLight.distance -= 0.1;
+      }
     }
     fireSprite1.material.opacity = initialOpacity;
     fireSprite2.material.opacity = initialOpacity;

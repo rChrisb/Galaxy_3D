@@ -497,7 +497,6 @@ function galaxyThreejs() {
     TWEEN.update();
     updateCamera();
     updateSpaceship();
-    checkCollision();
 
     renderer.render(scene, camera);
   }

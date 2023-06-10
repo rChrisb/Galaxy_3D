@@ -71,7 +71,7 @@ body {
   height: 100%;
   /* overflow: hidden; */
   /* white-space: nowrap; */
-  animation: scrolling-text-animation 40s infinite;
+  animation: scrolling-text-animation 50s infinite;
 }
 
 .headings {
@@ -88,7 +88,7 @@ p {
 
 @keyframes scrolling-text-animation {
   0% {
-    transform: rotateX(21deg) translateY(100%);
+    transform: rotateX(21deg) translateY(150%);
     opacity: 1;
   }
   20% {
@@ -98,7 +98,7 @@ p {
     opacity: 1;
   }
   100% {
-    transform: rotateX(21deg) translateY(-120%);
+    transform: rotateX(21deg) translateY(-280%);
     opacity: 0;
   }
 }

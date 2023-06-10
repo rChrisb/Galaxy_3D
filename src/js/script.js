@@ -32,6 +32,7 @@ const options = {
 };
 const menuMusic = document.getElementById("menuMusic");
 const sceneMusic = document.getElementById("sceneMusic");
+const loadingMusic = document.getElementById("loadingMusic");
 menuMusic.play();
 menuMusic.volume = 0.05;
 
@@ -56,10 +57,10 @@ startButton.addEventListener("click", () => {
   menuMusic.pause();
   menuMusic.currentTime = 0;
 
-  sceneMusic.play();
-  sceneMusic.volume = 0.05;
   galaxyThreejs();
   progressBarContainer.style.display = "flex";
+  loadingMusic.play();
+  loadingMusic.volume = 0.03;
   // Show the loading screen
 
   /* progressBarContainer.style.display = "flex"; */
@@ -231,6 +232,9 @@ function galaxyThreejs() {
 
   loadingManager.onLoad = function (url) {
     progressBarContainer.style.display = "none";
+    loadingMusic.pause();
+    sceneMusic.play();
+    sceneMusic.volume = 0.05;
     console.log("finished loading");
   };
 
@@ -418,9 +422,9 @@ function galaxyThreejs() {
   let spaceshipDirection;
   let spaceshipVelocity = new THREE.Vector3();
   const spaceshipAcceleration = 0.005;
-  const spaceshipInertia = 0.997;
-  const bounceAmplitude = 0.004;
-  const bounceFrequency = 0.004;
+  const spaceshipInertia = 0.998;
+  const bounceAmplitude = 0.0036;
+  const bounceFrequency = 0.006;
 
   function updateSpaceship() {
     spaceshipDirection = new THREE.Vector3();
@@ -592,7 +596,6 @@ const targetY = -(mouseY / window.innerHeight) * 2 + 1; */
     if (firstPlanet) {
       distance = spaceshipPosition.distanceTo(firstPlanet.position);
     }
-    console.log(distance);
 
     if (distance <= 10) {
       gsap.to(spaceshipPosition, {
@@ -769,8 +772,8 @@ const targetY = -(mouseY / window.innerHeight) * 2 + 1; */
     const y = ((-cameraProjection.y + 1) * window.innerHeight) / 2;
     const buttonZ = camera.position.z - 10; // Adjust the distance between the camera and button
 
-    messageButton.style.left = x + "px";
-    messageButton.style.top = y + "px";
+    /* messageButton.style.left = x + "px";
+    messageButton.style.top = y + "px"; */
   }
 
   function showMessageButton() {

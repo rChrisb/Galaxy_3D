@@ -11,7 +11,7 @@ import spaceshipmap from "../images/spaceship_texture.jpg";
 import pink from "../images/pink-red-mix-paints-paper.jpg";
 import greenTexture from "../images/grass_planet.jpg";
 import disc from "../images/disc.png";
-import motor from "../images/157-1575289_file-yellow-dot-svg-yellow-circle-black-outline-removebg-preview.png";
+import motor from "../images/motor.png";
 import * as TWEEN from "tween.js";
 import { gsap } from "/node_modules/gsap/index";
 import * as dat from "dat.gui";
@@ -27,7 +27,7 @@ const spaceship3 = new URL(
   import.meta.url
 );
 const options = {
-  speed: 0.7,
+  speed: 1,
   color: "#4a4714", // Red
   sound: "on",
 };
@@ -451,11 +451,11 @@ function galaxyThreejs() {
     map: textureLoader.load(disc),
   });
   const starGeo = new THREE.BufferGeometry();
-  for (let i = 0; i < 100010; i++) {
+  for (let i = 0; i < 600010; i++) {
     const star = new THREE.Vector3(
-      Math.random() * 600 - 300,
-      Math.random() * 600 - 300,
-      Math.random() * 600 - 300
+      Math.random() * 1800 - 900,
+      Math.random() * 1800 - 900,
+      Math.random() * 1800 - 900
     );
     stars.push(star);
   }
@@ -490,7 +490,7 @@ function galaxyThreejs() {
         moveUp ||
         moveLeft ||
         moveRight) &&
-      spaceshipSpeed < speed / 5
+      spaceshipSpeed < speed / 5 + 0.5
     ) {
       spaceshipSpeed += 0.003;
     } else spaceshipSpeed = 0.02;
@@ -500,7 +500,7 @@ function galaxyThreejs() {
     if (firstPlanet) {
       distance = spaceshipPosition.distanceTo(firstPlanet.position);
     }
-    if (speed >= 2.5 && distance < 30 && (moveBackward || moveForward))
+    if (spaceshipSpeed >= 1.5 && distance < 60 && (moveBackward || moveForward))
       spaceshipSpeed = spaceshipSpeed / speed - 0.997;
 
     if (distance <= 15) {

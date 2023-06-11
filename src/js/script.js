@@ -391,11 +391,11 @@ function galaxyThreejs() {
       (moveForward && initialOpacity <= 0.6) ||
       (moveUp && initialOpacity <= 0.6)
     ) {
-      initialOpacity += 0.0005;
+      initialOpacity += 0.001;
       pointLight.distance += 0.1;
     } else {
       if (initialOpacity >= 0 && pointLight.distance >= 6) {
-        initialOpacity -= 0.0005;
+        initialOpacity -= 0.001;
         pointLight.distance -= 0.1;
       }
     }
@@ -461,16 +461,16 @@ function galaxyThreejs() {
       distance = spaceshipPosition.distanceTo(firstPlanet.position);
     }
 
-    if (distance <= 10) {
+    if (distance <= 15) {
       gsap.to(spaceshipPosition, {
         duration: 2,
-        z: 50,
+        z: 35,
         /* ease: "power3.inOut", */
       });
     }
     // this limits the zoom when in front of the sphere
 
-    if (distance <= 17) showMessageButton();
+    if (distance <= 30) showMessageButton();
     else hideMessageButton();
 
     /* camera.lookAt(0, 0, 0); */

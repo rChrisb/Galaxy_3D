@@ -38,7 +38,7 @@ const ufoSound = document.getElementById("ufoSound");
 menuMusic.play();
 menuMusic.volume = 0.05;
 
-// Menu page
+// MENU PAGE
 const messageButton = document.getElementById("message-button");
 const startButton = document.getElementById("start-button");
 const openingText = document.getElementById("scrolling-text");
@@ -58,6 +58,7 @@ startButton.addEventListener("click", () => {
   loadingMusic.volume = 0.03;
 });
 
+// 3D SCENE
 function galaxyThreejs() {
   /* showLoadingScreen(); */
   // set the render
@@ -88,19 +89,19 @@ function galaxyThreejs() {
   controls.lookSpeed = 0.2;
 
   //1st person camera
-  // Update camera position and lookAt based on spaceshipContainer's position
+  // update camera position and lookat based on spaceshipcontainer's position
   function updateCamera() {
     const spaceshipPosition = spaceshipContainer.position;
     const spaceshipRotation = spaceshipContainer.rotation;
 
-    // Set the camera's position relative to the spaceship's rotation
+    // set the camera's position relative to the spaceship's rotation
     const distanceFromSpaceship = 6;
     const offset = new THREE.Vector3(0, 2, -distanceFromSpaceship);
     offset.applyEuler(spaceshipRotation);
     const cameraPosition = spaceshipPosition.clone().add(offset);
     camera.position.copy(cameraPosition);
 
-    // Set the camera's look-at target to be in the direction of the spaceship's rotation
+    // set the camera's look-at target to be in the direction of the spaceship's rotation
     const lookAtTarget = spaceshipPosition
       .clone()
       .add(new THREE.Vector3(0, 1, 0));
@@ -119,7 +120,7 @@ function galaxyThreejs() {
   const ambientLight = new THREE.AmbientLight(0xffffff);
   scene.add(ambientLight);
 
-  // variable for random colors
+  // variable for RANDOM COLORS
   const randomColor = new THREE.Color(
     Math.random(),
     Math.random(),
@@ -142,7 +143,7 @@ function galaxyThreejs() {
     console.log("finished loading");
   };
 
-  // create a simple object
+  // PLANETS
   const sphereGeometry = new THREE.SphereGeometry(12, 50, 50);
   const sphereMaterial = new THREE.MeshPhysicalMaterial({
     map: textureLoader.load(earth),
@@ -153,7 +154,7 @@ function galaxyThreejs() {
   scene.add(firstPlanet);
   firstPlanet.position.set(10, 10, 60);
 
-  // Define the array of spaceship model URLs and their corresponding scale values
+  // define the array of spaceship model urls and their corresponding scale values
   const spaceshipModels = [
     { url: spaceship.href, scale: 0.8 },
     /* {
@@ -166,7 +167,7 @@ function galaxyThreejs() {
     // Add more spaceship model URLs and scale values if needed
   ];
 
-  // Randomly select a spaceship model and its corresponding scale value
+  // randomly select a spaceship model and its corresponding scale value
   const randomModelIndex = Math.floor(Math.random() * spaceshipModels.length);
   const selectedModel = spaceshipModels[randomModelIndex];
 
@@ -205,7 +206,7 @@ function galaxyThreejs() {
     }
   );
 
-  // point light for illustrate spaceship activity
+  // POINT LIGHT for illustrate spaceship activity
   const pointLight = new THREE.PointLight(0xff0000, 2, 6);
   pointLight.position.set(0, 0, -5); // Adjust the position as per your spaceship
 
@@ -213,7 +214,7 @@ function galaxyThreejs() {
 
   const fireTexture = textureLoader.load(motor);
 
-  // fire material
+  // POWERLIGHT MATERIAL
   const fireMaterial = new THREE.SpriteMaterial({
     map: fireTexture,
     color: 0xc90712,
@@ -249,7 +250,7 @@ function galaxyThreejs() {
   let moveUp = false;
   let moveDown = false;
 
-  //  keyState object to track the state of each key
+  //  keystate object to track the state of each key
   const keyState = {};
 
   function updateKeyboardControls() {
@@ -464,7 +465,7 @@ function galaxyThreejs() {
   const starss = new THREE.Points(starGeo, starMater);
   scene.add(starss);
 
-  // annon.js bodies for the planet and spaceship
+  // cannon.js bodies for the planet and spaceship
   const planetShape = new CANNON.Sphere(8);
   const planetBody = new CANNON.Body({
     shape: planetShape,
@@ -535,12 +536,12 @@ function galaxyThreejs() {
 
     renderer.render(scene, camera);
   }
-  // scene animation rendering
+  // SCENE ANIMATION RENDERING
   renderer.setAnimationLoop(animate);
 
   gsap.ticker.add(animate);
 
-  // gui options
+  // GUI OPTIONS
   const gui = new dat.GUI();
   gui.close();
   /* const guiContainer = document.createElement("div");
@@ -621,7 +622,7 @@ function hideCursor() {
   }
 }
 
-// event listeners to detect mouse movement
+// EVENT LISTENERS TO DETECT MOUSE MOVEMENT
 document.addEventListener("mousemove", showCursor);
 document.addEventListener("mouseenter", showCursor);
 document.addEventListener("mouseleave", hideCursor);

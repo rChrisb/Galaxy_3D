@@ -599,3 +599,29 @@ function galaxyThreejs() {
     }
   });
 }
+
+// CURSOR
+let cursorVisible = false;
+let cursorTimeout;
+
+function showCursor() {
+  if (!cursorVisible) {
+    document.body.style.cursor = "auto";
+    cursorVisible = true;
+  }
+
+  clearTimeout(cursorTimeout);
+  cursorTimeout = setTimeout(hideCursor, 1000); // Hide the cursor after 1 second of inactivity
+}
+
+function hideCursor() {
+  if (cursorVisible) {
+    document.body.style.cursor = "none";
+    cursorVisible = false;
+  }
+}
+
+// event listeners to detect mouse movement
+document.addEventListener("mousemove", showCursor);
+document.addEventListener("mouseenter", showCursor);
+document.addEventListener("mouseleave", hideCursor);

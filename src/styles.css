@@ -15,7 +15,11 @@ body {
   font-size: 5vw;
   line-height: 1.3;
   overflow: hidden;
+  cursor: none;
 }
+/* body:hover { */
+/* cursor: auto; */
+/* } */
 
 #message-button {
   color: #ffbe00;

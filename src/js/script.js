@@ -181,10 +181,7 @@ function galaxyThreejs() {
       spaceshipModel = model;
       spaceshipModel.traverse(function (child) {
         if (child.isMesh && child.material && child.material.color) {
-          // Change the color of the spaceship's material
-          child.material.color.set(0x050505); // Set the color to red (adjust the color value as needed)
-
-          // Change the texture of the spaceship's material
+          child.material.color.set(0x050505);
         }
       });
       spaceshipModel.scale.set(
@@ -207,17 +204,15 @@ function galaxyThreejs() {
     }
   );
 
-  // Create a point light
+  // point light for illustrate spaceship activity
   const pointLight = new THREE.PointLight(0xff0000, 2, 6);
   pointLight.position.set(0, 0, -5); // Adjust the position as per your spaceship
 
-  // Add the point light to the spaceship container
   spaceshipContainer.add(pointLight);
 
-  // Create a fire texture
   const fireTexture = textureLoader.load(disc);
 
-  // Create a fire material
+  // fire material
   const fireMaterial = new THREE.SpriteMaterial({
     map: fireTexture,
     color: 0xc90712,
@@ -225,7 +220,7 @@ function galaxyThreejs() {
   });
 
   let spaceshipPosition = new THREE.Vector3(); // Initial spaceship position
-  // Create a fire sprite
+
   const fireSprite1 = new THREE.Sprite(fireMaterial);
   fireSprite1.scale.set(0.2, 0.2, 0.2);
 
@@ -238,16 +233,13 @@ function galaxyThreejs() {
   firePosition1.add(spaceshipPosition);
   firePosition2.add(spaceshipPosition);
 
-  // Set the position of the fire sprites
   fireSprite1.position.copy(firePosition1);
   fireSprite2.position.copy(firePosition2);
 
-  // Add the fire sprites to the spaceship container
   spaceshipContainer.add(fireSprite1);
   spaceshipContainer.add(fireSprite2);
 
-  let spaceshipSpeed = 0.6; // Speed at which spaceship moves
-  const spaceshipRotationSpeed = 0.2; // Speed at which spaceship rotates
+  let spaceshipSpeed = 0.6;
 
   let moveForward = false;
   let moveBackward = false;
@@ -256,7 +248,7 @@ function galaxyThreejs() {
   let moveUp = false;
   let moveDown = false;
 
-  // Define the keyState object to track the state of each key
+  //  keyState object to track the state of each key
   const keyState = {};
 
   function updateKeyboardControls() {
@@ -277,16 +269,13 @@ function galaxyThreejs() {
     }
   }
 
-  // Add event listeners for keydown and keyup events
   document.addEventListener("keydown", handleKeyDown);
   document.addEventListener("keyup", handleKeyUp);
 
-  // Function to handle keydown events
   function handleKeyDown(event) {
     keyState[event.code] = true;
   }
 
-  // Function to handle keyup events
   function handleKeyUp(event) {
     keyState[event.code] = false;
   }
@@ -295,11 +284,11 @@ function galaxyThreejs() {
     if (event.code === "KeyW") {
       ufoSound.play();
       ufoSound.volume = 0.5;
-      moveForward = true; // Move forward when 'W' key is pressed
+      moveForward = true; // Move forward when 'Z' key is pressed ('W' for qwerty board)
     } else if (event.code === "KeyS") {
       moveBackward = true; // Move backward when 'S' key is pressed
     } else if (event.code === "KeyA") {
-      moveLeft = true; // Move left when 'A' key is pressed
+      moveLeft = true; // Move left when 'Q' key is pressed ('A' in qwerty)
     } else if (event.code === "KeyD") {
       moveRight = true; // Move right when 'D' key is pressed
     } else if (event.code === "ArrowUp") {
@@ -338,11 +327,11 @@ function galaxyThreejs() {
   window.addEventListener("keyup", function (event) {
     if (event.code === "KeyW") {
       ufoSound.pause();
-      moveForward = false; // Stop moving forward when 'W' key is released
+      moveForward = false; // Stop moving forward when 'Z' (azerty) key is released
     } else if (event.code === "KeyS") {
       moveBackward = false; // Stop moving backward when 'S' key is released
     } else if (event.code === "KeyA") {
-      moveLeft = false; // Stop rotating left when 'A' key is released
+      moveLeft = false; // Stop rotating left when 'Q' (azerty) key is released
     } else if (event.code === "KeyD") {
       moveRight = false; // Stop rotating right when 'D' key is released
     } else if (event.code === "ArrowUp") {
@@ -390,10 +379,10 @@ function galaxyThreejs() {
       );
     }
 
-    // Apply inertia to the spaceship's velocity
+    // inertia to the spaceship's velocity
     spaceshipVelocity.multiplyScalar(spaceshipInertia);
 
-    // Apply bounce effect
+    // bounce effect
     const bounceOffset =
       Math.sin(Date.now() * bounceFrequency) * bounceAmplitude;
     spaceshipPosition.y = spaceshipPosition.y + bounceOffset;
@@ -445,7 +434,7 @@ function galaxyThreejs() {
   const starss = new THREE.Points(starGeo, starMater);
   scene.add(starss);
 
-  // Create Cannon.js bodies for the planet and spaceship
+  // annon.js bodies for the planet and spaceship
   const planetShape = new CANNON.Sphere(8);
   const planetBody = new CANNON.Body({
     shape: planetShape,
@@ -466,7 +455,7 @@ function galaxyThreejs() {
     const speed = options.speed;
     spaceshipSpeed = speed / 5;
 
-    // Calculate the distance between the camera and the sphere
+    // distance between the camera and the sphere
     let distance;
     if (firstPlanet) {
       distance = spaceshipPosition.distanceTo(firstPlanet.position);
@@ -479,7 +468,7 @@ function galaxyThreejs() {
         /* ease: "power3.inOut", */
       });
     }
-    // Limit the zoom when in front of the sphere
+    // this limits the zoom when in front of the sphere
 
     if (distance <= 17) showMessageButton();
     else hideMessageButton();
@@ -504,7 +493,7 @@ function galaxyThreejs() {
 
     renderer.render(scene, camera);
   }
-  // Start the 3D scene or perform any other action
+  // scene animation rendering
   renderer.setAnimationLoop(animate);
 
   gsap.ticker.add(animate);
@@ -521,8 +510,7 @@ function galaxyThreejs() {
   gui.addColor(options, "color").onChange(function (e) {
     spaceshipModel.traverse(function (child) {
       if (child.isMesh) {
-        // Change the color of the spaceship's material
-        child.material.color.set(e); // Set the color to red (adjust the color value as needed)
+        child.material.color.set(e);
       }
     });
   });

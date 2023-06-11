@@ -11,6 +11,7 @@ import spaceshipmap from "../images/spaceship_texture.jpg";
 import pink from "../images/pink-red-mix-paints-paper.jpg";
 import greenTexture from "../images/grass_planet.jpg";
 import disc from "../images/disc.png";
+import motor from "../images/157-1575289_file-yellow-dot-svg-yellow-circle-black-outline-removebg-preview.png";
 import * as TWEEN from "tween.js";
 import { gsap } from "/node_modules/gsap/index";
 import * as dat from "dat.gui";
@@ -181,7 +182,7 @@ function galaxyThreejs() {
       spaceshipModel = model;
       spaceshipModel.traverse(function (child) {
         if (child.isMesh && child.material && child.material.color) {
-          child.material.color.set(0x050505);
+          child.material.color.set(0x070707);
         }
       });
       spaceshipModel.scale.set(
@@ -210,7 +211,7 @@ function galaxyThreejs() {
 
   spaceshipContainer.add(pointLight);
 
-  const fireTexture = textureLoader.load(disc);
+  const fireTexture = textureLoader.load(motor);
 
   // fire material
   const fireMaterial = new THREE.SpriteMaterial({
@@ -239,7 +240,7 @@ function galaxyThreejs() {
   spaceshipContainer.add(fireSprite1);
   spaceshipContainer.add(fireSprite2);
 
-  let spaceshipSpeed = 0.6;
+  let spaceshipSpeed = 0.08;
 
   let moveForward = false;
   let moveBackward = false;
@@ -387,15 +388,44 @@ function galaxyThreejs() {
       Math.sin(Date.now() * bounceFrequency) * bounceAmplitude;
     spaceshipPosition.y = spaceshipPosition.y + bounceOffset;
 
+    // POWERLIGHTS
+    if (
+      !moveBackward &&
+      !moveForward &&
+      !moveDown &&
+      !moveUp &&
+      !moveLeft &&
+      !moveRight
+    ) {
+      /* initialOpacity = 0; */
+      pointLight.distance = 6;
+      /* pointLight.color.set(0xff0000); */
+    }
     if (
       (moveForward && initialOpacity <= 0.6) ||
       (moveUp && initialOpacity <= 0.6)
     ) {
+      pointLight.color.set(0xff0000);
       initialOpacity += 0.001;
-      pointLight.distance += 0.1;
+      pointLight.distance += 0.2;
+    } else if (
+      (moveBackward && initialOpacity <= 0.6) ||
+      (moveDown && initialOpacity <= 0.6)
+    ) {
+      pointLight.color.set(0x0000ff);
+      initialOpacity += 0.001;
+      pointLight.distance += 0.2;
+    } else if (
+      (moveLeft && initialOpacity <= 0.6) ||
+      (moveRight && initialOpacity <= 0.6)
+    ) {
+      pointLight.color.set(0x00ff00);
+      /* initialOpacity += 0.001; */
+      initialOpacity -= 0.002;
+      pointLight.distance += 0.2;
     } else {
       if (initialOpacity >= 0 && pointLight.distance >= 6) {
-        initialOpacity -= 0.001;
+        initialOpacity -= 0.002;
         pointLight.distance -= 0.1;
       }
     }
@@ -453,13 +483,25 @@ function galaxyThreejs() {
   function animate() {
     world.step(timeStep);
     const speed = options.speed;
-    spaceshipSpeed = speed / 5;
+    if (
+      (moveForward ||
+        moveBackward ||
+        moveDown ||
+        moveUp ||
+        moveLeft ||
+        moveRight) &&
+      spaceshipSpeed < speed / 5
+    ) {
+      spaceshipSpeed += 0.003;
+    } else spaceshipSpeed = 0.02;
 
     // distance between the camera and the sphere
     let distance;
     if (firstPlanet) {
       distance = spaceshipPosition.distanceTo(firstPlanet.position);
     }
+    if (speed >= 2.5 && distance < 30 && (moveBackward || moveForward))
+      spaceshipSpeed = spaceshipSpeed / speed - 0.997;
 
     if (distance <= 15) {
       gsap.to(spaceshipPosition, {

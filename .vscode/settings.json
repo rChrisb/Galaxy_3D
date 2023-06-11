@@ -1,5 +1,13 @@
 {
   "editor.tokenColorCustomizations": {
-    "comments": "#9fedb4"
+    "comments": "#edd29f",
+    "textMateRules": [
+      {
+        "scope": "comment.line.double-slash",
+        "settings": {
+          "fontStyle": "bold"
+        }
+      }
+    ]
   }
 }

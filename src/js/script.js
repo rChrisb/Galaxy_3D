@@ -142,7 +142,7 @@ function galaxyThreejs() {
   };
 
   // create a simple object
-  const sphereGeometry = new THREE.SphereGeometry(8, 50, 50);
+  const sphereGeometry = new THREE.SphereGeometry(12, 50, 50);
   const sphereMaterial = new THREE.MeshPhysicalMaterial({
     map: textureLoader.load(earth),
     color: 0x4b4e49,

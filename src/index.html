@@ -9,9 +9,12 @@
     <link rel="icon" href="./images/favicon.ico" type="image/x-icon" />
   </head>
   <body>
-    <button id="message-button" style="display: none">
-      Land on the planet
-    </button>
+    <button id="message-button" style="display: none">Planet 1</button>
+    <div id="info-window" class="window">
+      <span class="close-button"> &times;</span>
+      <p>This is some information about the planet.</p>
+      <button id="action-button">Land on the planet</button>
+    </div>
 
     <div id="menu-container">
       <div id="scrolling-text">
@@ -71,6 +74,11 @@
     <audio
       id="loadingMusic"
       src="./background-music/laser-cannon-science-fiction-sound-9831.mp3"
+      loop
+    ></audio>
+    <audio
+      id="ufoSound"
+      src="./background-music/metal-hit-fx-back-forth_130bpm.wav"
       loop
     ></audio>
   </body>

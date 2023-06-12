@@ -195,3 +195,51 @@ label {
   color: white;
   font-size: 2rem;
 }
+#action-button {
+  color: #a46d93;
+  position: absolute;
+  bottom: -80%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: rgba(6, 0, 0, 1);
+  padding: 20px 40px 20px 20px; /* Adjust the padding to create space for the image */
+  border-radius: 10px;
+  text-align: center;
+  font-size: 18px;
+  z-index: 9999;
+  display: none;
+}
+
+#action-button::after {
+  content: "";
+  background-image: url(./images/enter-button2.png);
+  background-size: 23px 23px; /* Adjust to fit the image appropriately */
+  background-repeat: no-repeat;
+  background-position: right center;
+  position: absolute;
+  top: 50%;
+  right: 10px; /* Adjust the right position */
+  transform: translateY(-50%);
+  width: 20px;
+  height: 20px;
+}
+.window {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #fff;
+  padding: 20px;
+  border: 1px solid #ccc;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  display: none;
+}
+
+.close-button {
+  position: absolute;
+  top: 0px;
+  right: 10px;
+  font-size: 32px;
+  cursor: pointer;
+  color: rgb(96, 6, 6);
+}

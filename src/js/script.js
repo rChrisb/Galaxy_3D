@@ -27,10 +27,11 @@ const spaceship3 = new URL(
   import.meta.url
 );
 const options = {
-  speed: 1,
+  speed: 0.7,
   color: "#4a4714", // Red
   sound: "on",
 };
+
 const menuMusic = document.getElementById("menuMusic");
 const sceneMusic = document.getElementById("sceneMusic");
 const loadingMusic = document.getElementById("loadingMusic");
@@ -38,8 +39,33 @@ const ufoSound = document.getElementById("ufoSound");
 menuMusic.play();
 menuMusic.volume = 0.05;
 
-// MENU PAGE
+let canClose = true;
+let infoVisible = true;
+
 const messageButton = document.getElementById("message-button");
+const infoWindow = document.getElementById("info-window");
+const closeButton = document.querySelector(".close-button");
+const actionButton = document.getElementById("action-button");
+
+messageButton.addEventListener("click", () => {
+  infoVisible = true;
+  actionButton.style.display = "block";
+  if (messageButton.style.display === "block" && infoVisible) {
+    infoWindow.style.display = "block";
+  } else infoWindow.style.display = "none";
+});
+
+closeButton.addEventListener("click", () => {
+  infoWindow.style.display = "none";
+  canClose = true;
+});
+
+actionButton.addEventListener("click", () => {
+  console.log("the user wants to enter the planet!");
+});
+
+// MENU PAGE
+
 const startButton = document.getElementById("start-button");
 const openingText = document.getElementById("scrolling-text");
 const menuContainer = document.getElementById("menu-container");
@@ -482,6 +508,11 @@ function galaxyThreejs() {
 
   // animation of the scene
   function animate() {
+    if (infoWindow.style.display === "block") {
+      canClose = false;
+      messageButton.style.display = "none";
+      return;
+    }
     world.step(timeStep);
     const speed = options.speed;
     if (
@@ -513,7 +544,7 @@ function galaxyThreejs() {
     }
     // this limits the zoom when in front of the sphere
 
-    if (distance <= 30) showMessageButton();
+    if (distance <= 30 && canClose) showMessageButton();
     else hideMessageButton();
 
     /* camera.lookAt(0, 0, 0); */
@@ -594,12 +625,30 @@ function galaxyThreejs() {
     messageButton.style.display = "none";
   }
   document.addEventListener("keydown", function (event) {
+    if (
+      infoWindow.style.display === "block" &&
+      actionButton.style.display !== "none"
+    ) {
+      /* enterPlanet = true; */
+      actionButton.click();
+    }
     if (event.code === "Enter" && messageButton.style.display === "block") {
       messageButton.click();
-      console.log("the user wants to enter the planet!");
+      console.log("check planet info");
+      canClose = false;
+    }
+
+    if (event.code === "Escape" && infoWindow.style.display === "block") {
+      closeButton.click();
+      console.log("window closed!");
     }
   });
 }
+document.addEventListener("keydown", function (event) {
+  if (event.code === "Enter" && startButton.style.display !== "none") {
+    startButton.click();
+  }
+});
 
 // CURSOR
 let cursorVisible = false;

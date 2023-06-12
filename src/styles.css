@@ -3,6 +3,20 @@
   padding: 0;
   box-sizing: border-box;
 }
+.window {
+  font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
+    "Lucida Sans", Arial, sans-serif;
+  color: rgb(139, 186, 186);
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #0a0808;
+  padding: 20px;
+  border: 5px solid #430b0b;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  display: none;
+}
 
 body {
   display: flex;
@@ -20,7 +34,10 @@ body {
 /* body:hover { */
 /* cursor: auto; */
 /* } */
-
+p {
+  padding: 0.5rem 0;
+  font-size: 1.8rem;
+}
 #message-button {
   color: #ffbe00;
   position: absolute;
@@ -84,10 +101,6 @@ body {
 h1 {
   font-size: 90px;
   text-align: center;
-}
-p {
-  padding: 0.5rem 0;
-  font-size: 1.8rem;
 }
 
 @keyframes scrolling-text-animation {
@@ -198,7 +211,7 @@ label {
 #action-button {
   color: #a46d93;
   position: absolute;
-  bottom: -80%;
+  top: -10%;
   left: 50%;
   transform: translate(-50%, -50%);
   background-color: rgba(6, 0, 0, 1);
@@ -223,17 +236,6 @@ label {
   width: 20px;
   height: 20px;
 }
-.window {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background-color: #fff;
-  padding: 20px;
-  border: 1px solid #ccc;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-  display: none;
-}
 
 .close-button {
   position: absolute;
@@ -242,4 +244,5 @@ label {
   font-size: 32px;
   cursor: pointer;
   color: rgb(96, 6, 6);
+  font-weight: bold;
 }

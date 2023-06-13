@@ -578,14 +578,28 @@ function galaxyThreejs() {
       spaceshipSpeed += 0.003;
     } else spaceshipSpeed = 0.02;
 
-    // distance between the camera and the sphere
-    let distance;
+    // distance between the camera and the planets
+    let distance, distance2, distance3, distance4, distance5;
     if (firstPlanet) {
       distance = spaceshipPosition.distanceTo(firstPlanet.position);
     }
+    if (secondPlanet) {
+      distance2 = spaceshipPosition.distanceTo(secondPlanet.position);
+    }
+    if (thirdPlanet) {
+      distance3 = spaceshipPosition.distanceTo(thirdPlanet.position);
+    }
+    if (fourthPlanet) {
+      distance4 = spaceshipPosition.distanceTo(fourthPlanet.position);
+    }
+    if (fifthPlanet) {
+      distance5 = spaceshipPosition.distanceTo(fifthPlanet.position);
+    }
+
     if (spaceshipSpeed >= 1.5 && distance < 60 && (moveBackward || moveForward))
       spaceshipSpeed = spaceshipSpeed / speed - 0.997;
 
+    // this limits the zoom when in front of the sphere
     if (distance <= 15) {
       gsap.to(spaceshipPosition, {
         duration: 2,
@@ -593,9 +607,40 @@ function galaxyThreejs() {
         /* ease: "power3.inOut", */
       });
     }
-    // this limits the zoom when in front of the sphere
+    if (distance2 <= 75) {
+      gsap.to(spaceshipPosition, {
+        duration: 2,
+        z: 35,
+        /* ease: "power3.inOut", */
+      });
+    }
+    if (distance3 <= 180) {
+      gsap.to(spaceshipPosition, {
+        duration: 2,
+        z: -1500,
+        /* ease: "power3.inOut", */
+      });
+    }
+    if (distance4 <= 50) {
+      gsap.to(spaceshipPosition, {
+        duration: 2,
+        z: 35,
+        /* ease: "power3.inOut", */
+      });
+    }
+    if (distance5 <= 140) {
+      gsap.to(spaceshipPosition, {
+        duration: 2,
+        z: 35,
+        /* ease: "power3.inOut", */
+      });
+    }
 
     if (distance <= 30 && canClose) showMessageButton();
+    else if (distance2 <= 90 && canClose) showMessageButton();
+    else if (distance3 <= 300 && canClose) showMessageButton();
+    else if (distance4 <= 65 && canClose) showMessageButton();
+    else if (distance5 <= 155 && canClose) showMessageButton();
     else hideMessageButton();
 
     /* camera.lookAt(0, 0, 0); */
@@ -606,7 +651,7 @@ function galaxyThreejs() {
       spaceshipModel.rotation.x = THREE.MathUtils.degToRad(10);
     }
 
-    firstPlanet.rotation.y += 0.001;
+    all_planets.forEach((planet) => (planet.rotation.y += 0.001));
     updateKeyboardControls();
     spaceshipContainer.rotation.y =
       spaceshipContainer.rotation.y % (2 * Math.PI);

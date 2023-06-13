@@ -62,7 +62,7 @@ p {
   padding: 0.5rem 0;
   font-size: 1.2rem;
 }
-#message-button {
+.message-button {
   color: #ffbe00;
   position: absolute;
   top: 50%;
@@ -76,7 +76,7 @@ p {
   z-index: 9999;
 }
 
-#message-button::after {
+.message-button::after {
   content: "";
   background-image: url(./images/enter-button2.png);
   background-size: 23px 23px; /* Adjust to fit the image appropriately */

@@ -42,17 +42,27 @@ menuMusic.volume = 0.05;
 let canClose = true;
 let infoVisible = true;
 
-const messageButton = document.getElementById("message-button");
+const messageButtons = document.querySelectorAll(".message-button");
+const planet2Button = document.querySelector(".planet2");
+const planet1Button = document.querySelector(".planet1");
+const planet3Button = document.querySelector(".planet3");
+const planet4Button = document.querySelector(".planet4");
+const planet5Button = document.querySelector(".planet5");
+
 const infoWindow = document.getElementById("info-window");
 const closeButton = document.querySelector(".close-window");
 const actionButton = document.getElementById("action-button");
 
-messageButton.addEventListener("click", () => {
-  infoVisible = true;
-  actionButton.style.display = "block";
-  if (messageButton.style.display === "block" && infoVisible) {
-    infoWindow.style.display = "block";
-  } else infoWindow.style.display = "none";
+messageButtons.forEach((button) => {
+  button.addEventListener("click", () => {
+    infoVisible = true;
+    actionButton.style.display = "block";
+    if (button.style.display === "block" && infoVisible) {
+      infoWindow.style.display = "block";
+    } else {
+      infoWindow.style.display = "none";
+    }
+  });
 });
 
 closeButton.addEventListener("click", () => {
@@ -561,7 +571,7 @@ function galaxyThreejs() {
   function animate() {
     if (infoWindow.style.display === "block") {
       canClose = false;
-      messageButton.style.display = "none";
+      messageButtons.forEach((button) => (button.style.display = "none"));
       return;
     }
     world.step(timeStep);
@@ -636,11 +646,11 @@ function galaxyThreejs() {
       });
     }
 
-    if (distance <= 30 && canClose) showMessageButton();
-    else if (distance2 <= 90 && canClose) showMessageButton();
-    else if (distance3 <= 300 && canClose) showMessageButton();
-    else if (distance4 <= 65 && canClose) showMessageButton();
-    else if (distance5 <= 155 && canClose) showMessageButton();
+    if (distance <= 30 && canClose) showMessageButton(planet1Button);
+    else if (distance2 <= 90 && canClose) showMessageButton(planet2Button);
+    else if (distance3 <= 300 && canClose) showMessageButton(planet3Button);
+    else if (distance4 <= 65 && canClose) showMessageButton(planet4Button);
+    else if (distance5 <= 155 && canClose) showMessageButton(planet5Button);
     else hideMessageButton();
 
     /* camera.lookAt(0, 0, 0); */
@@ -700,7 +710,7 @@ function galaxyThreejs() {
   const messageOverlay = document.getElementById("message-overlay");
 
   function updateButtonPosition() {
-    if (!camera || !messageButton) return; // Check if the camera and messageButton are defined
+    /* if (!camera || !messageButton) return; */ // Check if the camera and messageButton are defined
 
     const cameraPosition = camera.position.clone();
     const cameraProjection = cameraPosition.clone().project(camera);
@@ -712,13 +722,15 @@ function galaxyThreejs() {
     messageButton.style.top = y + "px"; */
   }
 
-  function showMessageButton() {
+  function showMessageButton(button) {
     updateButtonPosition();
-    messageButton.style.display = "block";
+    button.style.display = "block";
   }
 
   function hideMessageButton() {
-    messageButton.style.display = "none";
+    messageButtons.forEach((button) => {
+      button.style.display = "none";
+    });
   }
 
   // EVENT LISTENERS FOR MESSAGES BUTTONS
@@ -731,25 +743,31 @@ function galaxyThreejs() {
       /* enterPlanet = true; */
       actionButton.click();
     }
-    if (event.code === "Enter" && messageButton.style.display === "block") {
-      messageButton.click();
-      console.log("check planet info");
+    if (event.code === "Enter") {
+      messageButtons.forEach((button) => {
+        if (button.style.display === "block") {
+          button.click();
+          console.log("check planet info");
+        }
+      });
     }
-    if (
-      event.code === "Enter" &&
-      messageButton.style.display !== "block" &&
-      infoWindow.style.display !== "block"
-    ) {
-      gui.open();
-      console.log("open controls");
+    if (event.code === "Enter" && infoWindow.style.display !== "block") {
+      messageButtons.forEach((button) => {
+        if (button.style.display !== "block") {
+          button.click();
+          gui.open();
+          console.log("open controls");
+        }
+      });
     }
-    if (
-      event.code === "Escape" &&
-      messageButton.style.display !== "block" &&
-      infoWindow.style.display !== "block"
-    ) {
-      gui.close();
-      console.log("close controls");
+    if (event.code === "Escape" && infoWindow.style.display !== "block") {
+      messageButtons.forEach((button) => {
+        if (button.style.display !== "block") {
+          button.click();
+          gui.close();
+          console.log("close controls");
+        }
+      });
     }
 
     if (event.code === "Escape" && infoWindow.style.display === "block") {

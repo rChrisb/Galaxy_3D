@@ -27,7 +27,7 @@ const spaceship3 = new URL(
   import.meta.url
 );
 const options = {
-  speed: 0.7,
+  speed: 0.3,
   color: "#4a4714", // Red
   sound: "on",
 };
@@ -44,7 +44,7 @@ let infoVisible = true;
 
 const messageButton = document.getElementById("message-button");
 const infoWindow = document.getElementById("info-window");
-const closeButton = document.querySelector(".close-button");
+const closeButton = document.querySelector(".close-window");
 const actionButton = document.getElementById("action-button");
 
 messageButton.addEventListener("click", () => {
@@ -97,8 +97,20 @@ function galaxyThreejs() {
 
   const scene = new THREE.Scene();
   // scene.fog = new THREE.FogExp2(0xffffff, 0.01);
-  scene.fog = new THREE.Fog(0, 0, 700);
+  /* scene.fog = new THREE.Fog(0, 0, 700); */
+
   scene.background = new THREE.Color(0x040312);
+
+  const fogColor = 0x040312; // Color of the fog
+  const fogNear = 0; // Near distance of the fog
+  const fogFar = 6000; // Far distance of the fog
+  scene.fog = new THREE.Fog(fogColor, fogNear, fogFar);
+
+  renderer.setClearColor(fogColor);
+
+  renderer.setClearAlpha(1);
+
+  renderer.autoClear = false;
 
   // set the camera
   const cameraDistance = 20; // Distance between the camera and spaceship
@@ -109,6 +121,9 @@ function galaxyThreejs() {
     0.1,
     1000
   );
+  const newFarClippingPlane = 10000;
+  camera.far = newFarClippingPlane;
+  camera.updateProjectionMatrix();
   camera.frustum = new THREE.Frustum();
   const controls = new FirstPersonControls(camera, renderer.domElement);
   controls.movementSpeed = 10;
@@ -170,15 +185,51 @@ function galaxyThreejs() {
   };
 
   // PLANETS
-  const sphereGeometry = new THREE.SphereGeometry(12, 50, 50);
-  const sphereMaterial = new THREE.MeshPhysicalMaterial({
+  const sphereGeometry1 = new THREE.SphereGeometry(12, 50, 50);
+  const sphereMaterial1 = new THREE.MeshPhysicalMaterial({
     map: textureLoader.load(earth),
     color: 0x4b4e49,
   });
-  const firstPlanet = new THREE.Mesh(sphereGeometry, sphereMaterial);
+  const sphereGeometry2 = new THREE.SphereGeometry(65, 50, 50);
+  const sphereMaterial2 = new THREE.MeshPhysicalMaterial({
+    map: textureLoader.load(pink),
+    /* color: 0x4b4e49, */
+  });
+  const sphereGeometry3 = new THREE.SphereGeometry(150, 50, 50);
+  const sphereMaterial3 = new THREE.MeshPhysicalMaterial({
+    map: textureLoader.load(rocks),
+    /* color: 0x4b4e49, */
+  });
+  const sphereGeometry4 = new THREE.SphereGeometry(40, 50, 50);
+  const sphereMaterial4 = new THREE.MeshPhysicalMaterial({
+    map: textureLoader.load(moon),
+    color: 0x201a70,
+  });
+  const sphereGeometry5 = new THREE.SphereGeometry(110, 50, 50);
+  const sphereMaterial5 = new THREE.MeshPhysicalMaterial({
+    map: textureLoader.load(rocks2),
+    color: 0x4f1a0d,
+  });
+  const firstPlanet = new THREE.Mesh(sphereGeometry1, sphereMaterial1);
+  const secondPlanet = new THREE.Mesh(sphereGeometry2, sphereMaterial2);
+  const thirdPlanet = new THREE.Mesh(sphereGeometry3, sphereMaterial3);
+  const fourthPlanet = new THREE.Mesh(sphereGeometry4, sphereMaterial4);
+  const fifthPlanet = new THREE.Mesh(sphereGeometry5, sphereMaterial5);
 
-  scene.add(firstPlanet);
+  const all_planets = [
+    firstPlanet,
+    secondPlanet,
+    thirdPlanet,
+    fourthPlanet,
+    fifthPlanet,
+  ];
+  all_planets.forEach((planet) => scene.add(planet));
+
   firstPlanet.position.set(10, 10, 60);
+  secondPlanet.position.set(-400, 360, -800);
+  thirdPlanet.position.set(2500, -200, -1800);
+  fourthPlanet.position.set(60, -800, -200);
+  fifthPlanet.position.set(-2000, -260, 320);
 
   // define the array of spaceship model urls and their corresponding scale values
   const spaceshipModels = [
@@ -478,11 +529,11 @@ function galaxyThreejs() {
     map: textureLoader.load(disc),
   });
   const starGeo = new THREE.BufferGeometry();
-  for (let i = 0; i < 600010; i++) {
+  for (let i = 0; i < 1000010; i++) {
     const star = new THREE.Vector3(
-      Math.random() * 1800 - 900,
-      Math.random() * 1800 - 900,
-      Math.random() * 1800 - 900
+      Math.random() * 3000 - 1500,
+      Math.random() * 3000 - 1500,
+      Math.random() * 3000 - 1500
     );
     stars.push(star);
   }
@@ -624,8 +675,11 @@ function galaxyThreejs() {
   function hideMessageButton() {
     messageButton.style.display = "none";
   }
+
+  // EVENT LISTENERS FOR MESSAGES BUTTONS
   document.addEventListener("keydown", function (event) {
     if (
+      event.code === "Enter" &&
       infoWindow.style.display === "block" &&
       actionButton.style.display !== "none"
     ) {
@@ -635,7 +689,22 @@ function galaxyThreejs() {
     if (event.code === "Enter" && messageButton.style.display === "block") {
       messageButton.click();
       console.log("check planet info");
-      canClose = false;
+    }
+    if (
+      event.code === "Enter" &&
+      messageButton.style.display !== "block" &&
+      infoWindow.style.display !== "block"
+    ) {
+      gui.open();
+      console.log("open controls");
+    }
+    if (
+      event.code === "Escape" &&
+      messageButton.style.display !== "block" &&
+      infoWindow.style.display !== "block"
+    ) {
+      gui.close();
+      console.log("close controls");
     }
 
     if (event.code === "Escape" && infoWindow.style.display === "block") {

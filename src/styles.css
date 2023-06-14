@@ -13,13 +13,13 @@
   font-weight: bold;
 }
 .close-window button {
-  background-color: #086f39;
+  background-color: #474b49;
   cursor: pointer;
   font-size: 22px;
   opacity: 0.7;
 }
 .close-window button:hover {
-  background-color: rgb(240, 12, 12);
+  background-color: rgb(167, 5, 5);
   color: #fff;
   opacity: 1;
 }
@@ -36,6 +36,22 @@
   border: 5px solid #430b0b;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
   display: none;
+}
+.window.window2 {
+  background-color: #f086cb;
+  color: #090909;
+}
+.window.window3 {
+  background-color: #a1802c;
+  color: #0c0c0c;
+}
+.window.window4 {
+  background-color: #201a70;
+  color: #ffbe00;
+}
+.window.window5 {
+  background-color: #4f1a0d;
+  color: #ffbe00;
 }
 
 body {
@@ -63,7 +79,7 @@ p {
   font-size: 1.2rem;
 }
 .message-button {
-  color: #ffbe00;
+  color: #a1802c;
   position: absolute;
   top: 50%;
   left: 50%;
@@ -73,7 +89,24 @@ p {
   border-radius: 10px;
   text-align: center;
   font-size: 18px;
+  font-weight: bold;
   z-index: 9999;
+}
+.message-button:hover {
+  cursor: pointer;
+}
+.message-button.planet1 {
+  color: #086f39;
+}
+.message-button.planet2 {
+  color: #e03eb2;
+}
+.message-button.planet4 {
+  color: #08206f;
+}
+.message-button.planet5 {
+  color: #762713;
+  background-color: rgba(6, 0, 0, 0.7);
 }
 
 .message-button::after {
@@ -232,10 +265,10 @@ label {
   color: white;
   font-size: 2rem;
 }
-#action-button {
+.action-button {
   color: #f9e50d;
   position: absolute;
-  top: -10%;
+  top: -20%;
   left: 50%;
   transform: translate(-50%, -50%);
   background-color: rgb(62, 59, 59);
@@ -243,12 +276,46 @@ label {
   border-radius: 10px;
   text-align: center;
   font-size: 16px;
-  font-weight: bold;
+  font-weight: 1000;
   z-index: 9999;
   display: none;
 }
+.action-button:hover {
+  cursor: pointer;
+}
 
-#action-button::after {
+.action-button.second {
+  background-color: #2f0463;
+  color: #f38cd8;
+  font-size: 14.5px;
+  right: -10px;
+}
+.action-button.first {
+  background-color: #0f0f0f;
+  color: #0a6c0e;
+  font-size: 14.5px;
+  right: -10px;
+}
+.action-button.third {
+  background-color: #0c0c0c;
+  color: #a1802c;
+  font-size: 14.5px;
+  right: -10px;
+}
+.action-button.fourth {
+  background-color: #101010;
+  color: #0529c9;
+  font-size: 14.5px;
+  right: -10px;
+}
+.action-button.fifth {
+  background-color: rgb(118, 91, 91);
+  color: #4f1a0d;
+  font-size: 14.5px;
+  right: -10px;
+}
+
+.action-button::after {
   content: "";
   background-image: url(./images/enter-button2.png);
   background-size: 23px 23px; /* Adjust to fit the image appropriately */

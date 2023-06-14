@@ -2,7 +2,7 @@ import * as THREE from "three";
 import * as CANNON from "cannon-es";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import * as dat from "dat.gui";
-import moon from "../images/moon.jpg";
+import moon from "../images/moon-inspired-textures (1).jpg";
 import earth from "../images/green-vintage-folder-paper.jpg";
 import rocks from "../images/rocks-stones-with-rough-surface.jpg";
 import rocks2 from "../images/rocks2.jpg";
@@ -27,8 +27,8 @@ const spaceship3 = new URL(
   import.meta.url
 );
 const options = {
-  speed: 0.3,
-  color: "#4a4714", // Red
+  speed: 0.8,
+  color: "#093032", // cyan
   sound: "on",
 };
 
@@ -36,6 +36,14 @@ const menuMusic = document.getElementById("menuMusic");
 const sceneMusic = document.getElementById("sceneMusic");
 const loadingMusic = document.getElementById("loadingMusic");
 const ufoSound = document.getElementById("ufoSound");
+const ufoSoundSlow = document.getElementById("ufoSoundSlow");
+function restartAudio() {
+  setTimeout(() => {
+    ufoSound.currentTime = 0; // Reset the current playback time to the beginning
+  }, (ufoSound.duration - 0.9) * 1000); // Restart 0.5 seconds before the end
+}
+ufoSound.addEventListener("ended", restartAudio);
+
 menuMusic.play();
 menuMusic.volume = 0.05;
 
@@ -122,6 +130,9 @@ actionButtons.forEach((actionButton) =>
   })
 );
 
+///
+///
+///
 // MENU PAGE
 
 const startButton = document.getElementById("start-button");
@@ -420,7 +431,8 @@ function galaxyThreejs() {
   window.addEventListener("keydown", function (event) {
     if (event.code === "KeyW") {
       ufoSound.play();
-      ufoSound.volume = 0.5;
+      ufoSound.volume = 0.08;
+      if (ufoSound.volume < 0.5) ufoSound.volume += 0.03;
       moveForward = true; // Move forward when 'Z' key is pressed ('W' for qwerty board)
     } else if (event.code === "KeyS") {
       moveBackward = true; // Move backward when 'S' key is pressed
@@ -464,6 +476,8 @@ function galaxyThreejs() {
   window.addEventListener("keyup", function (event) {
     if (event.code === "KeyW") {
       ufoSound.pause();
+      ufoSoundSlow.play();
+      ufoSoundSlow.volume = 0.05;
       moveForward = false; // Stop moving forward when 'Z' (azerty) key is released
     } else if (event.code === "KeyS") {
       moveBackward = false; // Stop moving backward when 'S' key is released
@@ -587,11 +601,11 @@ function galaxyThreejs() {
     map: textureLoader.load(disc),
   });
   const starGeo = new THREE.BufferGeometry();
-  for (let i = 0; i < 1000010; i++) {
+  for (let i = 0; i < 2600010; i++) {
     const star = new THREE.Vector3(
-      Math.random() * 3000 - 1500,
-      Math.random() * 3000 - 1500,
-      Math.random() * 3000 - 1500
+      Math.random() * 4800 - 2400,
+      Math.random() * 4800 - 2400,
+      Math.random() * 4800 - 2400
     );
     stars.push(star);
   }
@@ -637,7 +651,7 @@ function galaxyThreejs() {
         moveUp ||
         moveLeft ||
         moveRight) &&
-      spaceshipSpeed < speed / 5 + 0.5
+      spaceshipSpeed < speed / 5 + 2.5
     ) {
       spaceshipSpeed += 0.003;
     } else spaceshipSpeed = 0.02;
@@ -674,40 +688,40 @@ function galaxyThreejs() {
     if (distance2 <= 75) {
       gsap.to(spaceshipPosition, {
         duration: 2,
-        z: 35,
+        z: -700,
         /* ease: "power3.inOut", */
       });
     }
     if (distance3 <= 180) {
       gsap.to(spaceshipPosition, {
         duration: 2,
-        z: -1500,
+        z: -1600,
         /* ease: "power3.inOut", */
       });
     }
     if (distance4 <= 50) {
       gsap.to(spaceshipPosition, {
         duration: 2,
-        z: 35,
+        z: -120,
         /* ease: "power3.inOut", */
       });
     }
     if (distance5 <= 140) {
       gsap.to(spaceshipPosition, {
         duration: 2,
-        z: 35,
+        z: 120,
         /* ease: "power3.inOut", */
       });
     }
 
     if (distance <= 30 && canClose) showMessageButton(planet1Button.message);
-    else if (distance2 <= 90 && canClose)
+    else if (distance2 <= 150 && canClose)
       showMessageButton(planet2Button.message);
     else if (distance3 <= 300 && canClose)
       showMessageButton(planet3Button.message);
-    else if (distance4 <= 65 && canClose)
+    else if (distance4 <= 145 && canClose)
       showMessageButton(planet4Button.message);
-    else if (distance5 <= 155 && canClose)
+    else if (distance5 <= 325 && canClose)
       showMessageButton(planet5Button.message);
     else hideMessageButton();
 
@@ -791,7 +805,7 @@ function galaxyThreejs() {
     });
   }
 
-  // EVENT LISTENERS FOR MESSAGES BUTTONS
+  // EVENT LISTENERS FOR MESSAGES BUTTONS AND GUI
   document.addEventListener("keydown", function (event) {
     let allClosed = 0;
     messageButtons.forEach((button) => {

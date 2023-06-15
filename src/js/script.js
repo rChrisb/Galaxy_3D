@@ -272,7 +272,8 @@ function galaxyThreejs() {
     const spriteParent = new THREE.Object3D();
     scene.add(spriteParent);
     spriteParent.add(smokeCloud1);
-    smokeCloud1.add(cloudLight);
+    /* smokeCloud1.add(cloudLight); */
+    /* spriteParent.add(cloudLight); */
     spriteParent.rotation.z = Math.random() * 360;
     smokeCloud1.position.set(
       0.5 * cloud * Math.cos((4 * cloud * Math.PI) / 180),
@@ -669,7 +670,7 @@ function galaxyThreejs() {
   function animate() {
     let delta = clock.getDelta();
     clouds1.forEach((cloud) => {
-      cloud.rotation.z -= delta * 0.15;
+      cloud.rotation.z -= delta * 0.03;
     });
 
     let canPause = false;

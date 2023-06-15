@@ -273,7 +273,7 @@ function galaxyThreejs() {
     scene.add(spriteParent);
     spriteParent.add(smokeCloud1);
     /* smokeCloud1.add(cloudLight); */
-    /* spriteParent.add(cloudLight); */
+    /* smokeCloud1.add(cloudLight); */
     spriteParent.rotation.z = Math.random() * 360;
     smokeCloud1.position.set(
       0.5 * cloud * Math.cos((4 * cloud * Math.PI) / 180),
@@ -533,6 +533,7 @@ function galaxyThreejs() {
   const bounceFrequency = 0.006;
   let initialOpacity = 0;
 
+  spaceshipPosition.z -= 300;
   function updateSpaceship() {
     spaceshipDirection = new THREE.Vector3();
 

@@ -1,6 +1,7 @@
 import * as THREE from "three";
 import * as CANNON from "cannon-es";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
+import { GPUComputationRenderer } from "three/examples/jsm/misc/GPUComputationRenderer";
 import * as dat from "dat.gui";
 import moon from "../images/moon-inspired-textures (1).jpg";
 import earth from "../images/green-vintage-folder-paper.jpg";
@@ -12,6 +13,7 @@ import pink from "../images/pink-red-mix-paints-paper.jpg";
 import greenTexture from "../images/grass_planet.jpg";
 import disc from "../images/disc.png";
 import motor from "../images/motor.png";
+import smoke from "../images/ink-explosion-gradient-gray-splash-removebg-preview.png";
 import * as TWEEN from "tween.js";
 import { gsap } from "/node_modules/gsap/index";
 import * as dat from "dat.gui";
@@ -252,6 +254,36 @@ function galaxyThreejs() {
     sceneMusic.volume = 0.05;
     console.log("finished loading");
   };
+
+  // PARTICLE SETUP
+  let clock = new THREE.Clock();
+  let clouds1 = [];
+
+  const smokeMaterial = new THREE.SpriteMaterial({
+    map: textureLoader.load(smoke),
+    transparent: true,
+    opacity: 0.1,
+    /* size: 100000, */
+    /* color: new THREE.Color(Math.random(), Math.random(), Math.random()), */
+  });
+  for (let cloud = 880; cloud > 250; cloud--) {
+    let cloudLight = new THREE.PointLight(0x1d0c74, 30, 350, 1.7);
+    const smokeCloud1 = new THREE.Sprite(smokeMaterial);
+    const spriteParent = new THREE.Object3D();
+    scene.add(spriteParent);
+    spriteParent.add(smokeCloud1);
+    smokeCloud1.add(cloudLight);
+    spriteParent.rotation.z = Math.random() * 360;
+    smokeCloud1.position.set(
+      0.5 * cloud * Math.cos((4 * cloud * Math.PI) / 180),
+      -0.5 * cloud * Math.sin((4 * cloud * Math.PI) / 180),
+      0.5 * cloud
+    );
+
+    smokeCloud1.scale.set(100, 300, 700);
+    clouds1.push(spriteParent);
+    /* scene.add(smokeCloud1); */
+  }
 
   // PLANETS
   const sphereGeometry1 = new THREE.SphereGeometry(12, 50, 50);
@@ -614,6 +646,9 @@ function galaxyThreejs() {
   const starss = new THREE.Points(starGeo, starMater);
   scene.add(starss);
 
+  ///
+  // PARTICLES SYSTEM
+
   // cannon.js bodies for the planet and spaceship
   const planetShape = new CANNON.Sphere(8);
   const planetBody = new CANNON.Body({
@@ -629,8 +664,14 @@ function galaxyThreejs() {
 
   const timeStep = 1 / 60;
 
-  // animation of the scene
+  ///
+  // ANIMATION OF THE SCENE
   function animate() {
+    let delta = clock.getDelta();
+    clouds1.forEach((cloud) => {
+      cloud.rotation.z -= delta * 0.15;
+    });
+
     let canPause = false;
     messageButtons.forEach((button) => {
       if (button.window.style.display === "block") {
@@ -737,6 +778,9 @@ function galaxyThreejs() {
     updateKeyboardControls();
     spaceshipContainer.rotation.y =
       spaceshipContainer.rotation.y % (2 * Math.PI);
+    /* smokeCloud1.position.y += 0.05;
+    smokeCloud1.position.x += 0.2;
+    smokeCloud1.position.z += 0.2; */
 
     orbit.update();
     TWEEN.update();

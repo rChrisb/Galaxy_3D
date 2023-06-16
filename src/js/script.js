@@ -77,7 +77,7 @@ const planet1Button = {
   message: document.querySelector(".planet1"),
   window: window1,
   action: action1,
-  unlocked: true,
+  unlocked: false,
   script: "http://localhost:3000/game-2d",
 };
 const planet3Button = {

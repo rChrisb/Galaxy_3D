@@ -71,7 +71,7 @@ const planet2Button = {
   message: document.querySelector(".planet2"),
   window: window2,
   action: action2,
-  unlocked: true,
+  unlocked: false,
 };
 const planet1Button = {
   message: document.querySelector(".planet1"),
@@ -125,6 +125,7 @@ closeButton.forEach((button) =>
     messageButtons.forEach((button) => {
       if (button.window.style.display !== "none") {
         button.window.style.display = "none";
+        sceneMusic.play();
         canClose = true;
         console.log("tried to click");
       }

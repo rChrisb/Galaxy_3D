@@ -71,27 +71,32 @@ const planet2Button = {
   message: document.querySelector(".planet2"),
   window: window2,
   action: action2,
+  unlocked: false,
 };
 const planet1Button = {
   message: document.querySelector(".planet1"),
   window: window1,
   action: action1,
+  unlocked: true,
   script: "http://localhost:3000/game-2d",
 };
 const planet3Button = {
   message: document.querySelector(".planet3"),
   window: window3,
   action: action3,
+  unlocked: false,
 };
 const planet4Button = {
   message: document.querySelector(".planet4"),
   window: window4,
   action: action4,
+  unlocked: false,
 };
 const planet5Button = {
   message: document.querySelector(".planet5"),
   window: window5,
   action: action5,
+  unlocked: false,
 };
 const messageButtons = [
   planet1Button,
@@ -130,7 +135,7 @@ closeButton.forEach((button) =>
 // 2D TRANSITION
 messageButtons.forEach((button) =>
   button.action.addEventListener("click", () => {
-    if (button.script) window.location.href = button.script;
+    if (button.unlocked && button.script) window.location.href = button.script;
     console.log("the user wants to enter the planet!");
   })
 );

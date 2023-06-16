@@ -128,6 +128,7 @@ closeButton.forEach((button) =>
 
 actionButtons.forEach((actionButton) =>
   actionButton.addEventListener("click", () => {
+    window.location.href = "http://localhost:3000/game-2d/";
     console.log("the user wants to enter the planet!");
   })
 );

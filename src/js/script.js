@@ -76,6 +76,7 @@ const planet1Button = {
   message: document.querySelector(".planet1"),
   window: window1,
   action: action1,
+  script: "http://localhost:3000/game-2d",
 };
 const planet3Button = {
   message: document.querySelector(".planet3"),
@@ -126,9 +127,10 @@ closeButton.forEach((button) =>
   })
 );
 
-actionButtons.forEach((actionButton) =>
-  actionButton.addEventListener("click", () => {
-    window.location.href = "http://localhost:3000/game-2d/";
+// 2D TRANSITION
+messageButtons.forEach((button) =>
+  button.action.addEventListener("click", () => {
+    if (button.script) window.location.href = button.script;
     console.log("the user wants to enter the planet!");
   })
 );

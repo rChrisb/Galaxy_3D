@@ -71,7 +71,7 @@ const planet2Button = {
   message: document.querySelector(".planet2"),
   window: window2,
   action: action2,
-  unlocked: false,
+  unlocked: true,
 };
 const planet1Button = {
   message: document.querySelector(".planet1"),

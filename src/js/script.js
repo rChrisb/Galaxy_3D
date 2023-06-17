@@ -14,6 +14,12 @@ import greenTexture from "../images/grass_planet.jpg";
 import disc from "../images/disc.png";
 import motor from "../images/motor.png";
 import smoke from "../images/ink-explosion-gradient-gray-splash-removebg-preview.png";
+import space1 from "../images/space-posx.jpg";
+import space2 from "../images/space-negx.jpg";
+import space3 from "../images/space-posy.jpg";
+import space4 from "../images/space-negy.jpg";
+import space5 from "../images/space-posz.jpg";
+import space6 from "../images/space-negz.jpg";
 import * as TWEEN from "tween.js";
 import { gsap } from "/node_modules/gsap/index";
 import * as dat from "dat.gui";
@@ -168,7 +174,7 @@ startButton.addEventListener("click", () => {
 function galaxyThreejs() {
   /* showLoadingScreen(); */
   // set the render
-  const renderer = new THREE.WebGLRenderer();
+  const renderer = new THREE.WebGLRenderer({ alpha: true });
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.shadowMap.enabled = true;
 
@@ -179,18 +185,18 @@ function galaxyThreejs() {
   // scene.fog = new THREE.FogExp2(0xffffff, 0.01);
   /* scene.fog = new THREE.Fog(0, 0, 700); */
 
-  scene.background = new THREE.Color(0x040312);
+  /* scene.background = new THREE.Color(0x040312); */
 
-  const fogColor = 0x040312; // Color of the fog
-  const fogNear = 0; // Near distance of the fog
-  const fogFar = 6000; // Far distance of the fog
-  scene.fog = new THREE.Fog(fogColor, fogNear, fogFar);
+  // const fogColor = 0x040312; // Color of the fog
+  // const fogNear = 0; // Near distance of the fog
+  // const fogFar = 6000; // Far distance of the fog
+  // scene.fog = new THREE.Fog(fogColor, fogNear, fogFar);
 
-  renderer.setClearColor(fogColor);
+  /* renderer.setClearColor(fogColor);
 
-  renderer.setClearAlpha(1);
+  renderer.setClearAlpha(1); */
 
-  renderer.autoClear = false;
+  /* renderer.autoClear = false; */
 
   // set the camera
   const cameraDistance = 20; // Distance between the camera and spaceship
@@ -251,6 +257,17 @@ function galaxyThreejs() {
   // texture varaible that will allow to set textures of object
   const loadingManager = new THREE.LoadingManager();
   const textureLoader = new THREE.TextureLoader(loadingManager);
+  const cubeLoader = new THREE.CubeTextureLoader();
+  const backgroundMap = cubeLoader.load(
+    [space1, space2, space3, space4, space5, space6],
+    () => {},
+    undefined,
+    (error) => {
+      console.error("Error loading background images:", error);
+    }
+  );
+  backgroundMap.colorSpace = THREE.SRGBColorSpace;
+  scene.background = backgroundMap;
 
   loadingManager.onProgress = function (url, loaded, total) {
     progressBar.value = (loaded / total) * 100;

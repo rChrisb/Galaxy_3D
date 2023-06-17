@@ -676,11 +676,93 @@ function galaxyThreejs() {
   const timeStep = 1 / 60;
 
   ///
+  /// FUN PART
+  ///
+  /// SHOOTING GAME
+  let projectiles = [],
+    targets = [];
+  let score = 0;
+  // Shoot Projectile
+  function shootProjectile() {
+    const projectileGeometry = new THREE.SphereGeometry(0.5, 32, 32);
+    const projectileMaterial = new THREE.MeshBasicMaterial({ color: 0xff0000 });
+    const projectile = new THREE.Mesh(projectileGeometry, projectileMaterial);
+
+    projectile.position.copy(spaceshipContainer.position);
+
+    const forwardDirection = new THREE.Vector3(0, 0, -1);
+    forwardDirection.applyQuaternion(camera.quaternion);
+
+    const projectileDirection = forwardDirection.clone();
+    projectileDirection.applyQuaternion(camera.quaternion);
+
+    const projectileVelocity = projectileDirection.clone().multiplyScalar(1);
+    projectile.userData.velocity = projectileVelocity;
+
+    const spaceshipPosition = spaceshipContainer.position;
+
+    const distanceFromSpaceship = 6;
+    const offset = new THREE.Vector3(0, 2, -distanceFromSpaceship);
+    offset.applyEuler(camera.rotation);
+    const projectilePosition = spaceshipPosition.clone().add(offset);
+    projectile.position.copy(projectilePosition);
+
+    scene.add(projectile);
+    projectiles.push(projectile);
+  }
+  document.addEventListener("click", shootProjectile);
+  function createTargets() {
+    const geometry = new THREE.BoxGeometry(20, 20, 20);
+    const material = new THREE.MeshBasicMaterial({ color: 0xff00ff });
+    for (let i = 0; i < 10; i++) {
+      const target = new THREE.Mesh(geometry, material);
+      const x = Math.random() * 200 - 100;
+      const y = Math.random() * 200 - 100;
+      const z = Math.random() * -1000;
+      target.position.set(x, y, z);
+      scene.add(target);
+      targets.push(target);
+    }
+  }
+  function updateTargets() {
+    for (let i = 0; i < projectiles.length; i++) {
+      const projectile = projectiles[i];
+      projectile.position.z += 5;
+
+      for (let j = 0; j < targets.length; j++) {
+        const target = targets[j];
+
+        if (projectile.position.distanceTo(target.position) < 15) {
+          score++;
+          if (score > 0) console.log(score);
+          scene.remove(projectile);
+          scene.remove(target);
+          projectiles.splice(i, 1);
+          targets.splice(j, 1);
+          break;
+        }
+      }
+
+      if (projectile.position.z > 0) {
+        scene.remove(projectile);
+        projectiles.splice(i, 1);
+      }
+    }
+  }
+  createTargets();
+  ///
   // ANIMATION OF THE SCENE
   function animate() {
     let delta = clock.getDelta();
     clouds1.forEach((cloud) => {
       cloud.rotation.z -= delta * 0.03;
+    });
+    const dist = 0.5 * delta;
+    projectiles.forEach((projectile) => {
+      projectile.translateZ(dist);
+
+      // Remove the projectile if it goes beyond a certain distance
+      if (projectile.position.z < -10000) scene.remove(projectile);
     });
 
     let canPause = false;
@@ -798,8 +880,26 @@ function galaxyThreejs() {
     updateCamera();
     updateSpaceship();
 
+    updateTargets();
+    // Update projectiles
+    for (let i = projectiles.length - 1; i >= 0; i--) {
+      const projectile = projectiles[i];
+      const velocity = projectile.userData.velocity;
+
+      // Update the position of the projectile based on its velocity
+      projectile.position.add(velocity);
+
+      // Check if the projectile is out of bounds
+      if (projectile.position.z < -1000) {
+        // Remove the projectile from the scene
+        scene.remove(projectile);
+        projectiles.splice(i, 1);
+      }
+    }
+
     renderer.render(scene, camera);
   }
+
   // SCENE ANIMATION RENDERING
   renderer.setAnimationLoop(animate);
 

@@ -35,7 +35,7 @@ const spaceship3 = new URL(
   import.meta.url
 );
 const options = {
-  speed: 0.8,
+  speed: 0.3,
   color: "#093032", // cyan
   sound: "on",
 };
@@ -661,11 +661,11 @@ function galaxyThreejs() {
     map: textureLoader.load(disc),
   });
   const starGeo = new THREE.BufferGeometry();
-  for (let i = 0; i < 2600010; i++) {
+  for (let i = 0; i < 3000010; i++) {
     const star = new THREE.Vector3(
-      Math.random() * 4800 - 2400,
-      Math.random() * 4800 - 2400,
-      Math.random() * 4800 - 2400
+      Math.random() * 3200 - 1600,
+      Math.random() * 3200 - 1600,
+      Math.random() * 3200 - 1600
     );
     stars.push(star);
   }

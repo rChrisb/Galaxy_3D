@@ -78,7 +78,6 @@ const planet2Button = {
   window: window2,
   action: action2,
   unlocked: false,
-  script: "",
 };
 const planet1Button = {
   message: document.querySelector(".planet1"),
@@ -875,6 +874,8 @@ function galaxyThreejs() {
 
     if (distance <= 30 && canClose) showMessageButton(planet1Button.message);
     else if (distance2 <= 150 && canClose) {
+      showMessageButton(planet2Button.message);
+    } else if (distance3 <= 300 && canClose) {
       // this check for the current sessionID and if the score is good enough
       fetch("/game-2d/score/" + localStorage.getItem("sessionId"), {
         method: "GET",
@@ -887,16 +888,14 @@ function galaxyThreejs() {
             0
           );
           if (highestScore >= 100) {
-            planet2Button.unlocked = true;
+            planet3Button.unlocked = true;
           }
         })
         .catch((error) => console.error("Error:", error));
       console.log("Loading level 2");
-      planet2Button.script = `http://localhost:3000/game-2d?level=2`;
-      showMessageButton(planet2Button.message);
-    } else if (distance3 <= 300 && canClose)
+      planet3Button.script = `http://localhost:3000/game-2d?level=2`;
       showMessageButton(planet3Button.message);
-    else if (distance4 <= 145 && canClose)
+    } else if (distance4 <= 145 && canClose)
       showMessageButton(planet4Button.message);
     else if (distance5 <= 325 && canClose)
       showMessageButton(planet5Button.message);

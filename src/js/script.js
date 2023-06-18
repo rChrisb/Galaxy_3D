@@ -20,6 +20,7 @@ import space3 from "../images/space-posy.jpg";
 import space4 from "../images/space-negy.jpg";
 import space5 from "../images/space-posz.jpg";
 import space6 from "../images/space-negz.jpg";
+import portal from "../images/vortex.jpg";
 import * as TWEEN from "tween.js";
 import { gsap } from "/node_modules/gsap/index";
 import * as dat from "dat.gui";
@@ -292,15 +293,14 @@ function galaxyThreejs() {
   let clock = new THREE.Clock();
   let clouds1 = [];
 
-  const smokeMaterial = new THREE.SpriteMaterial({
-    map: textureLoader.load(smoke),
-    transparent: true,
-    opacity: 0.1,
-    /* size: 100000, */
-    /* color: new THREE.Color(Math.random(), Math.random(), Math.random()), */
-  });
   for (let cloud = 880; cloud > 250; cloud--) {
-    let cloudLight = new THREE.PointLight(0x1d0c74, 30, 350, 1.7);
+    const smokeMaterial = new THREE.SpriteMaterial({
+      map: textureLoader.load(smoke),
+      transparent: true,
+      opacity: 0.1,
+      /* size: 100000, */
+      color: new THREE.Color(Math.random(), Math.random(), Math.random()),
+    });
     const smokeCloud1 = new THREE.Sprite(smokeMaterial);
     const spriteParent = new THREE.Object3D();
     scene.add(spriteParent);
@@ -314,7 +314,7 @@ function galaxyThreejs() {
       0.5 * cloud
     );
 
-    smokeCloud1.scale.set(100, 300, 700);
+    smokeCloud1.scale.set(400, 1200, 700);
     clouds1.push(spriteParent);
     /* scene.add(smokeCloud1); */
   }
@@ -706,8 +706,13 @@ function galaxyThreejs() {
   let projectiles = [],
     targets = [];
   let score = 0;
+  const timeElement = document.getElementById("time");
+  const messageElement = document.getElementById("score");
+  messageElement.addEventListener("transitionend", () => {
+    myElement.style.display = "none";
+  });
   // Shoot Projectile
-  function shootProjectile() {
+  /* function shootProjectile() {
     const projectileGeometry = new THREE.SphereGeometry(0.5, 32, 32);
     const projectileMaterial = new THREE.MeshBasicMaterial({ color: 0xff0000 });
     const projectile = new THREE.Mesh(projectileGeometry, projectileMaterial);
@@ -734,60 +739,158 @@ function galaxyThreejs() {
     scene.add(projectile);
     projectiles.push(projectile);
   }
-  document.addEventListener("click", shootProjectile);
+  document.addEventListener("click", shootProjectile); */
+  let raceStartTime,
+    result,
+    totalTargets = targets.length;
+  let targetIndex = 1;
+  function updateMessage(content) {
+    messageElement.textContent = content;
+  }
+  function setTimer(content) {
+    timeElement.textContent = content;
+  }
+
   function createTargets() {
-    const geometry = new THREE.BoxGeometry(20, 20, 20);
-    const material = new THREE.MeshBasicMaterial({ color: 0xff00ff });
-    for (let i = 0; i < 10; i++) {
+    const geometry = new THREE.CylinderGeometry(15, 15, 2, 32);
+    geometry.rotateX(Math.PI / 2);
+    const material = new THREE.MeshPhongMaterial({
+      /* color: 0x766ced, */
+      side: THREE.DoubleSide,
+      map: textureLoader.load(portal),
+      transparent: true,
+      opacity: 0.5,
+      emissive: 0x000000,
+    });
+    const targetPositions = [
+      new THREE.Vector3(-100, 100, 500),
+      new THREE.Vector3(-150, 100, 800),
+      new THREE.Vector3(-300, 150, 1100),
+      new THREE.Vector3(-360, 150, 1400),
+      new THREE.Vector3(-400, 160, 1700),
+      new THREE.Vector3(-550, 100, 2000),
+      new THREE.Vector3(-600, 40, 2300),
+      new THREE.Vector3(-750, 0, 2600),
+      new THREE.Vector3(-650, 50, 3000),
+      new THREE.Vector3(-550, 20, 3400),
+    ];
+
+    for (let i = 0; i < targetPositions.length; i++) {
       const target = new THREE.Mesh(geometry, material);
-      const x = Math.random() * 200 - 100;
-      const y = Math.random() * 200 - 100;
-      const z = Math.random() * -1000;
-      target.position.set(x, y, z);
+      const position = targetPositions[i];
+      target.position.copy(position);
       scene.add(target);
+      const light = new THREE.PointLight(0x0000ff, 2, 5);
+      target.add(light);
+
+      // Show only the first target initially
+      target.visible = i === 0;
+
       targets.push(target);
     }
   }
+  // Reset targets and score
+  function resetTargets() {
+    for (let i = 0; i < targets.length; i++) {
+      const target = targets[i];
+      target.visible = i === 0;
+    }
+    score = 0;
+  }
+  let timerInterval;
   function updateTargets() {
-    for (let i = 0; i < projectiles.length; i++) {
-      const projectile = projectiles[i];
-      projectile.position.z += 5;
+    const spaceshipPosition = spaceshipContainer.position;
+    let scoreMoved = false;
 
-      for (let j = 0; j < targets.length; j++) {
-        const target = targets[j];
+    for (let i = 0; i < targets.length; i++) {
+      const target = targets[i];
 
-        if (projectile.position.distanceTo(target.position) < 15) {
-          score++;
-          if (score > 0) console.log(score);
-          scene.remove(projectile);
-          scene.remove(target);
-          projectiles.splice(i, 1);
-          targets.splice(j, 1);
-          break;
+      if (
+        target.visible &&
+        spaceshipPosition.distanceTo(target.position) < 15
+      ) {
+        // Spaceship has passed through this target
+        scoreMoved = true;
+        score++;
+
+        if (score > 0) console.log(score);
+        updateMessage(`${score} / ${targets.length}`);
+
+        if (score === 1) {
+          raceStartTime = Date.now();
+          timeElement.style.display = "block";
+          startTimer();
         }
-      }
 
-      if (projectile.position.z > 0) {
-        scene.remove(projectile);
-        projectiles.splice(i, 1);
+        // Hide the current target
+        target.visible = false;
+
+        if (i < targets.length - 1) {
+          // Show the next target
+          targets[i + 1].visible = true;
+          scoreMoved = true;
+
+          // Display the message element for 2 seconds
+          messageElement.style.display = "block";
+          setTimeout(() => {
+            messageElement.style.display = "none";
+            scoreMoved = false;
+          }, 3000);
+        } else {
+          // All targets have been passed
+          const raceEndTime = Date.now();
+          const raceTime = (raceEndTime - raceStartTime) / 1000;
+          result = raceTime;
+          updateMessage(`Finished in ${raceTime} seconds`);
+
+          resetTargets();
+          raceStartTime = Date.now();
+
+          messageElement.style.display = "block";
+          messageElement.textContent = `Finished in ${raceTime} seconds`;
+          clearInterval(timerInterval);
+          timeElement.style.display = "none";
+          setTimeout(() => {
+            messageElement.style.display = "none";
+          }, 8000);
+        }
       }
     }
   }
+  function startTimer() {
+    timerInterval = setInterval(() => {
+      const elapsedTime = (Date.now() - raceStartTime) / 1000;
+      setTimer("time: " + elapsedTime.toFixed(2));
+    }, 10); // Update timer every 10 milliseconds
+  }
+  function setTimer(content) {
+    timeElement.textContent = content;
+  }
+
   createTargets();
+
+  updateMessage("HELLO ;)");
+
   ///
   // ANIMATION OF THE SCENE
   function animate() {
     let delta = clock.getDelta();
     clouds1.forEach((cloud) => {
       cloud.rotation.z -= delta * 0.03;
+      const radiusOfPath = 5000;
+      const speed = 0.000015;
+      const angle = Date.now() * speed;
+      const x = Math.cos(angle) * radiusOfPath;
+      const z = Math.sin(angle) * radiusOfPath;
+      cloud.position.set(x, 0, z);
     });
-    const dist = 0.5 * delta;
+    /* const dist = 0.5 * delta;
     projectiles.forEach((projectile) => {
       projectile.translateZ(dist);
 
       // Remove the projectile if it goes beyond a certain distance
       if (projectile.position.z < -10000) scene.remove(projectile);
-    });
+    }); */
 
     let canPause = false;
     messageButtons.forEach((button) => {
@@ -910,6 +1013,7 @@ function galaxyThreejs() {
     }
 
     all_planets.forEach((planet) => (planet.rotation.y += 0.001));
+    targets.forEach((target) => (target.rotation.z += 0.09));
     updateKeyboardControls();
     spaceshipContainer.rotation.y =
       spaceshipContainer.rotation.y % (2 * Math.PI);

@@ -78,6 +78,7 @@ const planet2Button = {
   window: window2,
   action: action2,
   unlocked: false,
+  script: "",
 };
 const planet1Button = {
   message: document.querySelector(".planet1"),
@@ -279,6 +280,13 @@ function galaxyThreejs() {
     sceneMusic.play();
     sceneMusic.volume = 0.05;
     console.log("finished loading");
+    if (!localStorage.getItem("sessionId")) {
+      const sessionId =
+        Math.random().toString(36).substring(2, 15) +
+        Math.random().toString(36).substring(2, 15);
+      localStorage.setItem("sessionId", sessionId);
+    }
+    console.log("Current sessionId: " + localStorage.getItem("sessionId"));
   };
 
   // PARTICLE SETUP
@@ -866,9 +874,27 @@ function galaxyThreejs() {
     }
 
     if (distance <= 30 && canClose) showMessageButton(planet1Button.message);
-    else if (distance2 <= 150 && canClose)
+    else if (distance2 <= 150 && canClose) {
+      // this check for the current sessionID and if the score is good enough
+      fetch("/game-2d/score/" + localStorage.getItem("sessionId"), {
+        method: "GET",
+      })
+        .then((response) => response.json())
+        .then((scoreData) => {
+          // find the highest score in the array of scores
+          const highestScore = scoreData.reduce(
+            (max, score) => Math.max(max, score.score),
+            0
+          );
+          if (highestScore >= 100) {
+            planet2Button.unlocked = true;
+          }
+        })
+        .catch((error) => console.error("Error:", error));
+      console.log("Loading level 2");
+      planet2Button.script = `http://localhost:3000/game-2d?level=2`;
       showMessageButton(planet2Button.message);
-    else if (distance3 <= 300 && canClose)
+    } else if (distance3 <= 300 && canClose)
       showMessageButton(planet3Button.message);
     else if (distance4 <= 145 && canClose)
       showMessageButton(planet4Button.message);

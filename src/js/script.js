@@ -847,7 +847,7 @@ function galaxyThreejs() {
   function setTimer(content) {
     timeElement.textContent = content;
   }
-  const meteGeo = new THREE.SphereGeometry(10, 6, 6);
+  const meteGeo = new THREE.SphereGeometry(10, 5, 5);
   const meteoMaterial = new THREE.MeshPhongMaterial({
     map: textureLoader.load(meteoriteTexture),
     color: 0x442b10,
@@ -914,12 +914,12 @@ function galaxyThreejs() {
   const item4Planet3 = new THREE.Sprite(pharaonMaterial);
   const item5Planet3 = new THREE.Sprite(pharaonMaterial);
   const item6Planet3 = new THREE.Sprite(pharaonMaterial);
-  item1Planet3.position.set(1100, -200, -1100);
-  item2Planet3.position.set(1300, -200, -1200);
-  item3Planet3.position.set(1500, -200, -1300);
-  item4Planet3.position.set(1700, -200, -1400);
-  item5Planet3.position.set(1900, -200, -1500);
-  item6Planet3.position.set(2100, -200, -1600);
+  item1Planet3.position.set(1000, -200, -1100);
+  item2Planet3.position.set(1200, -200, -1200);
+  item3Planet3.position.set(1400, -200, -1300);
+  item4Planet3.position.set(1600, -200, -1400);
+  item5Planet3.position.set(1800, -200, -1500);
+  item6Planet3.position.set(2000, -200, -1600);
   const planet3Items = [
     item1Planet3,
     item2Planet3,

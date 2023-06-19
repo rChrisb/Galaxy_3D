@@ -1052,7 +1052,7 @@ function galaxyThreejs() {
         /* ease: "power3.inOut", */
       });
     }
-    if (distance3 <= 2800) planet3MeteoritesMovement(2.2);
+    if (distance3 <= 2800) planet3MeteoritesMovement(4.2);
     else planet3MeteoritesMovement(0.3);
     if (distance4 <= 50) {
       gsap.to(spaceshipPosition, {

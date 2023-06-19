@@ -13,7 +13,9 @@ import pink from "../images/pink-red-mix-paints-paper.jpg";
 import greenTexture from "../images/grass_planet.jpg";
 import disc from "../images/disc.png";
 import motor from "../images/motor.png";
+import meteoriteTexture from "../images/orange-details-moon-texture-concept.jpg";
 import smoke from "../images/ink-explosion-gradient-gray-splash-removebg-preview.png";
+import pharaon from "../images/pharaon-removebg-preview.png";
 import space1 from "../images/space-posx.jpg";
 import space2 from "../images/space-negx.jpg";
 import space3 from "../images/space-posy.jpg";
@@ -78,32 +80,34 @@ const planet2Button = {
   message: document.querySelector(".planet2"),
   window: window2,
   action: action2,
-  unlocked: false,
+  minimum_score: false,
 };
 const planet1Button = {
   message: document.querySelector(".planet1"),
   window: window1,
   action: action1,
-  unlocked: true,
+  minimum_score: true,
+  all_items: true,
   script: "http://localhost:3000/game-2d",
 };
 const planet3Button = {
   message: document.querySelector(".planet3"),
   window: window3,
   action: action3,
-  unlocked: false,
+  minimum_score: false,
+  script: `http://localhost:3000/game-2d?level=2`,
 };
 const planet4Button = {
   message: document.querySelector(".planet4"),
   window: window4,
   action: action4,
-  unlocked: false,
+  minimum_score: false,
 };
 const planet5Button = {
   message: document.querySelector(".planet5"),
   window: window5,
   action: action5,
-  unlocked: false,
+  minimum_score: false,
 };
 const messageButtons = [
   planet1Button,
@@ -143,7 +147,8 @@ closeButton.forEach((button) =>
 // 2D TRANSITION
 messageButtons.forEach((button) =>
   button.action.addEventListener("click", () => {
-    if (button.unlocked && button.script) window.location.href = button.script;
+    if (button.minimum_score && button.script)
+      window.location.href = button.script;
     console.log("the user wants to enter the planet!");
   })
 );
@@ -711,35 +716,7 @@ function galaxyThreejs() {
   messageElement.addEventListener("transitionend", () => {
     myElement.style.display = "none";
   });
-  // Shoot Projectile
-  /* function shootProjectile() {
-    const projectileGeometry = new THREE.SphereGeometry(0.5, 32, 32);
-    const projectileMaterial = new THREE.MeshBasicMaterial({ color: 0xff0000 });
-    const projectile = new THREE.Mesh(projectileGeometry, projectileMaterial);
 
-    projectile.position.copy(spaceshipContainer.position);
-
-    const forwardDirection = new THREE.Vector3(0, 0, -1);
-    forwardDirection.applyQuaternion(camera.quaternion);
-
-    const projectileDirection = forwardDirection.clone();
-    projectileDirection.applyQuaternion(camera.quaternion);
-
-    const projectileVelocity = projectileDirection.clone().multiplyScalar(1);
-    projectile.userData.velocity = projectileVelocity;
-
-    const spaceshipPosition = spaceshipContainer.position;
-
-    const distanceFromSpaceship = 6;
-    const offset = new THREE.Vector3(0, 2, -distanceFromSpaceship);
-    offset.applyEuler(camera.rotation);
-    const projectilePosition = spaceshipPosition.clone().add(offset);
-    projectile.position.copy(projectilePosition);
-
-    scene.add(projectile);
-    projectiles.push(projectile);
-  }
-  document.addEventListener("click", shootProjectile); */
   let raceStartTime,
     result,
     totalTargets = targets.length;
@@ -866,7 +843,107 @@ function galaxyThreejs() {
   function setTimer(content) {
     timeElement.textContent = content;
   }
+  const meteGeo = new THREE.SphereGeometry(10, 6, 6);
+  const meteoMaterial = new THREE.MeshPhongMaterial({
+    map: textureLoader.load(meteoriteTexture),
+    color: 0x442b10,
+  });
+  const meterorite1_p3 = new THREE.Mesh(meteGeo, meteoMaterial);
+  const meterorite2_p3 = new THREE.Mesh(meteGeo, meteoMaterial);
+  const meterorite3_p3 = new THREE.Mesh(meteGeo, meteoMaterial);
+  const meterorite4_p3 = new THREE.Mesh(meteGeo, meteoMaterial);
+  const meterorite5_p3 = new THREE.Mesh(meteGeo, meteoMaterial);
+  const meterorite6_p3 = new THREE.Mesh(meteGeo, meteoMaterial);
+  const meteoritesPlanet3 = [
+    meterorite1_p3,
+    meterorite2_p3,
+    meterorite3_p3,
+    meterorite4_p3,
+    meterorite5_p3,
+    meterorite6_p3,
+  ];
+  meterorite1_p3.position.set(2000, -200, -2000);
+  meterorite2_p3.position.set(1800, -200, -1600);
+  meterorite3_p3.position.set(1600, -200, -2000);
+  meterorite4_p3.position.set(1400, -200, -1600);
+  meterorite5_p3.position.set(1200, -200, -2000);
+  meterorite6_p3.position.set(1000, -200, -1600);
+  meteoritesPlanet3.forEach((meteorite) => scene.add(meteorite));
+  const meteoritesGroup1 = [];
+  const meteoritesGroup2 = [];
+  meteoritesPlanet3.forEach((meteorite) => {
+    if (meteorite.position.z === -2000) meteoritesGroup1.push(meteorite);
+    else meteoritesGroup2.push(meteorite);
+  });
+  function planet3MeteoritesMovement(speed) {
+    const time1 = performance.now() * 0.001; // Time for meteorites at z = -2000
+    const time2 = performance.now() * 0.001; // Time for meteorites at z = -1600 (offset by 1000 milliseconds)
+    meteoritesGroup1.forEach((meteorite, index) => {
+      const initialPosition = -1400;
+      const targetPosition = -1000;
+      const distance = targetPosition - initialPosition;
+      const movementRange = Math.abs(distance) * 1.5;
 
+      const positionOffset = Math.sin((time1 + index) * speed) * movementRange;
+
+      meteorite.position.z = initialPosition + positionOffset;
+    });
+
+    meteoritesGroup2.forEach((meteorite, index) => {
+      const initialPosition = -1000;
+      const targetPosition = -1400;
+      const distance = targetPosition - initialPosition;
+      const movementRange = Math.abs(distance) * 1.7;
+
+      const positionOffset = Math.sin((time2 + index) * speed) * movementRange;
+
+      meteorite.position.z = initialPosition + positionOffset;
+    });
+  }
+  const pharaonMaterial = new THREE.SpriteMaterial({
+    map: textureLoader.load(pharaon),
+  });
+
+  const item1Planet3 = new THREE.Sprite(pharaonMaterial);
+  const item2Planet3 = new THREE.Sprite(pharaonMaterial);
+  const item3Planet3 = new THREE.Sprite(pharaonMaterial);
+  const item4Planet3 = new THREE.Sprite(pharaonMaterial);
+  const item5Planet3 = new THREE.Sprite(pharaonMaterial);
+  const item6Planet3 = new THREE.Sprite(pharaonMaterial);
+  item1Planet3.position.set(1100, -200, -1100);
+  item2Planet3.position.set(1300, -200, -1200);
+  item3Planet3.position.set(1500, -200, -1300);
+  item4Planet3.position.set(1700, -200, -1400);
+  item5Planet3.position.set(1900, -200, -1500);
+  item6Planet3.position.set(2100, -200, -1600);
+  const planet3Items = [
+    item1Planet3,
+    item2Planet3,
+    item3Planet3,
+    item4Planet3,
+    item5Planet3,
+    item6Planet3,
+  ];
+
+  planet3Items.forEach((item) => {
+    item.scale.set(10, 10, 1);
+    scene.add(item);
+  });
+  let collectedItems = 0;
+  function collectPharaons() {
+    const numberOfItems = planet3Items.length;
+
+    planet3Items.forEach((item) => {
+      if (item.visible && spaceshipPosition.distanceTo(item.position) < 15) {
+        collectedItems++;
+        item.visible = false;
+        console.log(collectedItems);
+      }
+    });
+
+    if (collectedItems === numberOfItems) planet3Button.all_items = true;
+    if (planet3Button.all_items) console.log(planet3Button.all_items);
+  }
   createTargets();
 
   updateMessage("HELLO ;)");
@@ -938,7 +1015,16 @@ function galaxyThreejs() {
     if (spaceshipSpeed >= 1.5 && distance < 60 && (moveBackward || moveForward))
       spaceshipSpeed = spaceshipSpeed / speed - 0.997;
 
-    // this limits the zoom when in front of the sphere
+    // this limits the zoom when in front of planets/meteorites
+    meteoritesPlanet3.forEach((meteorite) => {
+      if (spaceshipPosition.distanceTo(meteorite.position) <= 20) {
+        gsap.to(spaceshipPosition, {
+          duration: 2,
+          x: 800,
+        });
+      }
+    });
+
     if (distance <= 15) {
       gsap.to(spaceshipPosition, {
         duration: 2,
@@ -960,6 +1046,8 @@ function galaxyThreejs() {
         /* ease: "power3.inOut", */
       });
     }
+    /* if (distance3 <= 2800) planet3MeteoritesMovement(2.2);
+    else planet3MeteoritesMovement(0.3); */
     if (distance4 <= 50) {
       gsap.to(spaceshipPosition, {
         duration: 2,
@@ -991,12 +1079,12 @@ function galaxyThreejs() {
             0
           );
           if (highestScore >= 100) {
-            planet3Button.unlocked = true;
+            planet3Button.minimum_score = true;
           }
         })
         .catch((error) => console.error("Error:", error));
       console.log("Loading level 2");
-      planet3Button.script = `http://localhost:3000/game-2d?level=2`;
+
       showMessageButton(planet3Button.message);
     } else if (distance4 <= 145 && canClose)
       showMessageButton(planet4Button.message);
@@ -1014,6 +1102,7 @@ function galaxyThreejs() {
 
     all_planets.forEach((planet) => (planet.rotation.y += 0.001));
     targets.forEach((target) => (target.rotation.z += 0.09));
+
     updateKeyboardControls();
     spaceshipContainer.rotation.y =
       spaceshipContainer.rotation.y % (2 * Math.PI);
@@ -1025,7 +1114,7 @@ function galaxyThreejs() {
     TWEEN.update();
     updateCamera();
     updateSpaceship();
-
+    collectPharaons();
     updateTargets();
     // Update projectiles
     for (let i = projectiles.length - 1; i >= 0; i--) {

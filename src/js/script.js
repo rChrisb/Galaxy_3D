@@ -147,7 +147,7 @@ closeButton.forEach((button) =>
 // 2D TRANSITION
 messageButtons.forEach((button) =>
   button.action.addEventListener("click", () => {
-    if (button.minimum_score && button.script)
+    if (button.minimum_score && button.script && button.all_items)
       window.location.href = button.script;
     console.log("the user wants to enter the planet!");
   })

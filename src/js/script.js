@@ -15,7 +15,7 @@ import disc from "../images/disc.png";
 import motor from "../images/motor.png";
 import meteoriteTexture from "../images/orange-details-moon-texture-concept.jpg";
 import smoke from "../images/ink-explosion-gradient-gray-splash-removebg-preview.png";
-import pharaon from "../images/pharaon-removebg-preview.png";
+import pharaon from "../images/rm281batch2-adj-011-removebg-preview.png";
 import space1 from "../images/space-posx.jpg";
 import space2 from "../images/space-negx.jpg";
 import space3 from "../images/space-posy.jpg";
@@ -998,7 +998,7 @@ function galaxyThreejs() {
       spaceshipSpeed < speed / 5 + 1.5
     ) {
       spaceshipSpeed += 0.0003;
-    } else spaceshipSpeed = 0.02;
+    } else spaceshipSpeed = speed;
 
     // distance between the camera and the planets
     let distance, distance2, distance3, distance4, distance5;
@@ -1052,7 +1052,7 @@ function galaxyThreejs() {
         /* ease: "power3.inOut", */
       });
     }
-    if (distance3 <= 2800) planet3MeteoritesMovement(4.2);
+    if (distance3 <= 2800) planet3MeteoritesMovement(2);
     else planet3MeteoritesMovement(0.3);
     if (distance4 <= 50) {
       gsap.to(spaceshipPosition, {

@@ -38,7 +38,7 @@ const spaceship3 = new URL(
   import.meta.url
 );
 const options = {
-  speed: 0.3,
+  speed: 0.1,
   color: "#093032", // cyan
   sound: "on",
 };

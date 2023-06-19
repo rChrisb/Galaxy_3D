@@ -48,6 +48,8 @@ const sceneMusic = document.getElementById("sceneMusic");
 const loadingMusic = document.getElementById("loadingMusic");
 const ufoSound = document.getElementById("ufoSound");
 const ufoSoundSlow = document.getElementById("ufoSoundSlow");
+const itemSound = document.getElementById("itemSound");
+const vortexSound = document.getElementById("vortexSound");
 function restartAudio() {
   setTimeout(() => {
     ufoSound.currentTime = 0; // Reset the current playback time to the beginning
@@ -789,6 +791,8 @@ function galaxyThreejs() {
         // Spaceship has passed through this target
         scoreMoved = true;
         score++;
+        vortexSound.play();
+        vortexSound.volume = 0.3;
 
         if (score > 0) console.log(score);
         updateMessage(`${score} / ${targets.length}`);
@@ -936,6 +940,8 @@ function galaxyThreejs() {
     planet3Items.forEach((item) => {
       if (item.visible && spaceshipPosition.distanceTo(item.position) < 15) {
         collectedItems++;
+        itemSound.play();
+        itemSound.volume = 0.3;
         item.visible = false;
         console.log(collectedItems);
       }
@@ -1046,8 +1052,8 @@ function galaxyThreejs() {
         /* ease: "power3.inOut", */
       });
     }
-    /* if (distance3 <= 2800) planet3MeteoritesMovement(2.2);
-    else planet3MeteoritesMovement(0.3); */
+    if (distance3 <= 2800) planet3MeteoritesMovement(2.2);
+    else planet3MeteoritesMovement(0.3);
     if (distance4 <= 50) {
       gsap.to(spaceshipPosition, {
         duration: 2,

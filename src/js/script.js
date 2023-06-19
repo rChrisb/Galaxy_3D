@@ -38,7 +38,7 @@ const spaceship3 = new URL(
   import.meta.url
 );
 const options = {
-  speed: 0.1,
+  speed: 0.01,
   color: "#093032", // cyan
   sound: "on",
 };
@@ -988,7 +988,7 @@ function galaxyThreejs() {
     if (canPause) return;
     world.step(timeStep);
     const speed = options.speed;
-    if (
+    /* if (
       (moveForward ||
         moveBackward ||
         moveDown ||
@@ -998,7 +998,8 @@ function galaxyThreejs() {
       spaceshipSpeed < speed / 5 + 2.5
     ) {
       spaceshipSpeed += 0.003;
-    } else spaceshipSpeed = 0.02;
+    } else  */
+    spaceshipSpeed = 0.02;
 
     // distance between the camera and the planets
     let distance, distance2, distance3, distance4, distance5;

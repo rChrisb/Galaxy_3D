@@ -29,7 +29,10 @@ import * as dat from "dat.gui";
 import { FBXLoader } from "three/examples/jsm/loaders/FBXLoader.js";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { FirstPersonControls } from "three/examples/jsm/controls/FirstPersonControls";
-
+import {
+  CSS2DRenderer,
+  CSS2DObject,
+} from "three/examples/jsm/renderers/CSS2DRenderer";
 // import 3D model
 const spaceship = new URL("../models/spaceship.fbx", import.meta.url);
 const spaceship2 = new URL("../models/3d-model.fbx", import.meta.url);
@@ -38,7 +41,7 @@ const spaceship3 = new URL(
   import.meta.url
 );
 const options = {
-  speed: 0.3,
+  speed: 3,
   color: "#093032", // cyan
   sound: "on",
 };
@@ -230,7 +233,7 @@ function galaxyThreejs() {
     const spaceshipRotation = spaceshipContainer.rotation;
 
     // set the camera's position relative to the spaceship's rotation
-    const distanceFromSpaceship = 6;
+    const distanceFromSpaceship = 8.5;
     const offset = new THREE.Vector3(0, 2, -distanceFromSpaceship);
     offset.applyEuler(spaceshipRotation);
     const cameraPosition = spaceshipPosition.clone().add(offset);
@@ -250,6 +253,13 @@ function galaxyThreejs() {
   scene.add(axesHelper);
   camera.position.set(0, 0, 100);
   orbit.update();
+
+  const labelRenderer = new CSS2DRenderer();
+  labelRenderer.setSize(window.innerWidth, window.innerHeight);
+  labelRenderer.domElement.style.position = "absolute";
+  labelRenderer.domElement.style.top = "0px";
+  labelRenderer.domElement.style.pointerEvents = "none";
+  document.body.appendChild(labelRenderer.domElement);
 
   // lighting
   const ambientLight = new THREE.AmbientLight(0xffffff);
@@ -300,54 +310,54 @@ function galaxyThreejs() {
   let clock = new THREE.Clock();
   let clouds1 = [];
 
-  for (let cloud = 880; cloud > 250; cloud--) {
-    const smokeMaterial = new THREE.SpriteMaterial({
-      map: textureLoader.load(smoke),
-      transparent: true,
-      opacity: 0.1,
-      /* size: 100000, */
-      color: new THREE.Color(Math.random(), Math.random(), Math.random()),
-    });
-    const smokeCloud1 = new THREE.Sprite(smokeMaterial);
-    const spriteParent = new THREE.Object3D();
-    scene.add(spriteParent);
-    spriteParent.add(smokeCloud1);
-    /* smokeCloud1.add(cloudLight); */
-    /* smokeCloud1.add(cloudLight); */
-    spriteParent.rotation.z = Math.random() * 360;
-    smokeCloud1.position.set(
-      0.5 * cloud * Math.cos((4 * cloud * Math.PI) / 180),
-      -0.5 * cloud * Math.sin((4 * cloud * Math.PI) / 180),
-      0.5 * cloud
-    );
+  // for (let cloud = 880; cloud > 250; cloud--) {
+  //   const smokeMaterial = new THREE.SpriteMaterial({
+  //     map: textureLoader.load(smoke),
+  //     transparent: true,
+  //     opacity: 0.1,
+  //     /* size: 100000, */
+  //     color: new THREE.Color(Math.random(), Math.random(), Math.random()),
+  //   });
+  //   const smokeCloud1 = new THREE.Sprite(smokeMaterial);
+  //   const spriteParent = new THREE.Object3D();
+  //   scene.add(spriteParent);
+  //   spriteParent.add(smokeCloud1);
+  //   /* smokeCloud1.add(cloudLight); */
+  //   /* smokeCloud1.add(cloudLight); */
+  //   spriteParent.rotation.z = Math.random() * 360;
+  //   smokeCloud1.position.set(
+  //     0.5 * cloud * Math.cos((4 * cloud * Math.PI) / 180),
+  //     -0.5 * cloud * Math.sin((4 * cloud * Math.PI) / 180),
+  //     0.5 * cloud
+  //   );
 
-    smokeCloud1.scale.set(400, 1200, 700);
-    clouds1.push(spriteParent);
-    /* scene.add(smokeCloud1); */
-  }
+  //   smokeCloud1.scale.set(400, 1200, 700);
+  //   clouds1.push(spriteParent);
+  //   /* scene.add(smokeCloud1); */
+  // }
 
   // PLANETS
-  const sphereGeometry1 = new THREE.SphereGeometry(12, 50, 50);
+  const sphereGeometry1 = new THREE.SphereGeometry(100, 50, 50);
   const sphereMaterial1 = new THREE.MeshPhysicalMaterial({
     map: textureLoader.load(earth),
     color: 0x4b4e49,
   });
-  const sphereGeometry2 = new THREE.SphereGeometry(65, 50, 50);
+  const sphereGeometry2 = new THREE.SphereGeometry(100, 50, 50);
   const sphereMaterial2 = new THREE.MeshPhysicalMaterial({
     map: textureLoader.load(pink),
     /* color: 0x4b4e49, */
   });
-  const sphereGeometry3 = new THREE.SphereGeometry(150, 50, 50);
+  const sphereGeometry3 = new THREE.SphereGeometry(100, 50, 50);
   const sphereMaterial3 = new THREE.MeshPhysicalMaterial({
     map: textureLoader.load(rocks),
     /* color: 0x4b4e49, */
   });
-  const sphereGeometry4 = new THREE.SphereGeometry(40, 50, 50);
+  const sphereGeometry4 = new THREE.SphereGeometry(100, 50, 50);
   const sphereMaterial4 = new THREE.MeshPhysicalMaterial({
     map: textureLoader.load(moon),
     color: 0x201a70,
   });
-  const sphereGeometry5 = new THREE.SphereGeometry(110, 50, 50);
+  const sphereGeometry5 = new THREE.SphereGeometry(100, 50, 50);
   const sphereMaterial5 = new THREE.MeshPhysicalMaterial({
     map: textureLoader.load(rocks2),
     color: 0x4f1a0d,
@@ -365,13 +375,15 @@ function galaxyThreejs() {
     fourthPlanet,
     fifthPlanet,
   ];
-  all_planets.forEach((planet) => scene.add(planet));
+  all_planets.forEach((planet) => {
+    scene.add(planet);
+  });
 
-  firstPlanet.position.set(10, 10, 60);
-  secondPlanet.position.set(-400, 360, -800);
-  thirdPlanet.position.set(2500, -200, -1800);
-  fourthPlanet.position.set(60, -800, -200);
-  fifthPlanet.position.set(-2000, -260, 320);
+  firstPlanet.position.set(100, 10, 1700);
+  secondPlanet.position.set(-400, 175, 3800);
+  thirdPlanet.position.set(2000, -200, 2800);
+  fourthPlanet.position.set(60, -800, 3100);
+  fifthPlanet.position.set(-2000, -260, 4000);
 
   // define the array of spaceship model urls and their corresponding scale values
   const spaceshipModels = [
@@ -460,7 +472,7 @@ function galaxyThreejs() {
   spaceshipContainer.add(fireSprite1);
   spaceshipContainer.add(fireSprite2);
 
-  let spaceshipSpeed = 0.08;
+  let spaceshipSpeed;
 
   let moveForward = false;
   let moveBackward = false;
@@ -485,7 +497,7 @@ function galaxyThreejs() {
     if (keyState["ArrowRight"]) {
       // Rotate the spaceship to the right
       if (spaceshipModel) {
-        spaceshipContainer.rotateOnAxis(new THREE.Vector3(0, 1, 0), -0.01);
+        spaceshipContainer.rotateOnAxis(new THREE.Vector3(0, 1, 0), -0.005);
       }
     }
   }
@@ -675,11 +687,11 @@ function galaxyThreejs() {
     map: textureLoader.load(disc),
   });
   const starGeo = new THREE.BufferGeometry();
-  for (let i = 0; i < 3000010; i++) {
+  for (let i = 0; i < 100010; i++) {
     const star = new THREE.Vector3(
-      Math.random() * 3200 - 1600,
-      Math.random() * 3200 - 1600,
-      Math.random() * 3200 - 1600
+      Math.random() * 600 - 300,
+      Math.random() * 600 - 300,
+      Math.random() * 600 - 300
     );
     stars.push(star);
   }
@@ -692,17 +704,17 @@ function galaxyThreejs() {
   // PARTICLES SYSTEM
 
   // cannon.js bodies for the planet and spaceship
-  const planetShape = new CANNON.Sphere(8);
-  const planetBody = new CANNON.Body({
-    shape: planetShape,
-    type: CANNON.Body.STATIC,
-  });
-  const world = new CANNON.World();
-  world.addBody(planetBody);
+  // const planetShape = new CANNON.Sphere(8);
+  // const planetBody = new CANNON.Body({
+  //   shape: planetShape,
+  //   type: CANNON.Body.STATIC,
+  // });
+  // const world = new CANNON.World();
+  // world.addBody(planetBody);
 
-  const spaceshipShape = new CANNON.Box(new CANNON.Vec3(1, 1, 1));
-  const spaceshipBody = new CANNON.Body({ mass: 1, shape: spaceshipShape });
-  world.addBody(spaceshipBody);
+  // const spaceshipShape = new CANNON.Box(new CANNON.Vec3(1, 1, 1));
+  // const spaceshipBody = new CANNON.Body({ mass: 1, shape: spaceshipShape });
+  // world.addBody(spaceshipBody);
 
   const timeStep = 1 / 60;
 
@@ -730,7 +742,9 @@ function galaxyThreejs() {
     timeElement.textContent = content;
   }
 
-  function createTargets() {
+  const planetTargetsMap = new Map();
+  function createTargets(planet) {
+    targets = [];
     const geometry = new THREE.CylinderGeometry(15, 15, 2, 32);
     geometry.rotateX(Math.PI / 2);
     const material = new THREE.MeshPhongMaterial({
@@ -740,18 +754,64 @@ function galaxyThreejs() {
       transparent: true,
       opacity: 0.5,
       emissive: 0x000000,
+      color: planet.material.color,
     });
+    if (planet === firstPlanet) material.color.set(0x14870a);
+    else if (planet === secondPlanet) material.color.set(0xce31be);
+    else if (planet === thirdPlanet) material.color.set(0x685e0e);
+    else if (planet === fourthPlanet) material.color.set(0x093896);
+    else if (planet === fifthPlanet) material.color.set(0xed0030);
     const targetPositions = [
-      new THREE.Vector3(-100, 100, 500),
-      new THREE.Vector3(-150, 100, 800),
-      new THREE.Vector3(-300, 150, 1100),
-      new THREE.Vector3(-360, 150, 1400),
-      new THREE.Vector3(-400, 160, 1700),
-      new THREE.Vector3(-550, 100, 2000),
-      new THREE.Vector3(-600, 40, 2300),
-      new THREE.Vector3(-750, 0, 2600),
-      new THREE.Vector3(-650, 50, 3000),
-      new THREE.Vector3(-550, 20, 3400),
+      new THREE.Vector3(
+        planet.position.x + 300,
+        planet.position.y - 75,
+        planet.position.z - 3300
+      ),
+      new THREE.Vector3(
+        planet.position.x + 250,
+        planet.position.y - 75,
+        planet.position.z - 3000
+      ),
+      // new THREE.Vector3(
+      //   planet.position.x + 100,
+      //   planet.position.y - 25,
+      //   planet.position.z - 2700
+      // ),
+      // new THREE.Vector3(
+      //   planet.position.x + 40,
+      //   planet.position.y - 25,
+      //   planet.position.z - 2400
+      // ),
+      // new THREE.Vector3(
+      //   planet.position.x,
+      //   planet.position.y - 15,
+      //   planet.position.z - 2100
+      // ),
+      // new THREE.Vector3(
+      //   planet.position.x - 150,
+      //   planet.position.y - 75,
+      //   planet.position.z - 1800
+      // ),
+      // new THREE.Vector3(
+      //   planet.position.x - 200,
+      //   planet.position.y - 135,
+      //   planet.position.z - 1500
+      // ),
+      // new THREE.Vector3(
+      //   planet.position.x - 350,
+      //   planet.position.y - 175,
+      //   planet.position.z - 1200
+      // ),
+      // new THREE.Vector3(
+      //   planet.position.x - 250,
+      //   planet.position.y - 125,
+      //   planet.position.z - 800
+      // ),
+      // new THREE.Vector3(
+      //   planet.position.x - 150,
+      //   planet.position.y - 155,
+      //   planet.position.z - 400
+      // ),
     ];
 
     for (let i = 0; i < targetPositions.length; i++) {
@@ -759,6 +819,19 @@ function galaxyThreejs() {
       const position = targetPositions[i];
       target.position.copy(position);
       scene.add(target);
+      /* const cPointLabel = new CSS2DObject(p);
+      scene.add(cPointLabel);
+      cPointLabel.scale.set(50, 50, 50);
+      cPointLabel.position.copy(position); */
+      const p = document.createElement("p");
+      p.textContent = "Vortex";
+      const div = document.createElement("div");
+      div.appendChild(p);
+      const divContainer = new CSS2DObject(div);
+      scene.add(divContainer);
+      console.log(divContainer.position);
+      divContainer.scale.set(100, 100, 100);
+
       const light = new THREE.PointLight(0x0000ff, 2, 5);
       target.add(light);
 
@@ -767,12 +840,15 @@ function galaxyThreejs() {
 
       targets.push(target);
     }
+    planetTargetsMap.set(planet, targets);
   }
   // Reset targets and score
   function resetTargets() {
-    for (let i = 0; i < targets.length; i++) {
-      const target = targets[i];
-      target.visible = i === 0;
+    for (const [planet, targets] of planetTargetsMap.entries()) {
+      for (let i = 0; i < targets.length; i++) {
+        const target = targets[i];
+        target.visible = i === 0;
+      }
     }
     score = 0;
   }
@@ -781,59 +857,62 @@ function galaxyThreejs() {
     const spaceshipPosition = spaceshipContainer.position;
     let scoreMoved = false;
 
-    for (let i = 0; i < targets.length; i++) {
-      const target = targets[i];
+    // Iterate over each planet and its targets
+    for (const [planet, targets] of planetTargetsMap.entries()) {
+      for (let i = 0; i < targets.length; i++) {
+        const target = targets[i];
 
-      if (
-        target.visible &&
-        spaceshipPosition.distanceTo(target.position) < 15
-      ) {
-        // Spaceship has passed through this target
-        scoreMoved = true;
-        score++;
-        vortexSound.play();
-        vortexSound.volume = 0.3;
-
-        if (score > 0) console.log(score);
-        updateMessage(`${score} / ${targets.length}`);
-
-        if (score === 1) {
-          raceStartTime = Date.now();
-          timeElement.style.display = "block";
-          startTimer();
-        }
-
-        // Hide the current target
-        target.visible = false;
-
-        if (i < targets.length - 1) {
-          // Show the next target
-          targets[i + 1].visible = true;
+        if (
+          target.visible &&
+          spaceshipPosition.distanceTo(target.position) < 15
+        ) {
+          // Spaceship has passed through this target
           scoreMoved = true;
+          score++;
+          vortexSound.play();
+          vortexSound.volume = 0.3;
 
-          // Display the message element for 2 seconds
-          messageElement.style.display = "block";
-          setTimeout(() => {
-            messageElement.style.display = "none";
-            scoreMoved = false;
-          }, 3000);
-        } else {
-          // All targets have been passed
-          const raceEndTime = Date.now();
-          const raceTime = (raceEndTime - raceStartTime) / 1000;
-          result = raceTime;
-          updateMessage(`Finished in ${raceTime} seconds`);
+          if (score > 0) console.log(score);
+          updateMessage(`${score} / ${targets.length}`);
 
-          resetTargets();
-          raceStartTime = Date.now();
+          if (score === 1) {
+            raceStartTime = Date.now();
+            timeElement.style.display = "block";
+            startTimer();
+          }
 
-          messageElement.style.display = "block";
-          messageElement.textContent = `Finished in ${raceTime} seconds`;
-          clearInterval(timerInterval);
-          timeElement.style.display = "none";
-          setTimeout(() => {
-            messageElement.style.display = "none";
-          }, 8000);
+          // Hide the current target
+          target.visible = false;
+
+          if (i < targets.length - 1) {
+            // Show the next target
+            targets[i + 1].visible = true;
+            scoreMoved = true;
+
+            // Display the message element for 2 seconds
+            messageElement.style.display = "block";
+            setTimeout(() => {
+              messageElement.style.display = "none";
+              scoreMoved = false;
+            }, 3000);
+          } else {
+            // All targets have been passed
+            const raceEndTime = Date.now();
+            const raceTime = (raceEndTime - raceStartTime) / 1000;
+            result = raceTime;
+            updateMessage(`Finished in ${raceTime} seconds`);
+
+            resetTargets();
+            raceStartTime = Date.now();
+
+            messageElement.style.display = "block";
+            messageElement.textContent = `Finished in ${raceTime} seconds`;
+            clearInterval(timerInterval);
+            timeElement.style.display = "none";
+            setTimeout(() => {
+              messageElement.style.display = "none";
+            }, 8000);
+          }
         }
       }
     }
@@ -847,7 +926,7 @@ function galaxyThreejs() {
   function setTimer(content) {
     timeElement.textContent = content;
   }
-  const meteGeo = new THREE.SphereGeometry(10, 5, 5);
+  /* const meteGeo = new THREE.SphereGeometry(10, 5, 5);
   const meteoMaterial = new THREE.MeshPhongMaterial({
     map: textureLoader.load(meteoriteTexture),
     color: 0x442b10,
@@ -878,7 +957,7 @@ function galaxyThreejs() {
   meteoritesPlanet3.forEach((meteorite) => {
     if (meteorite.position.z === -2000) meteoritesGroup1.push(meteorite);
     else meteoritesGroup2.push(meteorite);
-  });
+  }); */
   function planet3MeteoritesMovement(speed) {
     const time1 = performance.now() * 0.001; // Time for meteorites at z = -2000
     const time2 = performance.now() * 0.001; // Time for meteorites at z = -1600 (offset by 1000 milliseconds)
@@ -950,8 +1029,11 @@ function galaxyThreejs() {
     if (collectedItems === numberOfItems) planet3Button.all_items = true;
     if (planet3Button.all_items) console.log(planet3Button.all_items);
   }
-  createTargets();
-
+  // createTargets(firstPlanet);
+  createTargets(secondPlanet);
+  // createTargets(thirdPlanet);
+  // createTargets(fourthPlanet);
+  createTargets(fifthPlanet);
   updateMessage("HELLO ;)");
 
   ///
@@ -986,7 +1068,7 @@ function galaxyThreejs() {
       }
     });
     if (canPause) return;
-    world.step(timeStep);
+    /* world.step(timeStep); */
     const speed = options.speed;
     if (
       (moveForward ||
@@ -998,7 +1080,7 @@ function galaxyThreejs() {
       spaceshipSpeed < speed / 5 + 1.5
     ) {
       spaceshipSpeed += 0.0003;
-    } else spaceshipSpeed = speed;
+    } else spaceshipSpeed = speed / 5;
 
     // distance between the camera and the planets
     let distance, distance2, distance3, distance4, distance5;
@@ -1018,18 +1100,18 @@ function galaxyThreejs() {
       distance5 = spaceshipPosition.distanceTo(fifthPlanet.position);
     }
 
-    if (spaceshipSpeed >= 1.5 && distance < 60 && (moveBackward || moveForward))
-      spaceshipSpeed = spaceshipSpeed / speed - 0.997;
+    // if (spaceshipSpeed >= 1.5 && distance < 60 && (moveBackward || moveForward))
+    //   spaceshipSpeed = spaceshipSpeed / speed - 0.997;
 
     // this limits the zoom when in front of planets/meteorites
-    meteoritesPlanet3.forEach((meteorite) => {
-      if (spaceshipPosition.distanceTo(meteorite.position) <= 20) {
-        gsap.to(spaceshipPosition, {
-          duration: 2,
-          x: 800,
-        });
-      }
-    });
+    // meteoritesPlanet3.forEach((meteorite) => {
+    //   if (spaceshipPosition.distanceTo(meteorite.position) <= 20) {
+    //     gsap.to(spaceshipPosition, {
+    //       duration: 2,
+    //       x: 800,
+    //     });
+    //   }
+    // });
 
     if (distance <= 15) {
       gsap.to(spaceshipPosition, {
@@ -1052,8 +1134,9 @@ function galaxyThreejs() {
         /* ease: "power3.inOut", */
       });
     }
-    if (distance3 <= 2800) planet3MeteoritesMovement(2);
-    else planet3MeteoritesMovement(0.3);
+    // if (distance3 <= 2800) planet3MeteoritesMovement(2);
+    // else
+    // planet3MeteoritesMovement(0.3);
     if (distance4 <= 50) {
       gsap.to(spaceshipPosition, {
         duration: 2,
@@ -1107,7 +1190,9 @@ function galaxyThreejs() {
     }
 
     all_planets.forEach((planet) => (planet.rotation.y += 0.001));
-    targets.forEach((target) => (target.rotation.z += 0.09));
+    for (const [planet, targets] of planetTargetsMap.entries()) {
+      targets.forEach((target) => (target.rotation.z += 0.03));
+    }
 
     updateKeyboardControls();
     spaceshipContainer.rotation.y =
@@ -1154,7 +1239,7 @@ function galaxyThreejs() {
   document.body.appendChild(guiContainer);
   guiContainer.appendChild(gui.domElement); */
 
-  gui.add(options, "speed", 0.3, 5);
+  gui.add(options, "speed", 0.3, 7);
   gui.addColor(options, "color").onChange(function (e) {
     spaceshipModel.traverse(function (child) {
       if (child.isMesh) {

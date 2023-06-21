@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GALAXY QUEST</title>
+    <link rel="stylesheet" type="text/css" href="styles.css" />
+    <link rel="icon" href="./images/favicon.ico" type="image/x-icon" />
+  </head>
+  <body>
+    <button class="message-button planet1" style="display: none">
+      Planet 1
+    </button>
+    <button class="message-button planet2" style="display: none">
+      Planet 2
+    </button>
+    <button class="message-button planet3" style="display: none">
+      Planet 3
+    </button>
+    <button class="message-button planet4" style="display: none">
+      Planet 4
+    </button>
+    <button class="message-button planet5" style="display: none">
+      Planet 5
+    </button>
+    <div class="info-window window window1">
+      <span class="close-window"><button>&times</button></span>
+      <div class="info">
+        <p>This is some information about the planet 1.</p>
+        <p>This is some information about the planet 1.</p>
+
+        <button class="action-button first">Land on the planet 1</button>
+      </div>
+    </div>
+    <div class="info-window window window2">
+      <span class="close-window"><button>&times</button></span>
+      <div class="info">
+        <p>This is some information about the planet 2.</p>
+        <p>This is some information about the planet 2.</p>
+
+        <button class="action-button second">Land on the planet 2</button>
+      </div>
+    </div>
+    <div class="info-window window window3">
+      <span class="close-window"><button>&times</button></span>
+      <div class="info">
+        <p>This is some information about the planet 3.</p>
+        <p>This is some information about the planet 3.</p>
+
+        <button class="action-button third">Land on the planet 3</button>
+      </div>
+    </div>
+    <div class="info-window window window4">
+      <span class="close-window"><button>&times</button></span>
+      <div class="info">
+        <p>This is some information about the planet 4.</p>
+        <p>This is some information about the planet 4.</p>
+
+        <button class="action-button fourth">Land on the planet 4</button>
+      </div>
+    </div>
+    <div class="info-window window window5">
+      <span class="close-window"><button>&times</button></span>
+      <div class="info">
+        <p>This is some information about the planet 5.</p>
+        <p>This is some information about the planet 5.</p>
+        <p>This is some information about the planet 5.</p>
+        <p>This is some information about the planet 5.</p>
+
+        <button class="action-button fifth">Land on the planet 5</button>
+      </div>
+    </div>
+
+    <div class="progress-bar-container">
+      <label for="progress-bar">Loading...</label
+      ><progress id="progress-bar" value="0" max="100"></progress>
+    </div>
+    <div id="container">
+      <div id="message-container">
+        <div><button id="score"></button> <span id="time"></span></div>
+      </div>
+    </div>
+    <script src="./js/script.js" type="module"></script>
+
+    <audio
+      id="sceneMusic"
+      src="./background-music/deep-space-relaxing-meditation-background-music-149049.mp3"
+      loop
+    ></audio>
+    <audio
+      id="loadingMusic"
+      src="./background-music/laser-cannon-science-fiction-sound-9831.mp3"
+      loop
+    ></audio>
+    <audio
+      id="ufoSound"
+      src="./background-music/flying-saucer-26373.mp3"
+      loop
+    ></audio>
+    <audio
+      id="ufoSoundSlow"
+      src="./background-music/metal-hit-fx-back-forth_130bpm.wav"
+    ></audio>
+    <audio
+      id="itemSound"
+      src="./background-music/collect-ring-15982.mp3"
+    ></audio>
+    <audio
+      id="vortexSound"
+      src="./background-music/collect-ring-15982.mp3"
+    ></audio>
+  </body>
+</html>

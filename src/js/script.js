@@ -46,7 +46,7 @@ const options = {
   sound: "on",
 };
 
-const menuMusic = document.getElementById("menuMusic");
+// const menuMusic = document.getElementById("menuMusic");
 const sceneMusic = document.getElementById("sceneMusic");
 const loadingMusic = document.getElementById("loadingMusic");
 const ufoSound = document.getElementById("ufoSound");
@@ -60,8 +60,8 @@ function restartAudio() {
 }
 ufoSound.addEventListener("ended", restartAudio);
 
-menuMusic.play();
-menuMusic.volume = 0.05;
+// menuMusic.play();
+// menuMusic.volume = 0.05;
 
 let canClose = true;
 let infoVisible = true;
@@ -163,23 +163,23 @@ messageButtons.forEach((button) =>
 ///
 // MENU PAGE
 
-const startButton = document.getElementById("start-button");
+// const startButton = document.getElementById("start-button");
 const openingText = document.getElementById("scrolling-text");
 const menuContainer = document.getElementById("menu-container");
 const progressBarContainer = document.querySelector(".progress-bar-container");
 const progressBar = document.getElementById("progress-bar");
-startButton.addEventListener("click", () => {
-  openingText.style.display = "none"; // Hide the opening text
-  startButton.style.display = "none";
-  menuContainer.parentNode.removeChild(menuContainer);
-  menuMusic.pause();
-  menuMusic.currentTime = 0;
+// startButton.addEventListener("click", () => {
+//   openingText.style.display = "none"; // Hide the opening text
+//   startButton.style.display = "none";
+//   menuContainer.parentNode.removeChild(menuContainer);
+//   menuMusic.pause();
+//   menuMusic.currentTime = 0;
 
-  galaxyThreejs();
-  loadingMusic.play();
-  loadingMusic.volume = 0.03;
-});
-
+//   galaxyThreejs();
+//   loadingMusic.play();
+//   loadingMusic.volume = 0.03;
+// });
+galaxyThreejs();
 // 3D SCENE
 function galaxyThreejs() {
   /* showLoadingScreen(); */

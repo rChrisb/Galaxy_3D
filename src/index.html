@@ -79,14 +79,15 @@
       }
 
       // EVENT LISTENERS TO DETECT MOUSE MOVEMENT
+      document.addEventListener("keydown", function (event) {
+        if (event.code === "Enter") {
+          window.location.href = "3D_scene.html";
+          console.log(456);
+        }
+      });
       document.addEventListener("mousemove", showCursor);
       document.addEventListener("mouseenter", showCursor);
       document.addEventListener("mouseleave", hideCursor);
-      document.addEventListener("keydown", function (event) {
-        if (event.code === "Enter" && startButton.style.display !== "none") {
-          startButton.click();
-        }
-      });
     </script>
   </body>
 </html>

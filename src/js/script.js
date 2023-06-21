@@ -176,7 +176,6 @@ startButton.addEventListener("click", () => {
   menuMusic.currentTime = 0;
 
   galaxyThreejs();
-  progressBarContainer.style.display = "flex";
   loadingMusic.play();
   loadingMusic.volume = 0.03;
 });
@@ -274,7 +273,8 @@ function galaxyThreejs() {
 
   // texture varaible that will allow to set textures of object
   const loadingManager = new THREE.LoadingManager();
-  const textureLoader = new THREE.TextureLoader(loadingManager);
+  const textureLoader = new THREE.TextureLoader();
+  const textureLoader2 = new THREE.TextureLoader(loadingManager);
   const cubeLoader = new THREE.CubeTextureLoader();
   const backgroundMap = cubeLoader.load(
     [space1, space2, space3, space4, space5, space6],
@@ -292,7 +292,6 @@ function galaxyThreejs() {
   };
 
   loadingManager.onLoad = function (url) {
-    progressBarContainer.style.display = "none";
     loadingMusic.pause();
     sceneMusic.play();
     sceneMusic.volume = 0.05;
@@ -344,7 +343,7 @@ function galaxyThreejs() {
   });
   const sphereGeometry2 = new THREE.SphereGeometry(100, 50, 50);
   const sphereMaterial2 = new THREE.MeshPhysicalMaterial({
-    map: textureLoader.load(pink),
+    map: textureLoader2.load(pink),
     /* color: 0x4b4e49, */
   });
   const sphereGeometry3 = new THREE.SphereGeometry(100, 50, 50);
@@ -579,8 +578,8 @@ function galaxyThreejs() {
 
   let spaceshipDirection;
   let spaceshipVelocity = new THREE.Vector3();
-  const spaceshipAcceleration = 0.005;
-  const spaceshipInertia = 0.998;
+  let spaceshipAcceleration = 0.005;
+  let spaceshipInertia = 0.998;
   const bounceAmplitude = 0.0036;
   const bounceFrequency = 0.006;
   let initialOpacity = 0;
@@ -687,17 +686,19 @@ function galaxyThreejs() {
     map: textureLoader.load(disc),
   });
   const starGeo = new THREE.BufferGeometry();
-  for (let i = 0; i < 100010; i++) {
+  for (let i = 0; i < 1000010; i++) {
     const star = new THREE.Vector3(
-      Math.random() * 600 - 300,
-      Math.random() * 600 - 300,
-      Math.random() * 600 - 300
+      Math.random() * 5000 - 2500,
+      Math.random() * 5000 - 2500,
+      Math.random() * 5000 - 2500
     );
     stars.push(star);
   }
   starGeo.setFromPoints(stars);
   starGeo.computeVertexNormals();
   const starss = new THREE.Points(starGeo, starMater);
+  console.log(starss.position.z);
+  starss.position.z += 2000;
   scene.add(starss);
 
   ///
@@ -1035,10 +1036,15 @@ function galaxyThreejs() {
   // createTargets(fourthPlanet);
   createTargets(fifthPlanet);
   updateMessage("HELLO ;)");
-
+  let sceneIsLoaded = false;
   ///
   // ANIMATION OF THE SCENE
   function animate() {
+    if (!sceneIsLoaded) progressBarContainer.style.display = "flex";
+    setTimeout(() => {
+      progressBarContainer.style.display = "none";
+      sceneIsLoaded = true;
+    }, 7000);
     let delta = clock.getDelta();
     clouds1.forEach((cloud) => {
       cloud.rotation.z -= delta * 0.03;
@@ -1069,7 +1075,7 @@ function galaxyThreejs() {
     });
     if (canPause) return;
     /* world.step(timeStep); */
-    const speed = options.speed;
+    let speed = options.speed;
     if (
       (moveForward ||
         moveBackward ||
@@ -1112,50 +1118,66 @@ function galaxyThreejs() {
     //     });
     //   }
     // });
+    // [distance, distance2, distance3, distance4, distance5].forEach(
+    //   (distance) => {
+    //     if (distance <= 500 && moveForward) {
+    //       moveBackward = true;
+    //       moveForward = false;
+    //       setTimeout(() => {
+    //         moveBackward = false;
+    //       }, 1000);
+    //     }
+    //   }
+    // );
+    if (distance <= 150) {
+      moveBackward = true;
+      moveForward = false;
+      gsap.to(spaceshipPosition, {
+        duration: 2,
+        z: 1400,
+        /* ease: "power3.inOut", */
+      });
 
-    if (distance <= 15) {
+      setTimeout(() => {
+        moveBackward = false;
+      }, 1000);
+    }
+    if (distance2 <= 150) {
       gsap.to(spaceshipPosition, {
         duration: 2,
-        z: 35,
+        z: 3500,
         /* ease: "power3.inOut", */
       });
     }
-    if (distance2 <= 75) {
+    if (distance3 <= 140) {
       gsap.to(spaceshipPosition, {
         duration: 2,
-        z: -700,
-        /* ease: "power3.inOut", */
-      });
-    }
-    if (distance3 <= 180) {
-      gsap.to(spaceshipPosition, {
-        duration: 2,
-        z: -1600,
+        z: 2500,
         /* ease: "power3.inOut", */
       });
     }
     // if (distance3 <= 2800) planet3MeteoritesMovement(2);
     // else
     // planet3MeteoritesMovement(0.3);
-    if (distance4 <= 50) {
+    if (distance4 <= 150) {
       gsap.to(spaceshipPosition, {
         duration: 2,
-        z: -120,
+        z: 2800,
         /* ease: "power3.inOut", */
       });
     }
-    if (distance5 <= 140) {
+    if (distance5 <= 150) {
       gsap.to(spaceshipPosition, {
         duration: 2,
-        z: 120,
+        z: 3700,
         /* ease: "power3.inOut", */
       });
     }
 
-    if (distance <= 30 && canClose) showMessageButton(planet1Button.message);
-    else if (distance2 <= 150 && canClose) {
+    if (distance <= 400 && canClose) showMessageButton(planet1Button.message);
+    else if (distance2 <= 400 && canClose) {
       showMessageButton(planet2Button.message);
-    } else if (distance3 <= 300 && canClose) {
+    } else if (distance3 <= 400 && canClose) {
       // this check for the current sessionID and if the score is good enough
       fetch("/game-2d/score/" + localStorage.getItem("sessionId"), {
         method: "GET",
@@ -1175,9 +1197,9 @@ function galaxyThreejs() {
       console.log("Loading level 2");
 
       showMessageButton(planet3Button.message);
-    } else if (distance4 <= 145 && canClose)
+    } else if (distance4 <= 400 && canClose)
       showMessageButton(planet4Button.message);
-    else if (distance5 <= 325 && canClose)
+    else if (distance5 <= 400 && canClose)
       showMessageButton(planet5Button.message);
     else hideMessageButton();
 

@@ -82,6 +82,11 @@
       document.addEventListener("mousemove", showCursor);
       document.addEventListener("mouseenter", showCursor);
       document.addEventListener("mouseleave", hideCursor);
+      document.addEventListener("keydown", function (event) {
+        if (event.code === "Enter" && startButton.style.display !== "none") {
+          startButton.click();
+        }
+      });
     </script>
   </body>
 </html>

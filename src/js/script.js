@@ -112,7 +112,7 @@ const planet3Button = {
   minimum_score: false,
   scoreNeededPreviously: 100,
   color: "yellow",
-  script: `http://localhost:3000/game-2d?level=2`,
+  script: new URL("/game-2d?level=2", window.location.href).href,
 };
 const planet4Button = {
   message: document.querySelector(".planet4"),
@@ -1115,11 +1115,11 @@ function galaxyThreejs() {
   ];
   const planet3Items = [
     item1Planet3,
-    item2Planet3,
-    item3Planet3,
-    item4Planet3,
-    item5Planet3,
-    item6Planet3,
+    // item2Planet3,
+    // item3Planet3,
+    // item4Planet3,
+    // item5Planet3,
+    // item6Planet3,
   ];
 
   planet1Items.forEach((item) => {

@@ -143,6 +143,7 @@ const messageButtons = [
   planet5Button,
 ];
 console.log(messageButtons);
+console.log(planet3.sco);
 const closeButton = document.querySelectorAll(".close-window");
 
 messageButtons.forEach((button) => {
@@ -1387,7 +1388,8 @@ function galaxyThreejs() {
             (max, score) => Math.max(max, score.score),
             0
           );
-          if (highestScore >= planet2Button.minimum_score) {
+          console.log(highestScore);
+          if (highestScore >= planet3Button.scoreNeededPreviously) {
             planet3Button.minimum_score = true;
           }
         })

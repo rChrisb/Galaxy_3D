@@ -101,7 +101,7 @@ const planet1Button = {
   minimum_score: true,
   all_items: false,
   color: "green",
-  script: window.location.href.replace(/\/$/, "") + "/game-2d",
+  script: window.location.assign("/game-2d"),
 };
 const planet3Button = {
   message: document.querySelector(".planet3"),
@@ -1099,11 +1099,11 @@ function galaxyThreejs() {
   item6Planet3.position.set(1050, -200, 1000);
   const planet1Items = [
     item1Planet1,
-    item2Planet1,
-    item3Planet1,
-    item4Planet1,
-    item5Planet1,
-    item6Planet1,
+    // item2Planet1,
+    // item3Planet1,
+    // item4Planet1,
+    // item5Planet1,
+    // item6Planet1,
   ];
   const planet4Items = [
     item1Planet4,

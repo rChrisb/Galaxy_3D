@@ -110,7 +110,7 @@ const planet3Button = {
   previous: "planet 1",
   succeededRace: true,
   minimum_score: false,
-  scoreNeededPreviously: 5000,
+  scoreNeededPreviously: 500,
   color: "yellow",
   script: new URL("/game-2d?level=2", window.location.href).href,
 };

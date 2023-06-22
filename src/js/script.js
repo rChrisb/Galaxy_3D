@@ -1387,7 +1387,7 @@ function galaxyThreejs() {
             (max, score) => Math.max(max, score.score),
             0
           );
-          if (highestScore >= 100) {
+          if (highestScore >= planet2Button.minimum_score) {
             planet3Button.minimum_score = true;
           }
         })

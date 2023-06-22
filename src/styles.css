@@ -342,6 +342,23 @@ label {
 #score {
   color: #a1802c;
   position: absolute;
+  top: 30%;
+  left: 20%;
+  transform: translate(-50%, -50%);
+  background-color: rgba(6, 0, 0, 0.5);
+  padding: 10px 20px 10px 10px; /* Adjust the padding to create space for the image */
+  border-radius: 10px;
+  text-align: center;
+  font-size: 30px;
+  font-weight: bold;
+  z-index: 9999;
+  opacity: 1;
+  transition: opacity 1s ease;
+  display: none;
+}
+#access {
+  color: #a1802c;
+  position: absolute;
   top: 10%;
   left: 40%;
   transform: translate(-50%, -50%);
@@ -349,7 +366,7 @@ label {
   padding: 10px 20px 10px 10px; /* Adjust the padding to create space for the image */
   border-radius: 10px;
   text-align: center;
-  font-size: 40px;
+  font-size: 20px;
   font-weight: bold;
   z-index: 9999;
   opacity: 1;
@@ -359,7 +376,7 @@ label {
 #time {
   color: #05cc30;
   position: absolute;
-  top: 30%;
+  top: 60%;
   left: 20%;
   transform: translate(-50%, -50%);
   background-color: rgba(6, 0, 0, 0.5);

@@ -86,13 +86,18 @@ const planet2Button = {
   message: document.querySelector(".planet2"),
   window: window2,
   action: action2,
+  succeededRace: false,
+  maximumTime: 70,
+  all_items: true,
   minimum_score: true,
   color: "pink",
+  script: "index.html",
 };
 const planet1Button = {
   message: document.querySelector(".planet1"),
   window: window1,
   action: action1,
+  succeededRace: true,
   minimum_score: true,
   all_items: false,
   color: "green",
@@ -103,6 +108,7 @@ const planet3Button = {
   window: window3,
   action: action3,
   previous: "planet 1",
+  succeededRace: true,
   minimum_score: false,
   scoreNeededPreviously: 100,
   color: "yellow",
@@ -113,6 +119,7 @@ const planet4Button = {
   window: window4,
   action: action4,
   previous: "planet 3",
+  succeededRace: true,
   minimum_score: false,
   scoreNeededPreviously: 100,
   color: "blue",
@@ -121,8 +128,12 @@ const planet5Button = {
   message: document.querySelector(".planet5"),
   window: window5,
   action: action5,
+  maximumTime: 10,
+  all_items: true,
   minimum_score: true,
   color: "red",
+  script:
+    "https://www.youtube.com/watch?v=36s9uEaVpr4&pp=ygULc3VpY2lkZWJveXM%3D",
 };
 const messageButtons = [
   planet1Button,
@@ -168,6 +179,8 @@ messageButtons.forEach((button) =>
       accessElement.textContent = `Score ${button.scoreNeededPreviously} points in ${button.previous} to unlock access`;
     } else if (button.minimum_score && !button.all_items) {
       accessElement.textContent = `Collect all ${button.color} items to unlock access`;
+    } else if (!button.succeededRace) {
+      accessElement.textContent = `Go through all ${button.color} vortexes in less than ${button.maximumTime} seconds to unlock access`;
     } else if (button.minimum_score && button.all_items && button.script) {
       window.location.href = button.script;
       console.log("The user wants to enter the planet!");
@@ -933,12 +946,17 @@ function galaxyThreejs() {
             result = raceTime;
             updateMessage(`Racetime: ${raceTime} seconds`);
             let color;
-            if (planet === secondPlanet && result <= 100) {
-              accessElement.textContent = "Unlocked acess to planet2";
+            if (
+              planet === secondPlanet &&
+              result <= planet2Button.maximumTime
+            ) {
+              planet2Button.succeededRace = true;
+              accessElement.textContent = "Unlocked access to planet2";
               color = "#d31bca";
             }
-            if (planet === fifthPlanet && result <= 100) {
-              accessElement.textContent = "Unlocked acess to planet5";
+            if (planet === fifthPlanet && result <= planet5Button.maximumTime) {
+              planet5Button.succeededRace = true;
+              accessElement.textContent = "Unlocked access to planet5";
               color = "#a5040d";
             }
             accessElement.style.opacity = 1;
@@ -1455,7 +1473,7 @@ function galaxyThreejs() {
   //"Go Back to Menu" button
   const goBackToTheMenu = {
     "Home Page": function () {
-      location.reload(); // Refresh the page
+      window.location.href = document.referrer; // Refresh the page
     },
   };
   /* gui.add(goBackToTheMenu, "Home Page"); */

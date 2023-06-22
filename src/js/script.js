@@ -101,7 +101,7 @@ const planet1Button = {
   minimum_score: true,
   all_items: false,
   color: "green",
-  script: "http://localhost:3000/game-2d",
+  script: window.location.href.replace(/\/$/, "") + "/game-2d",
 };
 const planet3Button = {
   message: document.querySelector(".planet3"),

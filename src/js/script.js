@@ -101,7 +101,7 @@ const planet1Button = {
   minimum_score: true,
   all_items: false,
   color: "green",
-  script: window.location.assign("/game-2d"),
+  script: new URL("/game-2d", window.location.href).href,
 };
 const planet3Button = {
   message: document.querySelector(".planet3"),

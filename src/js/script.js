@@ -143,7 +143,7 @@ const messageButtons = [
   planet5Button,
 ];
 console.log(messageButtons);
-console.log(planet3.sco);
+
 const closeButton = document.querySelectorAll(".close-window");
 
 messageButtons.forEach((button) => {

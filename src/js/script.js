@@ -91,7 +91,7 @@ const planet2Button = {
   all_items: true,
   minimum_score: true,
   color: "pink",
-  script: "index.html",
+  script: "https://www.immersiveworlds.com/",
 };
 const planet1Button = {
   message: document.querySelector(".planet1"),
@@ -556,22 +556,62 @@ function galaxyThreejs() {
     keyState[event.code] = false;
   }
 
+  const rotationAmount = 0.02;
+  const rotationResetSpeed = 0.05;
+  const maxRotationAngle = Math.PI / 8;
+
+  let currentRotationX = 0;
+  let currentRotationY = 0;
+  let currentRotationZ = 0;
+
+  // Function to reset the rotation of spaceshipContainer
+  function resetRotation() {
+    // Gradually reset the rotation back to zero
+    gsap.to(spaceshipModel.rotation, {
+      /* duration: 1.5, */
+      x: 0,
+      y: 0,
+      z: 0,
+    });
+    currentRotationX = 0;
+    currentRotationY = 0;
+    currentRotationZ = 0;
+  }
+  function inclinaison(x1, z1) {
+    gsap.to(spaceshipModel.rotation, {
+      duration: 0.5,
+      x: x1,
+      y: 0,
+      z: z1,
+    });
+  }
+
   window.addEventListener("keydown", function (event) {
     if (event.code === "KeyW") {
       ufoSound.play();
       ufoSound.volume = 0.08;
       if (ufoSound.volume < 0.5) ufoSound.volume += 0.03;
       moveForward = true; // Move forward when 'Z' key is pressed ('W' for qwerty board)
+      moveBackward = false;
     } else if (event.code === "KeyS") {
       moveBackward = true; // Move backward when 'S' key is pressed
+      moveForward = false;
     } else if (event.code === "KeyA") {
       moveLeft = true; // Move left when 'Q' key is pressed ('A' in qwerty)
+      moveRight = false;
+      inclinaison(0, -0.2);
     } else if (event.code === "KeyD") {
       moveRight = true; // Move right when 'D' key is pressed
-    } else if (event.code === "ArrowUp") {
+      moveLeft = false;
+      inclinaison(0, 0.2);
+    } else if (event.code === "ArrowUp" || event.code === "Space") {
       moveUp = true; // Move up when spacebar is pressed
-    } else if (event.code === "ArrowDown") {
+      moveDown = false;
+      inclinaison(15.9, 0);
+    } else if (event.code === "ArrowDown" || event.code === "ShiftLeft") {
       moveDown = true; // Move down when left shift key is pressed
+      moveUp = false;
+      inclinaison(-15.9, 0);
     }
     if (event.code === "KeyW" && event.code === "KeyD") {
       moveForward = true;
@@ -606,16 +646,22 @@ function galaxyThreejs() {
       ufoSound.pause();
       ufoSoundSlow.play();
       ufoSoundSlow.volume = 0.05;
+      resetRotation();
       moveForward = false; // Stop moving forward when 'Z' (azerty) key is released
     } else if (event.code === "KeyS") {
+      resetRotation();
       moveBackward = false; // Stop moving backward when 'S' key is released
     } else if (event.code === "KeyA") {
+      resetRotation();
       moveLeft = false; // Stop rotating left when 'Q' (azerty) key is released
     } else if (event.code === "KeyD") {
+      resetRotation();
       moveRight = false; // Stop rotating right when 'D' key is released
-    } else if (event.code === "ArrowUp") {
+    } else if (event.code === "ArrowUp" || event.code === "Space") {
+      resetRotation();
       moveUp = false; // Stop moving up when spacebar is released
-    } else if (event.code === "ArrowDown") {
+    } else if (event.code === "ArrowDown" || event.code === "ShiftLeft") {
+      resetRotation();
       moveDown = false; // Stop moving down when left shift key is released
     }
   });
@@ -624,7 +670,7 @@ function galaxyThreejs() {
   let spaceshipVelocity = new THREE.Vector3();
   let spaceshipAcceleration = 0.005;
   let spaceshipInertia = 0.998;
-  const bounceAmplitude = 0.0036;
+  const bounceAmplitude = 0.0077;
   const bounceFrequency = 0.006;
   let initialOpacity = 0;
 
@@ -780,8 +826,9 @@ function galaxyThreejs() {
     result,
     totalTargets = targets.length;
   let targetIndex = 1;
-  function updateMessage(content) {
+  function updateMessage(content, color) {
     messageElement.textContent = content;
+    messageElement.style.color = color;
   }
   function setTimer(content) {
     timeElement.textContent = content;
@@ -887,17 +934,8 @@ function galaxyThreejs() {
     }
     planetTargetsMap.set(planet, targets);
   }
-  // Reset targets and score
-  function resetTargets() {
-    for (const [planet, targets] of planetTargetsMap.entries()) {
-      for (let i = 0; i < targets.length; i++) {
-        const target = targets[i];
-        target.visible = i === 0;
-      }
-    }
-    score = 0;
-  }
   let timerInterval;
+
   function updateTargets() {
     const spaceshipPosition = spaceshipContainer.position;
     let scoreMoved = false;
@@ -918,9 +956,12 @@ function galaxyThreejs() {
           vortexSound.volume = 0.3;
 
           if (score > 0) console.log(score);
-          updateMessage(`${score} / ${targets.length}`);
+          updateMessage(
+            `${i + 1} / ${targets.length}`,
+            planet === secondPlanet ? "#d31bca" : "#a5040d"
+          );
 
-          if (score === 1) {
+          if (i + 1 === 1) {
             raceStartTime = Date.now();
             timeElement.style.display = "block";
             startTimer();
@@ -945,7 +986,10 @@ function galaxyThreejs() {
             const raceEndTime = Date.now();
             const raceTime = (raceEndTime - raceStartTime) / 1000;
             result = raceTime;
-            updateMessage(`Racetime: ${raceTime} seconds`);
+            updateMessage(
+              `Racetime: ${raceTime} seconds`,
+              planet === secondPlanet ? "#d31bca" : "#a5040d"
+            );
             let color;
             if (
               planet === secondPlanet &&
@@ -954,10 +998,24 @@ function galaxyThreejs() {
               planet2Button.succeededRace = true;
               accessElement.textContent = "Unlocked access to planet2";
               color = "#d31bca";
+            } else if (
+              planet === secondPlanet &&
+              result >= planet2Button.maximumTime
+            ) {
+              planet2Button.succeededRace = true;
+              accessElement.textContent = `Race Time was longer than ${planet2Button.maximumTime} seconds`;
+              color = "#d31bca";
             }
             if (planet === fifthPlanet && result <= planet5Button.maximumTime) {
               planet5Button.succeededRace = true;
               accessElement.textContent = "Unlocked access to planet5";
+              color = "#a5040d";
+            } else if (
+              planet === fifthPlanet &&
+              result >= planet5Button.maximumTime
+            ) {
+              planet5Button.succeededRace = true;
+              accessElement.textContent = `Race Time was longer than ${planet5Button.maximumTime} seconds`;
               color = "#a5040d";
             }
             accessElement.style.opacity = 1;
@@ -983,6 +1041,17 @@ function galaxyThreejs() {
         }
       }
     }
+  }
+
+  // Reset targets and score
+  function resetTargets() {
+    for (const [planet, targets] of planetTargetsMap.entries()) {
+      for (let i = 0; i < targets.length; i++) {
+        const target = targets[i];
+        target.visible = i === 0;
+      }
+    }
+    score = 0;
   }
   function startTimer() {
     timerInterval = setInterval(() => {
@@ -1100,7 +1169,7 @@ function galaxyThreejs() {
   item6Planet3.position.set(1050, -200, 1000);
   const planet1Items = [
     item1Planet1,
-    // item2Planet1,
+    item2Planet1,
     // item3Planet1,
     // item4Planet1,
     // item5Planet1,
@@ -1156,6 +1225,8 @@ function galaxyThreejs() {
     planet4: { raceOn: true, opacity: 0 },
   };
 
+  const itemCollectionTimers = {}; // Object to store the item collection timers
+
   function collectPharaons(planet, planetItemsList, button) {
     const numberOfItems = planetItemsList.length;
     let index;
@@ -1167,6 +1238,12 @@ function galaxyThreejs() {
     planetItemsList.forEach((item) => {
       if (item.visible && spaceshipPosition.distanceTo(item.position) < 15) {
         collectedItems[index]++; // Increment the appropriate property
+        if (collectedItems[index] === 1) {
+          raceStartTime = Date.now();
+          timeElement.style.display = "block";
+          startTimer();
+        }
+
         itemSound.play();
         itemSound.volume = 0.3;
         item.visible = false;
@@ -1176,10 +1253,28 @@ function galaxyThreejs() {
 
     if (collectedItems[index] === numberOfItems && raceStatus[index].raceOn) {
       button.all_items = true;
+
+      const raceEndTime = Date.now();
+      const raceTime = (raceEndTime - raceStartTime) / 1000;
+      result = raceTime;
+      updateMessage(
+        `Racetime: ${raceTime} seconds`,
+        planet === secondPlanet ? "#d31bca" : "#a5040d"
+      );
+      raceStartTime = Date.now();
+      messageElement.style.display = "block";
+      messageElement.style.color = button.color;
+      messageElement.textContent = `Racetime: ${raceTime} seconds`;
+      clearInterval(timerInterval);
+      timeElement.style.display = "none";
+      setTimeout(() => {
+        messageElement.style.display = "none";
+      }, 8000);
       console.log("you collected all items for", planet);
       accessElement.textContent = `Unlocked access to ${index}`;
       accessElement.style.opacity = 1;
       accessElement.style.display = "block";
+      accessElement.style.color = button.color;
       raceStatus[index].raceOn = false;
       setTimeout(() => {
         console.log(12);
@@ -1195,6 +1290,14 @@ function galaxyThreejs() {
       accessElement.style.display = "block";
       accessElement.style.color = "blue";
     }
+    if (collectedItems[index] === numberOfItems && !raceStatus[index].raceOn) {
+      setTimeout(() => {
+        planetItemsList.forEach((item) => {
+          item.visible = true;
+        });
+        collectedItems[index] = 0;
+      }, 10000);
+    }
 
     if (planet.all_items) console.log(planet.all_items);
   }
@@ -1206,8 +1309,10 @@ function galaxyThreejs() {
   updateMessage("HELLO ;)");
 
   let sceneIsLoaded = false;
+
   ///
   // ANIMATION OF THE SCENE
+  ///
   function animate() {
     if (!sceneIsLoaded) progressBarContainer.style.display = "flex";
     setTimeout(() => {

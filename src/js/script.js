@@ -573,11 +573,17 @@ function galaxyThreejs() {
       y: 0,
       z: 0,
     });
+    gsap.to(spaceshipContainer.rotation, {
+      /* duration: 1.5, */
+      x: 0,
+      z: 0,
+    });
     currentRotationX = 0;
     currentRotationY = 0;
     currentRotationZ = 0;
   }
-  function inclinaison(x1, z1) {
+
+  function inclinaisonModel(x1, z1) {
     gsap.to(spaceshipModel.rotation, {
       duration: 0.5,
       x: x1,
@@ -585,7 +591,13 @@ function galaxyThreejs() {
       z: z1,
     });
   }
-
+  function inclinaisonContainer(x1, z1) {
+    gsap.to(spaceshipContainer.rotation, {
+      /* duration: 1.5, */
+      x: x1,
+      z: z1,
+    });
+  }
   window.addEventListener("keydown", function (event) {
     if (event.code === "KeyW") {
       ufoSound.play();
@@ -599,19 +611,19 @@ function galaxyThreejs() {
     } else if (event.code === "KeyA") {
       moveLeft = true; // Move left when 'Q' key is pressed ('A' in qwerty)
       moveRight = false;
-      inclinaison(0, -0.2);
+      inclinaisonModel(0, -0.2);
     } else if (event.code === "KeyD") {
       moveRight = true; // Move right when 'D' key is pressed
       moveLeft = false;
-      inclinaison(0, 0.2);
+      inclinaisonModel(0, 0.2);
     } else if (event.code === "ArrowUp" || event.code === "Space") {
       moveUp = true; // Move up when spacebar is pressed
       moveDown = false;
-      inclinaison(15.9, 0);
+      inclinaisonContainer(-0.05, 0);
     } else if (event.code === "ArrowDown" || event.code === "ShiftLeft") {
       moveDown = true; // Move down when left shift key is pressed
       moveUp = false;
-      inclinaison(-15.9, 0);
+      inclinaisonContainer(0.05, 0);
     }
     if (event.code === "KeyW" && event.code === "KeyD") {
       moveForward = true;

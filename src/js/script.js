@@ -575,12 +575,12 @@ function galaxyThreejs() {
     });
     gsap.to(fireSprite1.position, {
       /* duration: 1.5, */
-
+      x: 0,
       y: 0,
     });
     gsap.to(fireSprite2.position, {
       /* duration: 1.5, */
-
+      x: -0.47,
       y: 0,
     });
 
@@ -646,12 +646,32 @@ function galaxyThreejs() {
         spaceshipModel.rotation.z,
         -0.12
       );
+      gsap.to(fireSprite1.position, {
+        /* duration: 1.5, */
+
+        x: 0.1,
+      });
+      gsap.to(fireSprite2.position, {
+        /* duration: 1.5, */
+
+        x: -0.37,
+      });
     } else if (event.code === "ArrowLeft") {
       inclinaisonModel(
         spaceshipModel.rotation.x,
         spaceshipModel.rotation.z,
         0.12
       );
+      gsap.to(fireSprite1.position, {
+        /* duration: 1.5, */
+
+        x: -0.1,
+      });
+      gsap.to(fireSprite2.position, {
+        /* duration: 1.5, */
+
+        x: -0.57,
+      });
     }
     if (event.code === "KeyW" && event.code === "KeyD") {
       moveForward = true;

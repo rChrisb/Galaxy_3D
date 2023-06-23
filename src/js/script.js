@@ -583,11 +583,11 @@ function galaxyThreejs() {
     currentRotationZ = 0;
   }
 
-  function inclinaisonModel(x1, z1) {
+  function inclinaisonModel(x1, z1, y1 = spaceshipModel.rotation.y) {
     gsap.to(spaceshipModel.rotation, {
       duration: 0.5,
       x: x1,
-      y: 0,
+      y: y1,
       z: z1,
     });
   }
@@ -624,6 +624,18 @@ function galaxyThreejs() {
       moveDown = true; // Move down when left shift key is pressed
       moveUp = false;
       inclinaisonContainer(0.05, 0);
+    } else if (event.code === "ArrowRight") {
+      inclinaisonModel(
+        spaceshipModel.rotation.x,
+        spaceshipModel.rotation.z,
+        -0.12
+      );
+    } else if (event.code === "ArrowLeft") {
+      inclinaisonModel(
+        spaceshipModel.rotation.x,
+        spaceshipModel.rotation.z,
+        0.12
+      );
     }
     if (event.code === "KeyW" && event.code === "KeyD") {
       moveForward = true;
@@ -675,6 +687,8 @@ function galaxyThreejs() {
     } else if (event.code === "ArrowDown" || event.code === "ShiftLeft") {
       resetRotation();
       moveDown = false; // Stop moving down when left shift key is released
+    } else if (event.code === "ArrowLeft" || event.code === "ArrowRight") {
+      resetRotation();
     }
   });
 

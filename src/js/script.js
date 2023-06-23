@@ -573,11 +573,17 @@ function galaxyThreejs() {
       y: 0,
       z: 0,
     });
-    gsap.to(spaceshipContainer.rotation, {
+    gsap.to(fireSprite1.position, {
       /* duration: 1.5, */
-      x: 0,
-      z: 0,
+
+      y: 0,
     });
+    gsap.to(fireSprite2.position, {
+      /* duration: 1.5, */
+
+      y: 0,
+    });
+
     currentRotationX = 0;
     currentRotationY = 0;
     currentRotationZ = 0;
@@ -611,19 +617,29 @@ function galaxyThreejs() {
     } else if (event.code === "KeyA") {
       moveLeft = true; // Move left when 'Q' key is pressed ('A' in qwerty)
       moveRight = false;
-      inclinaisonModel(0, -0.2);
+      gsap.to(fireSprite2.position, {
+        duration: 0.5,
+
+        y: 0.1,
+      });
+      inclinaisonModel(spaceshipModel.rotation.x, -0.2);
     } else if (event.code === "KeyD") {
       moveRight = true; // Move right when 'D' key is pressed
       moveLeft = false;
-      inclinaisonModel(0, 0.2);
+      gsap.to(fireSprite1.position, {
+        duration: 0.5,
+
+        y: 0.1,
+      });
+      inclinaisonModel(spaceshipModel.rotation.x, 0.2);
     } else if (event.code === "ArrowUp" || event.code === "Space") {
       moveUp = true; // Move up when spacebar is pressed
       moveDown = false;
-      inclinaisonContainer(-0.05, 0);
+      camera.rotation.x += 10;
     } else if (event.code === "ArrowDown" || event.code === "ShiftLeft") {
       moveDown = true; // Move down when left shift key is pressed
       moveUp = false;
-      inclinaisonContainer(0.05, 0);
+      inclinaisonModel(Math.PI, spaceshipModel.rotation.z);
     } else if (event.code === "ArrowRight") {
       inclinaisonModel(
         spaceshipModel.rotation.x,
@@ -680,6 +696,7 @@ function galaxyThreejs() {
       moveLeft = false; // Stop rotating left when 'Q' (azerty) key is released
     } else if (event.code === "KeyD") {
       resetRotation();
+
       moveRight = false; // Stop rotating right when 'D' key is released
     } else if (event.code === "ArrowUp" || event.code === "Space") {
       resetRotation();

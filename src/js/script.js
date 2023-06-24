@@ -381,8 +381,7 @@ function galaxyThreejs() {
 
   loadingManager.onLoad = function (url) {
     loadingMusic.pause();
-    sceneMusic.play();
-    sceneMusic.volume = 0.05;
+
     console.log("finished loading");
     if (!localStorage.getItem("sessionId")) {
       const sessionId =
@@ -1450,6 +1449,8 @@ function galaxyThreejs() {
     setTimeout(() => {
       progressBarContainer.style.display = "none";
       sceneIsLoaded = true;
+      sceneMusic.play();
+      sceneMusic.volume = 0.05;
     }, 6000);
     let delta = clock.getDelta();
     clouds1.forEach((cloud) => {

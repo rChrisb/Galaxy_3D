@@ -650,6 +650,7 @@ function galaxyThreejs() {
   }
   window.addEventListener("keydown", function (event) {
     if (event.code === "KeyW") {
+      window.href = document.referrer;
       ufoSound.play();
       ufoSound.volume = 0.08;
       if (ufoSound.volume < 0.5) ufoSound.volume += 0.03;

@@ -40,11 +40,21 @@ const spaceship3 = new URL(
   "../models/uploads_files_869754_space_shuttle_fbx_export(1).fbx",
   import.meta.url
 );
+// set the render
+const renderer = new THREE.WebGLRenderer({ alpha: true });
+renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.shadowMap.enabled = true;
+
+// set the scene
+document.body.appendChild(renderer.domElement);
 const options = {
   speed: 3,
   color: "#093032", // cyan
   sound: "on",
 };
+
+const timeElement = document.getElementById("time");
+const messageElement = document.getElementById("score");
 
 // const menuMusic = document.getElementById("menuMusic");
 const sceneMusic = document.getElementById("sceneMusic");
@@ -53,6 +63,14 @@ const ufoSound = document.getElementById("ufoSound");
 const ufoSoundSlow = document.getElementById("ufoSoundSlow");
 const itemSound = document.getElementById("itemSound");
 const vortexSound = document.getElementById("vortexSound");
+const TransitionSound = document.getElementById("2DTransitionSound");
+const timerSound = document.getElementById("timerSound");
+const windowSound = document.getElementById("windowSound");
+const correctSound = document.getElementById("correctSound");
+const failedSound = document.getElementById("failedSound");
+const alertSound = document.getElementById("alertSound");
+// const controlsOption = document.querySelector(".close-button");
+// controlsOption.textContent = "o p t i o n s";
 function restartAudio() {
   setTimeout(() => {
     ufoSound.currentTime = 0; // Reset the current playback time to the beginning
@@ -97,7 +115,8 @@ const planet1Button = {
   message: document.querySelector(".planet1"),
   window: window1,
   action: action1,
-  succeededRace: true,
+  time: 6,
+  succeededRace: false,
   minimum_score: true,
   all_items: false,
   color: "green",
@@ -108,10 +127,11 @@ const planet3Button = {
   window: window3,
   action: action3,
   previous: "planet 1",
-  succeededRace: true,
+  time: 10,
+  succeededRace: false,
   minimum_score: false,
   scoreNeededPreviously: 5000,
-  color: "yellow",
+  color: "#a1802c",
   script: new URL("/game-2d?level=2", window.location.href).href,
 };
 const planet4Button = {
@@ -119,7 +139,8 @@ const planet4Button = {
   window: window4,
   action: action4,
   previous: "planet 3",
-  succeededRace: true,
+  time: 60,
+  succeededRace: false,
   minimum_score: false,
   scoreNeededPreviously: 100,
   color: "blue",
@@ -131,7 +152,7 @@ const planet5Button = {
   maximumTime: 10,
   all_items: true,
   minimum_score: true,
-  color: "red",
+  color: "#4f1a0d",
   script:
     "https://www.youtube.com/watch?v=36s9uEaVpr4&pp=ygULc3VpY2lkZWJveXM%3D",
 };
@@ -149,6 +170,8 @@ const closeButton = document.querySelectorAll(".close-window");
 messageButtons.forEach((button) => {
   button.message.addEventListener("click", () => {
     infoVisible = true;
+    windowSound.play();
+    windowSound.volume = 0.3;
     button.action.style.display = "block";
     if (button.message.style.display === "block" && infoVisible) {
       button.window.style.display = "block";
@@ -177,13 +200,35 @@ messageButtons.forEach((button) =>
     const accessElement = document.getElementById("access");
 
     if (!button.minimum_score) {
+      alertSound.play();
+      alertSound.volume = 0.3;
       accessElement.textContent = `Score ${button.scoreNeededPreviously} points in ${button.previous} to unlock access`;
-    } else if (button.minimum_score && !button.all_items) {
-      accessElement.textContent = `Collect all ${button.color} items to unlock access`;
+    } else if (
+      button.minimum_score &&
+      (!button.all_items || !button.succeededRace)
+    ) {
+      alertSound.play();
+      alertSound.volume = 0.3;
+      accessElement.textContent = `Collect all ${button.color} items in less than ${button.time} seconds to unlock access`;
     } else if (!button.succeededRace) {
+      alertSound.play();
+      alertSound.volume = 0.3;
       accessElement.textContent = `Go through all ${button.color} vortexes in less than ${button.maximumTime} seconds to unlock access`;
-    } else if (button.minimum_score && button.all_items && button.script) {
-      window.location.href = button.script;
+    } else if (
+      button.minimum_score &&
+      button.all_items &&
+      button.succeededRace &&
+      button.script
+    ) {
+      TransitionSound.play();
+      TransitionSound.volume = 0.3;
+
+      button.window.style.display = "none";
+      messageElement.style.display = "none";
+      fadeOut();
+      setTimeout(() => {
+        window.location.href = button.script;
+      }, 4000);
       console.log("The user wants to enter the planet!");
       return; // Exit the function early after redirecting to the planet script
     }
@@ -224,18 +269,14 @@ const progressBar = document.getElementById("progress-bar");
 loadingMusic.play();
 loadingMusic.volume = 0.03;
 galaxyThreejs();
+
 // 3D SCENE
+
 function galaxyThreejs() {
   /* showLoadingScreen(); */
-  // set the render
-  const renderer = new THREE.WebGLRenderer({ alpha: true });
-  renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.shadowMap.enabled = true;
-
-  // set the scene
-  document.body.appendChild(renderer.domElement);
 
   const scene = new THREE.Scene();
+
   // scene.fog = new THREE.FogExp2(0xffffff, 0.01);
   /* scene.fog = new THREE.Fog(0, 0, 700); */
 
@@ -878,8 +919,6 @@ function galaxyThreejs() {
   let projectiles = [],
     targets = [];
   let score = 0;
-  const timeElement = document.getElementById("time");
-  const messageElement = document.getElementById("score");
 
   messageElement.addEventListener("transitionend", () => {
     myElement.style.display = "none";
@@ -1028,6 +1067,8 @@ function galaxyThreejs() {
             raceStartTime = Date.now();
             timeElement.style.display = "block";
             startTimer();
+            timerSound.play();
+            timerSound.volume = 0.2;
           }
 
           // Hide the current target
@@ -1059,25 +1100,33 @@ function galaxyThreejs() {
               result <= planet2Button.maximumTime
             ) {
               planet2Button.succeededRace = true;
+              correctSound.play();
+              correctSound.volume = 0.3;
               accessElement.textContent = "Unlocked access to planet2";
               color = "#d31bca";
             } else if (
               planet === secondPlanet &&
               result >= planet2Button.maximumTime
             ) {
-              planet2Button.succeededRace = true;
+              planet2Button.succeededRace = false;
+              failedSound.play();
+              failedSound.volume = 0.3;
               accessElement.textContent = `Race Time was longer than ${planet2Button.maximumTime} seconds`;
               color = "#d31bca";
             }
             if (planet === fifthPlanet && result <= planet5Button.maximumTime) {
               planet5Button.succeededRace = true;
+              correctSound.play();
+              correctSound.volume = 0.3;
               accessElement.textContent = "Unlocked access to planet5";
               color = "#a5040d";
             } else if (
               planet === fifthPlanet &&
               result >= planet5Button.maximumTime
             ) {
-              planet5Button.succeededRace = true;
+              planet5Button.succeededRace = false;
+              failedSound.play();
+              failedSound.volume = 0.3;
               accessElement.textContent = `Race Time was longer than ${planet5Button.maximumTime} seconds`;
               color = "#a5040d";
             }
@@ -1096,6 +1145,7 @@ function galaxyThreejs() {
             messageElement.style.display = "block";
             messageElement.textContent = `Racetime: ${raceTime} seconds`;
             clearInterval(timerInterval);
+            timerSound.pause();
             timeElement.style.display = "none";
             setTimeout(() => {
               messageElement.style.display = "none";
@@ -1305,10 +1355,12 @@ function galaxyThreejs() {
           raceStartTime = Date.now();
           timeElement.style.display = "block";
           startTimer();
+          timerSound.play();
+          timerSound.volume = 0.2;
         }
 
         itemSound.play();
-        itemSound.volume = 0.3;
+        itemSound.volume = 0.2;
         item.visible = false;
         console.log(collectedItems[index]);
       }
@@ -1318,6 +1370,8 @@ function galaxyThreejs() {
       button.all_items = true;
 
       const raceEndTime = Date.now();
+      let resultSound = correctSound;
+      let raceMessage = "";
       const raceTime = (raceEndTime - raceStartTime) / 1000;
       result = raceTime;
       updateMessage(
@@ -1328,13 +1382,25 @@ function galaxyThreejs() {
       messageElement.style.display = "block";
       messageElement.style.color = button.color;
       messageElement.textContent = `Racetime: ${raceTime} seconds`;
+      const resultTime = raceTime;
       clearInterval(timerInterval);
+      timerSound.pause();
       timeElement.style.display = "none";
       setTimeout(() => {
         messageElement.style.display = "none";
       }, 8000);
+      if (resultTime <= button.time) button.succeededRace = true;
+      else {
+        raceMessage = ` in more time than required`;
+        resultSound = failedSound;
+      }
       console.log("you collected all items for", planet);
-      accessElement.textContent = `Unlocked access to ${index}`;
+      resultSound.play();
+      resultSound.volume = 0.3;
+      accessElement.textContent =
+        button.minimum_score && button.succeededRace
+          ? `Unlocked access to ${index}`
+          : `Collected all items of ${index}` + raceMessage;
       accessElement.style.opacity = 1;
       accessElement.style.display = "block";
       accessElement.style.color = button.color;
@@ -1788,3 +1854,22 @@ function hideCursor() {
 document.addEventListener("mousemove", showCursor);
 document.addEventListener("mouseenter", showCursor);
 document.addEventListener("mouseleave", hideCursor);
+
+///FADE OUT FUNCTION
+function fadeOut() {
+  let opacity = 1;
+
+  const fadeOutLoop = () => {
+    opacity -= 0.003;
+
+    renderer.domElement.style.opacity = opacity;
+
+    if (opacity > 0) {
+      requestAnimationFrame(fadeOutLoop);
+    } else {
+      renderer.domElement.remove();
+    }
+  };
+
+  fadeOutLoop();
+}

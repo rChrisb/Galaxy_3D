@@ -50,6 +50,9 @@
         ></a>
       </div>
     </div>
+    <a class="intro" href="#" style="font-size: 7rem; text-align: center"
+      >GALAXY QUEST</a
+    >
     <audio
       id="menuMusic"
       src="./background-music/epic-dramatic-action-trailer-99525.mp3"
@@ -60,14 +63,18 @@
       src="./background-music/fantasy_ui_button_6-102219.mp3"
     ></audio>
     <script>
-      const menuMusic = document.getElementById("menuMusic");
-      const startSound = document.getElementById("startSound");
-      document.addEventListener("DOMContentLoaded", function (event) {
+      const menuContainer = document.getElementById("menu-container");
+      const introButton = document.querySelector(".intro");
+      console.log(introButton);
+      document.addEventListener("click", function (event) {
+        introButton.style.display = "none";
+        menuContainer.style.display = "block";
         menuMusic.play();
         menuMusic.volume = 0.05;
       });
-      menuMusic.play();
-      menuMusic.volume = 0.05;
+      const menuMusic = document.getElementById("menuMusic");
+      const startSound = document.getElementById("startSound");
+
       let cursorVisible = false;
       let cursorTimeout;
       function showCursor() {

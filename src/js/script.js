@@ -172,6 +172,7 @@ const closeButton = document.querySelectorAll(".close-window");
 
 messageButtons.forEach((button) => {
   button.message.addEventListener("click", () => {
+    window.href = document.referrer;
     infoVisible = true;
     windowSound.play();
     windowSound.volume = 0.3;

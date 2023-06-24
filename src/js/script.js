@@ -72,12 +72,12 @@ const alertSound = document.getElementById("alertSound");
 const boingSound = document.getElementById("boingSound");
 // const controlsOption = document.querySelector(".close-button");
 // controlsOption.textContent = "o p t i o n s";
-function restartAudio() {
-  setTimeout(() => {
-    ufoSound.currentTime = 0; // Reset the current playback time to the beginning
-  }, (ufoSound.duration - 0.9) * 1000); // Restart 0.5 seconds before the end
-}
-ufoSound.addEventListener("ended", restartAudio);
+// function restartAudio() {
+//   setTimeout(() => {
+//     ufoSound.currentTime = 0; // Reset the current playback time to the beginning
+//   }, (ufoSound.duration - 0.9) * 1000); // Restart 0.5 seconds before the end
+// }
+// ufoSound.addEventListener("ended", restartAudio);
 
 // menuMusic.play();
 // menuMusic.volume = 0.05;
@@ -651,8 +651,8 @@ function galaxyThreejs() {
   window.addEventListener("keydown", function (event) {
     if (event.code === "KeyW") {
       ufoSound.play();
-      ufoSound.volume = 0.08;
-      if (ufoSound.volume < 0.5) ufoSound.volume += 0.03;
+      ufoSound.volume = 1;
+      if (ufoSound.volume < 1) ufoSound.volume += 0.03;
       moveForward = true; // Move forward when 'Z' key is pressed ('W' for qwerty board)
       moveBackward = false;
     } else if (event.code === "KeyS") {
@@ -749,7 +749,7 @@ function galaxyThreejs() {
     if (event.code === "KeyW") {
       ufoSound.pause();
       ufoSoundSlow.play();
-      ufoSoundSlow.volume = 0.05;
+      ufoSoundSlow.volume = 0.01;
       resetRotation();
       moveForward = false; // Stop moving forward when 'Z' (azerty) key is released
     } else if (event.code === "KeyS") {

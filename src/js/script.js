@@ -172,7 +172,6 @@ const closeButton = document.querySelectorAll(".close-window");
 
 messageButtons.forEach((button) => {
   button.message.addEventListener("click", () => {
-    window.href = document.referrer;
     infoVisible = true;
     windowSound.play();
     windowSound.volume = 0.3;
@@ -650,7 +649,6 @@ function galaxyThreejs() {
   }
   window.addEventListener("keydown", function (event) {
     if (event.code === "KeyW") {
-      window.href = document.referrer;
       ufoSound.play();
       ufoSound.volume = 0.08;
       if (ufoSound.volume < 0.5) ufoSound.volume += 0.03;
@@ -1623,11 +1621,10 @@ function galaxyThreejs() {
       })
         .then((response) => response.json())
         .then((scoreData) => {
-          // find the highest score in the array of scores
-          const highestScore = scoreData.reduce(
-            (max, score) => Math.max(max, score.score),
-            0
-          );
+          // filter scores for map1 and find the highest score
+          const highestScore = scoreData
+            .filter((score) => score.map === "map1")
+            .reduce((max, score) => Math.max(max, score.score), 0);
           console.log(highestScore);
           if (highestScore >= planet3Button.scoreNeededPreviously) {
             planet3Button.minimum_score = true;

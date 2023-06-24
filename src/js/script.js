@@ -749,7 +749,7 @@ function galaxyThreejs() {
     if (event.code === "KeyW") {
       ufoSound.pause();
       ufoSoundSlow.play();
-      ufoSoundSlow.volume = 0.01;
+      ufoSoundSlow.volume = 0.02;
       resetRotation();
       moveForward = false; // Stop moving forward when 'Z' (azerty) key is released
     } else if (event.code === "KeyS") {
@@ -1705,7 +1705,7 @@ function galaxyThreejs() {
 
   // GUI OPTIONS
   const gui = new dat.GUI();
-  gui.close();
+  /* gui.close(); */
   /* const guiContainer = document.createElement("div");
   guiContainer.classList.add("gui-container");
   document.body.appendChild(guiContainer);

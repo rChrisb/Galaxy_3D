@@ -55,8 +55,13 @@
       src="./background-music/epic-dramatic-action-trailer-99525.mp3"
       loop
     ></audio>
+    <audio
+      id="startSound"
+      src="./background-music/fantasy_ui_button_6-102219.mp3"
+    ></audio>
     <script>
       const menuMusic = document.getElementById("menuMusic");
+      const startSound = document.getElementById("startSound");
       menuMusic.play();
       menuMusic.volume = 0.05;
       let cursorVisible = false;
@@ -77,10 +82,18 @@
           cursorVisible = false;
         }
       }
+      const startButton = document.getElementById("start-button");
+      console.log(startButton);
+      startButton.addEventListener("mouseover", function () {
+        startSound.play();
+        startSound.volume = 0.2;
+      });
 
       // EVENT LISTENERS TO DETECT MOUSE MOVEMENT
       document.addEventListener("keydown", function (event) {
         if (event.code === "Enter") {
+          startSound.play();
+          startSound.volume = 0.2;
           window.location.href = "3D_scene.html";
           console.log(456);
         }

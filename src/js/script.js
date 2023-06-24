@@ -123,6 +123,7 @@ const planet1Button = {
   all_items: false,
   color: "green",
   stringColor: "green",
+  for2D: true,
   script: new URL("/game-2d", window.location.href).href,
 };
 const planet3Button = {
@@ -136,6 +137,7 @@ const planet3Button = {
   scoreNeededPreviously: 2000,
   color: "#a1802c",
   stringColor: "yellow",
+  for2D: true,
   script: new URL("/game-2d?level=2", window.location.href).href,
 };
 const planet4Button = {
@@ -149,6 +151,7 @@ const planet4Button = {
   scoreNeededPreviously: 3000,
   color: "#0529c9",
   stringColor: "blue",
+  for2D: true,
 };
 const planet5Button = {
   message: document.querySelector(".planet5"),
@@ -211,7 +214,8 @@ messageButtons.forEach((button) =>
       accessElement.textContent = `Score ${button.scoreNeededPreviously} points in ${button.previous} to unlock access`;
     } else if (
       button.minimum_score &&
-      (!button.all_items || !button.succeededRace)
+      (!button.all_items || !button.succeededRace) &&
+      button.for2D
     ) {
       alertSound.play();
       alertSound.volume = 0.3;

@@ -110,6 +110,7 @@ const planet2Button = {
   all_items: true,
   minimum_score: true,
   color: "pink",
+  stringColor: "pink",
   script: "https://www.immersiveworlds.com/",
 };
 const planet1Button = {
@@ -121,6 +122,7 @@ const planet1Button = {
   minimum_score: true,
   all_items: false,
   color: "green",
+  stringColor: "green",
   script: new URL("/game-2d", window.location.href).href,
 };
 const planet3Button = {

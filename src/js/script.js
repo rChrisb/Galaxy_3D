@@ -1723,10 +1723,7 @@ function galaxyThreejs() {
   //"Go Back to Menu" button
   const goBackToTheMenu = {
     "Home Page": function () {
-      window.location.href = new URL(
-        "/#menu-container",
-        window.location.href
-      ).href; // Refresh the page
+      window.location.href = new URL("/", window.location.href).href; // Refresh the page
     },
   };
   /* gui.add(goBackToTheMenu, "Home Page"); */

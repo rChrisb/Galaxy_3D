@@ -132,6 +132,7 @@ const planet3Button = {
   minimum_score: false,
   scoreNeededPreviously: 2000,
   color: "#a1802c",
+  stringColor: "yellow",
   script: new URL("/game-2d?level=2", window.location.href).href,
 };
 const planet4Button = {
@@ -139,11 +140,12 @@ const planet4Button = {
   window: window4,
   action: action4,
   previous: "planet 3",
-  time: 60,
+  time: 50,
   succeededRace: false,
   minimum_score: false,
-  scoreNeededPreviously: 100,
-  color: "blue",
+  scoreNeededPreviously: 3000,
+  color: "#0529c9",
+  stringColor: "blue",
 };
 const planet5Button = {
   message: document.querySelector(".planet5"),
@@ -153,6 +155,7 @@ const planet5Button = {
   all_items: true,
   minimum_score: true,
   color: "#4f1a0d",
+  stringColor: "red",
   script:
     "https://www.youtube.com/watch?v=36s9uEaVpr4&pp=ygULc3VpY2lkZWJveXM%3D",
 };
@@ -209,11 +212,11 @@ messageButtons.forEach((button) =>
     ) {
       alertSound.play();
       alertSound.volume = 0.3;
-      accessElement.textContent = `Collect all ${button.color} items in less than ${button.time} seconds to unlock access`;
+      accessElement.textContent = `Collect all ${button.stringColor} items in less than ${button.time} seconds to unlock access`;
     } else if (!button.succeededRace) {
       alertSound.play();
       alertSound.volume = 0.3;
-      accessElement.textContent = `Go through all ${button.color} vortexes in less than ${button.maximumTime} seconds to unlock access`;
+      accessElement.textContent = `Go through all ${button.stringColor} vortexes in less than ${button.maximumTime} seconds to unlock access`;
     } else if (
       button.minimum_score &&
       button.all_items &&

@@ -69,6 +69,7 @@ const windowSound = document.getElementById("windowSound");
 const correctSound = document.getElementById("correctSound");
 const failedSound = document.getElementById("failedSound");
 const alertSound = document.getElementById("alertSound");
+const boingSound = document.getElementById("boingSound");
 // const controlsOption = document.querySelector(".close-button");
 // controlsOption.textContent = "o p t i o n s";
 function restartAudio() {
@@ -1537,7 +1538,7 @@ function galaxyThreejs() {
     //   }
     // );
 
-    if (distance <= 152) {
+    if (distance <= 151) {
       moveBackward = true;
       moveForward = false;
       setTimeout(() => {
@@ -1545,13 +1546,15 @@ function galaxyThreejs() {
       }, 1000);
     }
     if (distance <= 150) {
+      boingSound.play();
+      boingSound.volume = 0.2;
       gsap.to(spaceshipPosition, {
         duration: 2,
         z: 1400,
         /* ease: "power3.inOut", */
       });
     }
-    if (distance2 <= 152) {
+    if (distance2 <= 151) {
       moveBackward = true;
       moveForward = false;
       setTimeout(() => {
@@ -1559,13 +1562,15 @@ function galaxyThreejs() {
       }, 1000);
     }
     if (distance2 <= 150) {
+      boingSound.play();
+      boingSound.volume = 0.2;
       gsap.to(spaceshipPosition, {
         duration: 2,
         z: 3500,
         /* ease: "power3.inOut", */
       });
     }
-    if (distance3 <= 142) {
+    if (distance3 <= 141) {
       moveBackward = true;
       moveForward = false;
       setTimeout(() => {
@@ -1573,6 +1578,8 @@ function galaxyThreejs() {
       }, 1000);
     }
     if (distance3 <= 140) {
+      boingSound.play();
+      boingSound.volume = 0.2;
       gsap.to(spaceshipPosition, {
         duration: 2,
         z: 2500,
@@ -1582,7 +1589,7 @@ function galaxyThreejs() {
     // if (distance3 <= 2800) planet3MeteoritesMovement(2);
     // else
     // planet3MeteoritesMovement(0.3);
-    if (distance4 <= 152) {
+    if (distance4 <= 151) {
       moveBackward = true;
       moveForward = false;
       setTimeout(() => {
@@ -1590,13 +1597,15 @@ function galaxyThreejs() {
       }, 1000);
     }
     if (distance4 <= 150) {
+      boingSound.play();
+      boingSound.volume = 0.2;
       gsap.to(spaceshipPosition, {
         duration: 2,
         z: 2800,
         /* ease: "power3.inOut", */
       });
     }
-    if (distance5 <= 152) {
+    if (distance5 <= 151) {
       moveBackward = true;
       moveForward = false;
       setTimeout(() => {
@@ -1604,6 +1613,8 @@ function galaxyThreejs() {
       }, 1000);
     }
     if (distance5 <= 150) {
+      boingSound.play();
+      boingSound.volume = 0.2;
       gsap.to(spaceshipPosition, {
         duration: 2,
         z: 3700,

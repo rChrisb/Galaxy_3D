@@ -230,6 +230,9 @@ messageButtons.forEach((button) =>
       messageElement.style.display = "none";
       fadeOut();
       setTimeout(() => {
+        renderer.domElement.style.opacity = 1;
+      }, 5000);
+      setTimeout(() => {
         window.location.href = button.script;
       }, 4000);
       console.log("The user wants to enter the planet!");
@@ -1876,4 +1879,20 @@ function fadeOut() {
   };
 
   fadeOutLoop();
+}
+
+function fadeIn() {
+  let opacity = 0;
+
+  const fadeInLoop = () => {
+    opacity += 0.003;
+
+    renderer.domElement.style.opacity = opacity;
+
+    if (opacity < 1) {
+      requestAnimationFrame(fadeInLoop);
+    }
+  };
+
+  fadeInLoop();
 }

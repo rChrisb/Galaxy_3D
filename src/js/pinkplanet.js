@@ -13,19 +13,18 @@ const pinkColor = 0xff65ed;
 const windSound = document.getElementById("windSound");
 windSound.play();
 console.log(windSound.volume);
+const camera = new THREE.PerspectiveCamera(
+  55,
+  window.innerWidth / window.innerHeight,
+  0.1,
+  30000
+);
+const renderer = new THREE.WebGLRenderer({ antialias: true });
 function pinkPlanet() {
   const scene = new THREE.Scene();
-
-  const camera = new THREE.PerspectiveCamera(
-    55,
-    window.innerWidth / window.innerHeight,
-    0.1,
-    30000
-  );
   /* camera.position.set(-900, -200, -900); */
   camera.position.z = -300;
 
-  const renderer = new THREE.WebGLRenderer({ antialias: true });
   renderer.setSize(window.innerWidth, window.innerHeight);
   document.body.appendChild(renderer.domElement);
 

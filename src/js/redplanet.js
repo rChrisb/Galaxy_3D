@@ -14,19 +14,19 @@ const environmentSound = document.getElementById("environmentSound");
 environmentSound.play();
 environmentSound.volume = 0.2;
 console.log(environmentSound.volume);
+const camera = new THREE.PerspectiveCamera(
+  55,
+  window.innerWidth / window.innerHeight,
+  0.1,
+  30000
+);
+const renderer = new THREE.WebGLRenderer({ antialias: true });
 function redPlanet() {
   const scene = new THREE.Scene();
 
-  const camera = new THREE.PerspectiveCamera(
-    55,
-    window.innerWidth / window.innerHeight,
-    0.1,
-    30000
-  );
   /* camera.position.set(-900, -200, -900); */
   camera.position.z = -300;
 
-  const renderer = new THREE.WebGLRenderer({ antialias: true });
   renderer.setSize(window.innerWidth, window.innerHeight);
   document.body.appendChild(renderer.domElement);
 

@@ -20,8 +20,8 @@ const camera = new THREE.PerspectiveCamera(
   30000
 );
 const renderer = new THREE.WebGLRenderer({ antialias: true });
+const scene = new THREE.Scene();
 function pinkPlanet() {
-  const scene = new THREE.Scene();
   /* camera.position.set(-900, -200, -900); */
   camera.position.z = -300;
 

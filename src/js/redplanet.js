@@ -20,10 +20,9 @@ const camera = new THREE.PerspectiveCamera(
   0.1,
   30000
 );
+const scene = new THREE.Scene();
 const renderer = new THREE.WebGLRenderer({ antialias: true });
 function redPlanet() {
-  const scene = new THREE.Scene();
-
   /* camera.position.set(-900, -200, -900); */
   camera.position.z = -300;
 

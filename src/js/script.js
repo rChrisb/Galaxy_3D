@@ -117,7 +117,7 @@ const planet2Button = {
   minimum_score: true,
   color: "pink",
   stringColor: "pink",
-  script: "pinkplanet.html",
+  script: new URL("/pinkplanet.html", window.location.href).href,
 };
 const planet1Button = {
   message: document.querySelector(".planet1"),
@@ -168,7 +168,7 @@ const planet5Button = {
   minimum_score: true,
   color: "#4f1a0d",
   stringColor: "red",
-  script: "redplanet.html",
+  script: new URL("/redplanet.html", window.location.href).href,
 };
 const messageButtons = [
   planet1Button,

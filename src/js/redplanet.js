@@ -15,7 +15,7 @@ environmentSound.play();
 environmentSound.volume = 0.2;
 console.log(environmentSound.volume);
 function redPlanet() {
-  scene = new THREE.Scene();
+  const scene = new THREE.Scene();
 
   camera = new THREE.PerspectiveCamera(
     55,

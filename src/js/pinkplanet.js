@@ -14,7 +14,7 @@ const windSound = document.getElementById("windSound");
 windSound.play();
 console.log(windSound.volume);
 function pinkPlanet() {
-  scene = new THREE.Scene();
+  const scene = new THREE.Scene();
 
   camera = new THREE.PerspectiveCamera(
     55,

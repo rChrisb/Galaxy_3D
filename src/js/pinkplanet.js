@@ -16,7 +16,7 @@ console.log(windSound.volume);
 function pinkPlanet() {
   const scene = new THREE.Scene();
 
-  camera = new THREE.PerspectiveCamera(
+  const camera = new THREE.PerspectiveCamera(
     55,
     window.innerWidth / window.innerHeight,
     0.1,
@@ -25,7 +25,7 @@ function pinkPlanet() {
   /* camera.position.set(-900, -200, -900); */
   camera.position.z = -300;
 
-  renderer = new THREE.WebGLRenderer({ antialias: true });
+  const renderer = new THREE.WebGLRenderer({ antialias: true });
   renderer.setSize(window.innerWidth, window.innerHeight);
   document.body.appendChild(renderer.domElement);
 

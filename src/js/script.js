@@ -4,12 +4,15 @@ import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import { GPUComputationRenderer } from "three/examples/jsm/misc/GPUComputationRenderer";
 import * as dat from "dat.gui";
 import moon from "../images/moon-inspired-textures (1).jpg";
-import earth from "../images/green-vintage-folder-paper.jpg";
+import texture4 from "../images/painted-surface-with-holes.jpg";
+import earth from "../images/mud-water-surface.jpg";
 import rocks from "../images/rocks-stones-with-rough-surface.jpg";
 import rocks2 from "../images/rocks2.jpg";
+import rocks3 from "../images/cracked-dry-brown-soil-surface-photography.jpg";
 import galaxy from "../images/panoramic-view-sunset-night.jpg";
 import spaceshipmap from "../images/spaceship_texture.jpg";
 import pink from "../images/pink-red-mix-paints-paper.jpg";
+import pink2 from "../images/soft-concrete-texture.jpg";
 import greenTexture from "../images/grass_planet.jpg";
 import disc from "../images/disc.png";
 import motor from "../images/motor.png";
@@ -86,6 +89,9 @@ let canClose = true;
 let infoVisible = true;
 let canOpenGUI = true;
 let canCloseGUI = false;
+let spaceshipSpeed;
+let spaceshipAcceleration = 0.005;
+let spaceshipInertia = 0.998;
 
 const infoWindow = document.querySelectorAll("info-window");
 const window1 = document.querySelector(".window1");
@@ -111,7 +117,7 @@ const planet2Button = {
   minimum_score: true,
   color: "pink",
   stringColor: "pink",
-  script: "https://www.immersiveworlds.com/",
+  script: "pinkplanet.html",
 };
 const planet1Button = {
   message: document.querySelector(".planet1"),
@@ -162,8 +168,7 @@ const planet5Button = {
   minimum_score: true,
   color: "#4f1a0d",
   stringColor: "red",
-  script:
-    "https://www.youtube.com/watch?v=36s9uEaVpr4&pp=ygULc3VpY2lkZWJveXM%3D",
+  script: "redplanet.html",
 };
 const messageButtons = [
   planet1Button,
@@ -236,6 +241,7 @@ messageButtons.forEach((button) =>
       button.window.style.display = "none";
       messageElement.style.display = "none";
       fadeOut();
+      spaceshipInertia = 0.98;
       setTimeout(() => {
         window.location.href = button.script;
       }, 4000);
@@ -433,11 +439,12 @@ function galaxyThreejs() {
   const sphereGeometry1 = new THREE.SphereGeometry(100, 50, 50);
   const sphereMaterial1 = new THREE.MeshPhysicalMaterial({
     map: textureLoader.load(earth),
-    color: 0x4b4e49,
+    color: 0x4d6839,
   });
   const sphereGeometry2 = new THREE.SphereGeometry(100, 50, 50);
   const sphereMaterial2 = new THREE.MeshPhysicalMaterial({
-    map: textureLoader2.load(pink),
+    map: textureLoader2.load(pink2),
+    color: 0xef96e5,
     /* color: 0x4b4e49, */
   });
   const sphereGeometry3 = new THREE.SphereGeometry(100, 50, 50);
@@ -447,12 +454,12 @@ function galaxyThreejs() {
   });
   const sphereGeometry4 = new THREE.SphereGeometry(100, 50, 50);
   const sphereMaterial4 = new THREE.MeshPhysicalMaterial({
-    map: textureLoader.load(moon),
+    map: textureLoader.load(texture4),
     color: 0x201a70,
   });
   const sphereGeometry5 = new THREE.SphereGeometry(100, 50, 50);
   const sphereMaterial5 = new THREE.MeshPhysicalMaterial({
-    map: textureLoader.load(rocks2),
+    map: textureLoader.load(rocks3),
     color: 0x4f1a0d,
   });
   const firstPlanet = new THREE.Mesh(sphereGeometry1, sphereMaterial1);
@@ -564,8 +571,6 @@ function galaxyThreejs() {
 
   spaceshipContainer.add(fireSprite1);
   spaceshipContainer.add(fireSprite2);
-
-  let spaceshipSpeed;
 
   let moveForward = false;
   let moveBackward = false;
@@ -781,8 +786,7 @@ function galaxyThreejs() {
 
   let spaceshipDirection;
   let spaceshipVelocity = new THREE.Vector3();
-  let spaceshipAcceleration = 0.005;
-  let spaceshipInertia = 0.998;
+
   const bounceAmplitude = 0.0077;
   const bounceFrequency = 0.006;
   let initialOpacity = 0;
@@ -1729,7 +1733,7 @@ function galaxyThreejs() {
   //"Go Back to Menu" button
   const goBackToTheMenu = {
     "Home Page": function () {
-      window.location.href = new URL("/", window.location.href).href; // Refresh the page
+      window.location.href = new URL("/", window.location.href).href;
     },
   };
   /* gui.add(goBackToTheMenu, "Home Page"); */

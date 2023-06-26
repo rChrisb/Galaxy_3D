@@ -3,6 +3,12 @@
   padding: 0;
   box-sizing: border-box;
 }
+h3 {
+  font-size: 16px;
+}
+li {
+  margin-bottom: 5px;
+}
 .close-window {
   position: absolute;
   top: -11px;
@@ -479,8 +485,4 @@ label {
   color: rgb(12, 114, 145);
   font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
   font-weight: bold;
-}
-
-.window6.info {
-  font-size: 14px;
 }

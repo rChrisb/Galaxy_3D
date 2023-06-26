@@ -2,12 +2,12 @@ import * as THREE from "three";
 import * as dat from "dat.gui";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import { FBXLoader } from "three/examples/jsm/loaders/FBXLoader.js";
-import face1 from "../images/exosystem_ft.jpg";
+import face1 from "../images/exosystem_ft.png";
 import face2 from "../images/exosystem_bk.jpg";
 import face3 from "../images/exosystem_up.jpg";
 import face4 from "../images/exosystem_dn.jpg";
 import face5 from "../images/exosystem_rt.jpg";
-import face6 from "../images/exosystem_lf.jpg";
+import face6 from "../images/exosystem_lf.png";
 
 const pinkColor = 0xff65ed;
 const windSound = document.getElementById("windSound");

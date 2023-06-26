@@ -99,6 +99,7 @@ const window2 = document.querySelector(".window2");
 const window3 = document.querySelector(".window3");
 const window4 = document.querySelector(".window4");
 const window5 = document.querySelector(".window5");
+const window6 = document.querySelector(".window6");
 const actionButtons = document.querySelectorAll(".action-button");
 const action1 = document.querySelector(".first");
 const action2 = document.querySelector(".second");
@@ -107,6 +108,10 @@ const action4 = document.querySelector(".fourth");
 const action5 = document.querySelector(".fifth");
 const accessElement = document.getElementById("access");
 
+const planetScore = {
+  message: document.querySelector(".planet6"),
+  window: window6,
+};
 const planet2Button = {
   message: document.querySelector(".planet2"),
   window: window2,
@@ -177,6 +182,7 @@ const messageButtons = [
   planet3Button,
   planet4Button,
   planet5Button,
+  planetScore,
 ];
 console.log(messageButtons);
 
@@ -187,9 +193,10 @@ messageButtons.forEach((button) => {
     infoVisible = true;
     windowSound.play();
     windowSound.volume = 0.3;
-    button.action.style.display = "block";
+    if (button.action) button.action.style.display = "block";
     if (button.message.style.display === "block" && infoVisible) {
       button.window.style.display = "block";
+      console.log("WTF");
     } else {
       button.window.style.display = "none";
     }
@@ -210,57 +217,58 @@ closeButton.forEach((button) =>
 );
 
 // 2D TRANSITION
-messageButtons.forEach((button) =>
-  button.action.addEventListener("click", () => {
-    const accessElement = document.getElementById("access");
+messageButtons.forEach((button) => {
+  if (button.action)
+    button.action.addEventListener("click", () => {
+      const accessElement = document.getElementById("access");
 
-    if (!button.minimum_score) {
-      alertSound.play();
-      alertSound.volume = 0.3;
-      accessElement.textContent = `Score ${button.scoreNeededPreviously} points in ${button.previous} to unlock access`;
-    } else if (
-      button.minimum_score &&
-      (!button.all_items || !button.succeededRace) &&
-      button.for2D
-    ) {
-      alertSound.play();
-      alertSound.volume = 0.3;
-      accessElement.textContent = `Collect all ${button.stringColor} items in less than ${button.time} seconds to unlock access`;
-    } else if (!button.succeededRace) {
-      alertSound.play();
-      alertSound.volume = 0.3;
-      accessElement.textContent = `Go through all ${button.stringColor} vortexes in less than ${button.maximumTime} seconds to unlock access`;
-    } else if (
-      button.minimum_score &&
-      button.all_items &&
-      button.succeededRace &&
-      button.script
-    ) {
-      TransitionSound.play();
-      TransitionSound.volume = 0.3;
+      if (!button.minimum_score) {
+        alertSound.play();
+        alertSound.volume = 0.3;
+        accessElement.textContent = `Score ${button.scoreNeededPreviously} points in ${button.previous} to unlock access`;
+      } else if (
+        button.minimum_score &&
+        (!button.all_items || !button.succeededRace) &&
+        button.for2D
+      ) {
+        alertSound.play();
+        alertSound.volume = 0.3;
+        accessElement.textContent = `Collect all ${button.stringColor} items in less than ${button.time} seconds to unlock access`;
+      } else if (!button.succeededRace) {
+        alertSound.play();
+        alertSound.volume = 0.3;
+        accessElement.textContent = `Go through all ${button.stringColor} vortexes in less than ${button.maximumTime} seconds to unlock access`;
+      } else if (
+        button.minimum_score &&
+        button.all_items &&
+        button.succeededRace &&
+        button.script
+      ) {
+        TransitionSound.play();
+        TransitionSound.volume = 0.3;
 
-      button.window.style.display = "none";
-      messageElement.style.display = "none";
-      fadeOut();
-      spaceshipInertia = 0.98;
+        button.window.style.display = "none";
+        messageElement.style.display = "none";
+        fadeOut();
+        spaceshipInertia = 0.98;
+        setTimeout(() => {
+          window.location.href = button.script;
+        }, 4000);
+        console.log("The user wants to enter the planet!");
+        return; // Exit the function early after redirecting to the planet script
+      }
+
+      // Display the access element
+      accessElement.style.opacity = 1;
+      accessElement.style.display = "block";
+      accessElement.style.color = button.color;
+
+      // Hide the access element after 3 seconds
       setTimeout(() => {
-        window.location.href = button.script;
-      }, 4000);
-      console.log("The user wants to enter the planet!");
-      return; // Exit the function early after redirecting to the planet script
-    }
-
-    // Display the access element
-    accessElement.style.opacity = 1;
-    accessElement.style.display = "block";
-    accessElement.style.color = button.color;
-
-    // Hide the access element after 3 seconds
-    setTimeout(() => {
-      accessElement.style.opacity = 0;
-    }, 3000);
-  })
-);
+        accessElement.style.opacity = 0;
+      }, 3000);
+    });
+});
 
 ///
 ///
@@ -463,11 +471,17 @@ function galaxyThreejs() {
     map: textureLoader.load(rocks3),
     color: 0x4f1a0d,
   });
+  const sphereGeometry6 = new THREE.SphereGeometry(100, 50, 50);
+  const sphereMaterial6 = new THREE.MeshPhysicalMaterial({
+    map: textureLoader.load(moon),
+  });
+
   const firstPlanet = new THREE.Mesh(sphereGeometry1, sphereMaterial1);
   const secondPlanet = new THREE.Mesh(sphereGeometry2, sphereMaterial2);
   const thirdPlanet = new THREE.Mesh(sphereGeometry3, sphereMaterial3);
   const fourthPlanet = new THREE.Mesh(sphereGeometry4, sphereMaterial4);
   const fifthPlanet = new THREE.Mesh(sphereGeometry5, sphereMaterial5);
+  const sixthPlanet = new THREE.Mesh(sphereGeometry6, sphereMaterial6);
 
   const all_planets = [
     firstPlanet,
@@ -475,6 +489,7 @@ function galaxyThreejs() {
     thirdPlanet,
     fourthPlanet,
     fifthPlanet,
+    sixthPlanet,
   ];
   all_planets.forEach((planet) => {
     scene.add(planet);
@@ -485,6 +500,7 @@ function galaxyThreejs() {
   thirdPlanet.position.set(2000, -200, 2800);
   fourthPlanet.position.set(60, -800, 3100);
   fifthPlanet.position.set(-2000, -260, 4000);
+  sixthPlanet.position.set(900, -300, 1300);
 
   // define the array of spaceship model urls and their corresponding scale values
   const spaceshipModels = [
@@ -1508,7 +1524,7 @@ function galaxyThreejs() {
     } else spaceshipSpeed = speed / 5;
 
     // distance between the camera and the planets
-    let distance, distance2, distance3, distance4, distance5;
+    let distance, distance2, distance3, distance4, distance5, distance6;
     if (firstPlanet) {
       distance = spaceshipPosition.distanceTo(firstPlanet.position);
     }
@@ -1523,6 +1539,9 @@ function galaxyThreejs() {
     }
     if (fifthPlanet) {
       distance5 = spaceshipPosition.distanceTo(fifthPlanet.position);
+    }
+    if (sixthPlanet) {
+      distance6 = spaceshipPosition.distanceTo(sixthPlanet.position);
     }
 
     // if (spaceshipSpeed >= 1.5 && distance < 60 && (moveBackward || moveForward))
@@ -1632,6 +1651,22 @@ function galaxyThreejs() {
         /* ease: "power3.inOut", */
       });
     }
+    if (distance6 <= 151) {
+      moveBackward = true;
+      moveForward = false;
+      setTimeout(() => {
+        moveBackward = false;
+      }, 1000);
+    }
+    if (distance6 <= 150) {
+      boingSound.play();
+      boingSound.volume = 0.2;
+      gsap.to(spaceshipPosition, {
+        duration: 2,
+        z: 1100,
+        /* ease: "power3.inOut", */
+      });
+    }
 
     if (distance <= 400 && canClose) showMessageButton(planet1Button.message);
     else if (distance2 <= 400 && canClose) {
@@ -1676,6 +1711,8 @@ function galaxyThreejs() {
       showMessageButton(planet4Button.message);
     } else if (distance5 <= 400 && canClose)
       showMessageButton(planet5Button.message);
+    else if (distance6 <= 400 && canClose)
+      showMessageButton(planetScore.message);
     else hideMessageButton();
 
     /* camera.lookAt(0, 0, 0); */
@@ -1796,7 +1833,7 @@ function galaxyThreejs() {
         allClosed += 1;
       } else allClosed = 0;
     });
-    if (allClosed === 5) {
+    if (allClosed === 6) {
       canOpenGUI = true;
       canCloseGUI = true;
     } else {
@@ -1931,4 +1968,46 @@ function fadeIn() {
   };
 
   fadeInLoop();
+}
+
+fetch("/game-2d/score/" + localStorage.getItem("sessionId"), {
+  method: "GET",
+})
+  .then((response) => response.json())
+  .then((scoreData) => {
+    const map1Button = document.getElementById("map1-button");
+    const map2Button = document.getElementById("map2-button");
+    const map3Button = document.getElementById("map3-button");
+
+    map1Button.addEventListener("click", () => {
+      displayTopScores("map1", scoreData);
+    });
+
+    map2Button.addEventListener("click", () => {
+      displayTopScores("map2", scoreData);
+    });
+
+    map3Button.addEventListener("click", () => {
+      displayTopScores("map3", scoreData);
+    });
+  });
+
+function displayTopScores(map, scoreData) {
+  const mapScores = scoreData
+    .filter((score) => score.map === map)
+    .sort((a, b) => b.score - a.score)
+    .slice(0, 3);
+
+  const infoDiv = document.querySelector(".info");
+  infoDiv.innerHTML = ""; // Clear the previous scores
+
+  const scoresList = document.createElement("ul");
+
+  mapScores.forEach((score) => {
+    const scoreItem = document.createElement("li");
+    scoreItem.textContent = score.score;
+    scoresList.appendChild(scoreItem);
+  });
+
+  infoDiv.appendChild(scoresList);
 }

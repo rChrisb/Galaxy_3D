@@ -158,6 +158,7 @@ const planet4Button = {
   color: "#0529c9",
   stringColor: "blue",
   for2D: true,
+  script: new URL("/game-2d?level=3", window.location.href).href,
 };
 const planet5Button = {
   message: document.querySelector(".planet5"),
@@ -1655,9 +1656,25 @@ function galaxyThreejs() {
       console.log("Loading level 2");
 
       showMessageButton(planet3Button.message);
-    } else if (distance4 <= 400 && canClose)
+    } else if (distance4 <= 400 && canClose) {
+      fetch("/game-2d/score/" + localStorage.getItem("sessionId"), {
+        method: "GET",
+      })
+        .then((response) => response.json())
+        .then((scoreData) => {
+          // filter scores for map1 and find the highest score
+          const highestScore = scoreData
+            .filter((score) => score.map === "map2")
+            .reduce((max, score) => Math.max(max, score.score), 0);
+          console.log(highestScore);
+          if (highestScore >= planet3Button.scoreNeededPreviously) {
+            planet3Button.minimum_score = true;
+          }
+        })
+        .catch((error) => console.error("Error:", error));
+      console.log("Loading level 3");
       showMessageButton(planet4Button.message);
-    else if (distance5 <= 400 && canClose)
+    } else if (distance5 <= 400 && canClose)
       showMessageButton(planet5Button.message);
     else hideMessageButton();
 

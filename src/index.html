@@ -11,7 +11,7 @@
     <div id="menu-container">
       <div id="scrolling-text">
         <div class="headings">
-          <h1>Galaxy Quest</h1>
+          <h1 style="color: #a91c19">Galaxy Quest</h1>
         </div>
         <p>
           In a distant future, humanity has explored and colonized numerous
@@ -59,8 +59,8 @@
     />
     <audio
       id="menuMusic"
-      src="./background-music/epic-dramatic-action-trailer-99525.mp3"
       loop
+      src="./background-music/epicaly-113907.mp3"
     ></audio>
     <audio
       id="startSound"
@@ -72,9 +72,11 @@
       console.log(introButton);
       window.addEventListener("DOMContentLoaded", function () {
         const hash = window.location.hash;
+        menuMusic.volume = 0.1;
 
         if (hash === "#MENU") {
           showContainer();
+          menuMusic.play();
         } else {
           hideContainer();
         }
@@ -88,6 +90,7 @@
           hideContainer();
         } else {
           showContainer();
+          menuMusic.play();
         }
       }
 
@@ -97,8 +100,7 @@
 
         introButton.style.display = "none";
         menuContainer.style.display = "block";
-        menuMusic.play();
-        menuMusic.volume = 0.05;
+
         history.pushState(null, "", "#MENU");
       }
 
@@ -112,6 +114,11 @@
       }
 
       const menuMusic = document.getElementById("menuMusic");
+      const audioSources = [
+        "./background-music/epicaly-113907.mp3",
+        "./background-music/epic-dramatic-action-trailer-99525.mp3",
+      ];
+      let currentSourceIndex = 0;
       const startSound = document.getElementById("startSound");
 
       let cursorVisible = false;
@@ -135,6 +142,10 @@
       const startButton = document.getElementById("start-button");
       console.log(startButton);
       startButton.addEventListener("mouseover", function () {
+        startSound.play();
+        startSound.volume = 0.2;
+      });
+      introButton.addEventListener("mouseover", function () {
         startSound.play();
         startSound.volume = 0.2;
       });

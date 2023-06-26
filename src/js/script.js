@@ -1879,6 +1879,7 @@ function galaxyThreejs() {
       messageButtons.forEach((button) => {
         if (
           button.window.style.display === "block" &&
+          button.action &&
           button.action !== "none"
         ) {
           button.action.click();

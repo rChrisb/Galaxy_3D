@@ -1971,7 +1971,7 @@ function fadeIn() {
   fadeInLoop();
 }
 
-fetch("/game-2d/score/" + localStorage.getItem("sessionId"), {
+fetch("/game-2d/score/", {
   method: "GET",
 })
   .then((response) => response.json())

@@ -123,7 +123,7 @@ const planet1Button = {
   message: document.querySelector(".planet1"),
   window: window1,
   action: action1,
-  time: 8,
+  time: 35,
   succeededRace: false,
   minimum_score: true,
   all_items: false,
@@ -137,7 +137,7 @@ const planet3Button = {
   window: window3,
   action: action3,
   previous: "planet 1",
-  time: 6,
+  time: 25,
   succeededRace: false,
   minimum_score: false,
   scoreNeededPreviously: 2000,
@@ -163,7 +163,7 @@ const planet5Button = {
   message: document.querySelector(".planet5"),
   window: window5,
   action: action5,
-  maximumTime: 10,
+  maximumTime: 60,
   all_items: true,
   minimum_score: true,
   color: "#4f1a0d",
@@ -979,46 +979,46 @@ function galaxyThreejs() {
         planet.position.y - 75,
         planet.position.z - 3000
       ),
-      // new THREE.Vector3(
-      //   planet.position.x + 100,
-      //   planet.position.y - 25,
-      //   planet.position.z - 2700
-      // ),
-      // new THREE.Vector3(
-      //   planet.position.x + 40,
-      //   planet.position.y - 25,
-      //   planet.position.z - 2400
-      // ),
-      // new THREE.Vector3(
-      //   planet.position.x,
-      //   planet.position.y - 15,
-      //   planet.position.z - 2100
-      // ),
-      // new THREE.Vector3(
-      //   planet.position.x - 150,
-      //   planet.position.y - 75,
-      //   planet.position.z - 1800
-      // ),
-      // new THREE.Vector3(
-      //   planet.position.x - 200,
-      //   planet.position.y - 135,
-      //   planet.position.z - 1500
-      // ),
-      // new THREE.Vector3(
-      //   planet.position.x - 350,
-      //   planet.position.y - 175,
-      //   planet.position.z - 1200
-      // ),
-      // new THREE.Vector3(
-      //   planet.position.x - 250,
-      //   planet.position.y - 125,
-      //   planet.position.z - 800
-      // ),
-      // new THREE.Vector3(
-      //   planet.position.x - 150,
-      //   planet.position.y - 155,
-      //   planet.position.z - 400
-      // ),
+      new THREE.Vector3(
+        planet.position.x + 100,
+        planet.position.y - 25,
+        planet.position.z - 2700
+      ),
+      new THREE.Vector3(
+        planet.position.x + 40,
+        planet.position.y - 25,
+        planet.position.z - 2400
+      ),
+      new THREE.Vector3(
+        planet.position.x,
+        planet.position.y - 15,
+        planet.position.z - 2100
+      ),
+      new THREE.Vector3(
+        planet.position.x - 150,
+        planet.position.y - 75,
+        planet.position.z - 1800
+      ),
+      new THREE.Vector3(
+        planet.position.x - 200,
+        planet.position.y - 135,
+        planet.position.z - 1500
+      ),
+      new THREE.Vector3(
+        planet.position.x - 350,
+        planet.position.y - 175,
+        planet.position.z - 1200
+      ),
+      new THREE.Vector3(
+        planet.position.x - 250,
+        planet.position.y - 125,
+        planet.position.z - 800
+      ),
+      new THREE.Vector3(
+        planet.position.x - 150,
+        planet.position.y - 155,
+        planet.position.z - 400
+      ),
     ];
 
     for (let i = 0; i < targetPositions.length; i++) {
@@ -1296,10 +1296,10 @@ function galaxyThreejs() {
   const planet1Items = [
     item1Planet1,
     item2Planet1,
-    // item3Planet1,
-    // item4Planet1,
-    // item5Planet1,
-    // item6Planet1,
+    item3Planet1,
+    item4Planet1,
+    item5Planet1,
+    item6Planet1,
   ];
   const planet4Items = [
     item1Planet4,
@@ -1312,10 +1312,10 @@ function galaxyThreejs() {
   const planet3Items = [
     item1Planet3,
     item2Planet3,
-    // item3Planet3,
-    // item4Planet3,
-    // item5Planet3,
-    // item6Planet3,
+    item3Planet3,
+    item4Planet3,
+    item5Planet3,
+    item6Planet3,
   ];
 
   planet1Items.forEach((item) => {

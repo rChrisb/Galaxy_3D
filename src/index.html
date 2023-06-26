@@ -50,9 +50,13 @@
         ></a>
       </div>
     </div>
-    <a class="intro" href="#" style="font-size: 7rem; text-align: center"
-      ><span>GALAXY QUEST</span><i></i
-    ></a>
+    <img
+      src="./images/logo-v2.png"
+      alt="GALAXY QUEST"
+      class="intro"
+      onclick="toggleContainerVisibility()"
+      style="cursor: pointer"
+    />
     <audio
       id="menuMusic"
       src="./background-music/epic-dramatic-action-trailer-99525.mp3"
@@ -66,12 +70,47 @@
       const menuContainer = document.getElementById("menu-container");
       const introButton = document.querySelector(".intro");
       console.log(introButton);
-      document.addEventListener("click", function (event) {
+      window.addEventListener("DOMContentLoaded", function () {
+        const hash = window.location.hash;
+
+        if (hash === "#MENU") {
+          showContainer();
+        } else {
+          hideContainer();
+        }
+      });
+
+      function toggleContainerVisibility() {
+        const menuContainer = document.getElementById("menu-container");
+        const hash = window.location.hash;
+
+        if (hash === "#MENU") {
+          hideContainer();
+        } else {
+          showContainer();
+        }
+      }
+
+      function showContainer() {
+        const introButton = document.querySelector(".intro");
+        const menuContainer = document.getElementById("menu-container");
+
         introButton.style.display = "none";
         menuContainer.style.display = "block";
         menuMusic.play();
         menuMusic.volume = 0.05;
-      });
+        history.pushState(null, "", "#MENU");
+      }
+
+      function hideContainer() {
+        const introButton = document.querySelector(".intro");
+        const menuContainer = document.getElementById("menu-container");
+
+        introButton.style.display = "block";
+        menuContainer.style.display = "none";
+        history.pushState(null, "", "#GALAXYQUEST");
+      }
+
       const menuMusic = document.getElementById("menuMusic");
       const startSound = document.getElementById("startSound");
 
@@ -102,12 +141,14 @@
 
       // EVENT LISTENERS TO DETECT MOUSE MOVEMENT
       document.addEventListener("keydown", function (event) {
-        if (event.code === "Enter") {
+        if (event.code === "Enter" && menuContainer.style.display === "block") {
           startSound.play();
           startSound.volume = 0.2;
           window.location.href = "3D_scene.html";
           console.log(456);
         }
+        if (event.code === "Enter" && menuContainer.style.display !== "block")
+          introButton.click();
       });
       document.addEventListener("mousemove", showCursor);
       document.addEventListener("mouseenter", showCursor);

@@ -176,22 +176,40 @@ h1 {
     opacity: 0;
   }
 }
+/* .intro { */
+/* position: fixed; */
+/* top: 50%; */
+/* left: 50%; */
+/* transform: translate(-50%, -50%); */
+/* background: rgba(105, 105, 105, 0); */
+/* color: #d8a80a; */
+/* text-transform: uppercase; */
+/* text-decoration: none; */
+/* font-size: 0.5em; */
+/* letter-spacing: 0.1em; */
+/* font-weight: 400; */
+/* padding: 10px 30px; */
+/* transition: 0.5s; */
+/* display: inline-block; */
+/* border: 3px solid rgba(75, 0, 130, 0.6); */
+/* } */
+
+img {
+  transform: scale(0.8);
+}
 .intro {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background: rgba(105, 105, 105, 0);
-  color: #d8a80a;
-  text-transform: uppercase;
-  text-decoration: none;
-  font-size: 0.5em;
-  letter-spacing: 0.1em;
-  font-weight: 400;
-  padding: 10px 30px;
-  transition: 0.5s;
-  display: inline-block;
-  border: 3px solid rgba(75, 0, 130, 0.6);
+  display: inline-block; /* Ensure the link takes the width of its content */
+  text-align: center; /* Center the content horizontally */
+}
+
+.intro span {
+  display: inline-block; /* Ensure the image takes the width of its content */
+}
+
+.intro img {
+  width: 100%; /* Adjust the width as needed */
+  height: auto; /* Maintain the aspect ratio */
+  cursor: pointer; /* Show a pointer cursor on hover */
 }
 a {
   position: fixed;

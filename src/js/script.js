@@ -1976,42 +1976,37 @@ fetch("/game-2d/score/" + localStorage.getItem("sessionId"), {
 })
   .then((response) => response.json())
   .then((scoreData) => {
-    const map1Button = document.getElementById("map1-button");
-    const map2Button = document.getElementById("map2-button");
-    const map3Button = document.getElementById("map3-button");
+    const map1ScoresDiv = document.getElementById("map1-scores");
+    const map2ScoresDiv = document.getElementById("map2-scores");
+    const map3ScoresDiv = document.getElementById("map3-scores");
 
-    map1Button.addEventListener("click", () => {
-      displayTopScores("map1", scoreData);
-      console.log("clicked on map 1 score");
-    });
+    const map1Scores = getTopScores("map1", scoreData);
+    const map2Scores = getTopScores("map2", scoreData);
+    const map3Scores = getTopScores("map3", scoreData);
 
-    map2Button.addEventListener("click", () => {
-      displayTopScores("map2", scoreData);
-      console.log("clicked on map 2 score");
-    });
-
-    map3Button.addEventListener("click", () => {
-      displayTopScores("map3", scoreData);
-      console.log("clicked on map 3 score");
-    });
+    displayScores(map1Scores, map1ScoresDiv);
+    displayScores(map2Scores, map2ScoresDiv);
+    displayScores(map3Scores, map3ScoresDiv);
   });
 
-function displayTopScores(map, scoreData) {
-  const mapScores = scoreData
+function getTopScores(map, scoreData) {
+  return scoreData
     .filter((score) => score.map === map)
     .sort((a, b) => b.score - a.score)
     .slice(0, 3);
+}
 
-  const infoDiv = document.querySelector(".score-info");
-  infoDiv.innerHTML = ""; // Clear the previous scores
+function displayScores(scores, scoresDiv) {
+  scoresDiv.style.display = "block";
+  scoresDiv.innerHTML = ""; // Clear the previous scores
 
   const scoresList = document.createElement("ul");
 
-  mapScores.forEach((score) => {
+  scores.forEach((score) => {
     const scoreItem = document.createElement("li");
     scoreItem.textContent = score.score;
     scoresList.appendChild(scoreItem);
   });
 
-  infoDiv.appendChild(scoresList);
+  scoresDiv.appendChild(scoresList);
 }

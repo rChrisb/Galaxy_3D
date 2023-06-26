@@ -4,10 +4,11 @@
   box-sizing: border-box;
 }
 h3 {
+  color: rgb(214, 146, 8);
   font-size: 16px;
 }
 ul {
-  margin-bottom: 5px;
+  font-size: 12px;
 }
 .close-window {
   position: absolute;

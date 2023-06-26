@@ -1115,7 +1115,7 @@ function galaxyThreejs() {
               planet2Button.succeededRace = true;
               correctSound.play();
               correctSound.volume = 0.3;
-              accessElement.textContent = "Unlocked access to Rosy Haven";
+              accessElement.textContent = "Unlocked access to Aetheria";
               color = "#d31bca";
             } else if (
               planet === secondPlanet &&
@@ -1131,7 +1131,7 @@ function galaxyThreejs() {
               planet5Button.succeededRace = true;
               correctSound.play();
               correctSound.volume = 0.3;
-              accessElement.textContent = "Unlocked access to Crimson Peril";
+              accessElement.textContent = "Unlocked access to Emberfell";
               color = "#a5040d";
             } else if (
               planet === fifthPlanet &&

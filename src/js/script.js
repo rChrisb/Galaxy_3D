@@ -51,7 +51,7 @@ renderer.shadowMap.enabled = true;
 // set the scene
 document.body.appendChild(renderer.domElement);
 const options = {
-  speed: 3,
+  speed: 5,
   color: "#093032", // cyan
   sound: "on",
 };
@@ -112,7 +112,7 @@ const planet2Button = {
   window: window2,
   action: action2,
   succeededRace: false,
-  maximumTime: 70,
+  maximumTime: 45,
   all_items: true,
   minimum_score: true,
   color: "pink",
@@ -163,7 +163,7 @@ const planet5Button = {
   message: document.querySelector(".planet5"),
   window: window5,
   action: action5,
-  maximumTime: 60,
+  maximumTime: 40,
   all_items: true,
   minimum_score: true,
   color: "#4f1a0d",
@@ -1721,7 +1721,7 @@ function galaxyThreejs() {
   document.body.appendChild(guiContainer);
   guiContainer.appendChild(gui.domElement); */
 
-  gui.add(options, "speed", 0.3, 7);
+  gui.add(options, "speed", 0.3, 10);
   gui.addColor(options, "color").onChange(function (e) {
     spaceshipModel.traverse(function (child) {
       if (child.isMesh) {

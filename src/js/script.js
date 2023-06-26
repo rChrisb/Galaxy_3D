@@ -1115,7 +1115,7 @@ function galaxyThreejs() {
               planet2Button.succeededRace = true;
               correctSound.play();
               correctSound.volume = 0.3;
-              accessElement.textContent = "Unlocked access to planet2";
+              accessElement.textContent = "Unlocked access to Rosy Haven";
               color = "#d31bca";
             } else if (
               planet === secondPlanet &&
@@ -1131,7 +1131,7 @@ function galaxyThreejs() {
               planet5Button.succeededRace = true;
               correctSound.play();
               correctSound.volume = 0.3;
-              accessElement.textContent = "Unlocked access to planet5";
+              accessElement.textContent = "Unlocked access to Crimson Peril";
               color = "#a5040d";
             } else if (
               planet === fifthPlanet &&
@@ -1333,8 +1333,8 @@ function galaxyThreejs() {
     scene.add(item);
   });
   let collectedItems = {
-    planet1: 0,
-    planet3: 0,
+    Elysir: 0,
+    Xerxes: 0,
     planet4: 0,
   };
   console.log(collectedItems["planet4"]);
@@ -1346,8 +1346,8 @@ function galaxyThreejs() {
   ];
 
   const raceStatus = {
-    planet1: { raceOn: true, opacity: 0 },
-    planet3: { raceOn: true, opacity: 0 },
+    Elysir: { raceOn: true, opacity: 0 },
+    Xerxes: { raceOn: true, opacity: 0 },
     planet4: { raceOn: true, opacity: 0 },
   };
 
@@ -1357,9 +1357,9 @@ function galaxyThreejs() {
     const numberOfItems = planetItemsList.length;
     let index;
 
-    if (planet === firstPlanet) index = "planet1";
+    if (planet === firstPlanet) index = "Elysir";
     if (planet === fourthPlanet) index = "planet4";
-    if (planet === thirdPlanet) index = "planet3";
+    if (planet === thirdPlanet) index = "Xerxes";
 
     planetItemsList.forEach((item) => {
       if (item.visible && spaceshipPosition.distanceTo(item.position) < 15) {

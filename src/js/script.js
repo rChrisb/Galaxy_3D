@@ -1984,9 +1984,9 @@ fetch("/game-2d/score/" + localStorage.getItem("sessionId"), {
     const map2Scores = getTopScores("map2", scoreData);
     const map3Scores = getTopScores("map3", scoreData);
 
-    displayScores(map1Scores, map1ScoresDiv);
-    displayScores(map2Scores, map2ScoresDiv);
-    displayScores(map3Scores, map3ScoresDiv);
+    displayScores(map1Scores, map1ScoresDiv, "Map 1 Scores");
+    displayScores(map2Scores, map2ScoresDiv, "Map 2 Scores");
+    displayScores(map3Scores, map3ScoresDiv, "Map 3 Scores");
   });
 
 function getTopScores(map, scoreData) {
@@ -1996,9 +1996,13 @@ function getTopScores(map, scoreData) {
     .slice(0, 3);
 }
 
-function displayScores(scores, scoresDiv) {
+function displayScores(scores, scoresDiv, mapName) {
   scoresDiv.style.display = "block";
   scoresDiv.innerHTML = ""; // Clear the previous scores
+
+  const mapTitle = document.createElement("h3");
+  mapTitle.textContent = mapName;
+  scoresDiv.appendChild(mapTitle);
 
   const scoresList = document.createElement("ul");
 

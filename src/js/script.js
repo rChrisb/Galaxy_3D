@@ -2002,7 +2002,7 @@ function displayTopScores(map, scoreData) {
     .sort((a, b) => b.score - a.score)
     .slice(0, 3);
 
-  const infoDiv = document.querySelector(".info");
+  const infoDiv = document.querySelector(".score-info");
   infoDiv.innerHTML = ""; // Clear the previous scores
 
   const scoresList = document.createElement("ul");

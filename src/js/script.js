@@ -1667,8 +1667,8 @@ function galaxyThreejs() {
             .filter((score) => score.map === "map2")
             .reduce((max, score) => Math.max(max, score.score), 0);
           console.log(highestScore);
-          if (highestScore >= planet3Button.scoreNeededPreviously) {
-            planet3Button.minimum_score = true;
+          if (highestScore >= planet4Button.scoreNeededPreviously) {
+            planet4Button.minimum_score = true;
           }
         })
         .catch((error) => console.error("Error:", error));

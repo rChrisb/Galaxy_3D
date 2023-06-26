@@ -1984,9 +1984,9 @@ fetch("/game-2d/score/" + localStorage.getItem("sessionId"), {
     const map2Scores = getTopScores("map2", scoreData);
     const map3Scores = getTopScores("map3", scoreData);
 
-    displayScores(map1Scores, map1ScoresDiv, "Map 1 Scores");
-    displayScores(map2Scores, map2ScoresDiv, "Map 2 Scores");
-    displayScores(map3Scores, map3ScoresDiv, "Map 3 Scores");
+    displayScores(map1Scores, map1ScoresDiv, "Elysir Top Scores");
+    displayScores(map2Scores, map2ScoresDiv, "Xerxes Top Scores");
+    displayScores(map3Scores, map3ScoresDiv, "Planete 4 Top Scores");
   });
 
 function getTopScores(map, scoreData) {

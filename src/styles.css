@@ -480,3 +480,7 @@ label {
   font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
   font-weight: bold;
 }
+
+.window6.info {
+  font-size: 14px;
+}

@@ -1982,14 +1982,17 @@ fetch("/game-2d/score/" + localStorage.getItem("sessionId"), {
 
     map1Button.addEventListener("click", () => {
       displayTopScores("map1", scoreData);
+      console.log("clicked on map 1 score");
     });
 
     map2Button.addEventListener("click", () => {
       displayTopScores("map2", scoreData);
+      console.log("clicked on map 2 score");
     });
 
     map3Button.addEventListener("click", () => {
       displayTopScores("map3", scoreData);
+      console.log("clicked on map 3 score");
     });
   });
 

@@ -3,7 +3,7 @@ import * as dat from "dat.gui";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import { FBXLoader } from "three/examples/jsm/loaders/FBXLoader.js";
 import face1 from "../images/exosystem_ft.png";
-import face2 from "../images/exosystem_bk.jpg";
+import face2 from "../images/exosystem_bk.png";
 import face3 from "../images/exosystem_up.jpg";
 import face4 from "../images/exosystem_dn.jpg";
 import face5 from "../images/exosystem_rt.jpg";

@@ -4,6 +4,8 @@ import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import { GPUComputationRenderer } from "three/examples/jsm/misc/GPUComputationRenderer";
 import * as dat from "dat.gui";
 import moon from "../images/moon-inspired-textures (1).jpg";
+import moon6 from "../images/copy-space-classic-texture-designer-background.jpg";
+import moon7 from "../images/still-life-ashes-with-charcoal.jpg";
 import texture4 from "../images/painted-surface-with-holes.jpg";
 import earth from "../images/mud-water-surface.jpg";
 import rocks from "../images/rocks-stones-with-rough-surface.jpg";
@@ -161,10 +163,10 @@ const planet4Button = {
   window: window4,
   action: action4,
   previous: "planet 3",
-  time: 50,
+  time: 45,
   succeededRace: false,
   minimum_score: false,
-  scoreNeededPreviously: 3000,
+  scoreNeededPreviously: 2000,
   color: "#0529c9",
   stringColor: "blue",
   for2D: true,
@@ -482,11 +484,12 @@ function galaxyThreejs() {
   const sphereGeometry5 = new THREE.SphereGeometry(100, 50, 50);
   const sphereMaterial5 = new THREE.MeshPhysicalMaterial({
     map: textureLoader.load(rocks3),
-    color: 0x4f1a0d,
+    color: 0x262b2b,
   });
   const sphereGeometry6 = new THREE.SphereGeometry(100, 50, 50);
   const sphereMaterial6 = new THREE.MeshPhysicalMaterial({
-    map: textureLoader.load(moon),
+    map: textureLoader.load(moon7),
+    color: 0x1b1e1e,
   });
 
   const firstPlanet = new THREE.Mesh(sphereGeometry1, sphereMaterial1);

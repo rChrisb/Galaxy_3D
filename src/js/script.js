@@ -4,7 +4,7 @@ import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import { GPUComputationRenderer } from "three/examples/jsm/misc/GPUComputationRenderer";
 import * as dat from "dat.gui";
 import moon from "../images/moon-inspired-textures (1).jpg";
-import moon6 from "../images/copy-space-classic-texture-designer-background.jpg";
+import moon6 from "../images/tree-bark.jpg";
 import moon7 from "../images/still-life-ashes-with-charcoal.jpg";
 import texture4 from "../images/painted-surface-with-holes.jpg";
 import earth from "../images/mud-water-surface.jpg";
@@ -148,7 +148,7 @@ const planet3Button = {
   message: document.querySelector(".planet3"),
   window: window3,
   action: action3,
-  previous: "planet 1",
+  previous: "Elysir",
   time: 30,
   succeededRace: false,
   minimum_score: false,
@@ -162,7 +162,7 @@ const planet4Button = {
   message: document.querySelector(".planet4"),
   window: window4,
   action: action4,
-  previous: "planet 3",
+  previous: "Xerxes",
   time: 45,
   succeededRace: false,
   minimum_score: false,
@@ -488,8 +488,8 @@ function galaxyThreejs() {
   });
   const sphereGeometry6 = new THREE.SphereGeometry(100, 50, 50);
   const sphereMaterial6 = new THREE.MeshPhysicalMaterial({
-    map: textureLoader.load(moon7),
-    color: 0x1b1e1e,
+    map: textureLoader.load(moon6),
+    color: 0x475b5b,
   });
 
   const firstPlanet = new THREE.Mesh(sphereGeometry1, sphereMaterial1);
@@ -1368,9 +1368,9 @@ function galaxyThreejs() {
   let collectedItems = {
     Elysir: 0,
     Xerxes: 0,
-    planet4: 0,
+    Pyrothia: 0,
   };
-  console.log(collectedItems["planet4"]);
+  console.log(collectedItems["Pyrothia"]);
 
   const planetItems = [
     { planet: firstPlanet, itemsList: planet1Items, button: planet1Button },
@@ -1381,7 +1381,7 @@ function galaxyThreejs() {
   const raceStatus = {
     Elysir: { raceOn: true, opacity: 0 },
     Xerxes: { raceOn: true, opacity: 0 },
-    planet4: { raceOn: true, opacity: 0 },
+    Pyrothia: { raceOn: true, opacity: 0 },
   };
 
   const itemCollectionTimers = {}; // Object to store the item collection timers
@@ -1391,7 +1391,7 @@ function galaxyThreejs() {
     let index;
 
     if (planet === firstPlanet) index = "Elysir";
-    if (planet === fourthPlanet) index = "planet4";
+    if (planet === fourthPlanet) index = "Pyrothia";
     if (planet === thirdPlanet) index = "Xerxes";
 
     planetItemsList.forEach((item) => {

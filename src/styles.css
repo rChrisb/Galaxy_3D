@@ -6,16 +6,48 @@
 .map-scores {
   margin-bottom: 20px;
 }
+.info-window h2 {
+  color: rgb(13, 116, 116);
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  margin-top: 20px;
+  margin-bottom: 30px;
+}
 h2 {
   color: rgb(13, 116, 116);
   margin-left: 25px;
-  margin-bottom: 20px;
+  margin-bottom: 50px;
   font-size: 28px;
   opacity: 0.2;
 }
 h3 {
+  margin-top: 70px;
   margin-bottom: 10px;
   font-size: 26;
+}
+.info-window {
+  position: relative;
+}
+
+.info-window h2 {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  margin-top: 20px;
+}
+.window6 .info {
+  display: flex;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+}
+
+.map-scores {
+  flex: 0 0 auto;
+  margin-right: 34px;
+  margin-left: 29px;
 }
 #map1-scores h3,
 .map1-score {

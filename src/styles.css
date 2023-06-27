@@ -472,7 +472,7 @@ label {
   background-position: right center;
   position: absolute;
   top: 50%;
-  right: 105px; /* Adjust the right position */
+  right: 10px; /* Adjust the right position */
   transform: translateY(-50%);
   width: 20px;
   height: 20px;

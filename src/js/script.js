@@ -56,6 +56,8 @@ const options = {
   sound: "on",
 };
 
+let highestScore;
+
 const timeElement = document.getElementById("time");
 const messageElement = document.getElementById("score");
 
@@ -73,6 +75,8 @@ const correctSound = document.getElementById("correctSound");
 const failedSound = document.getElementById("failedSound");
 const alertSound = document.getElementById("alertSound");
 const boingSound = document.getElementById("boingSound");
+const rankingSound = document.getElementById("rankingSound");
+
 // const controlsOption = document.querySelector(".close-button");
 // controlsOption.textContent = "o p t i o n s";
 // function restartAudio() {
@@ -111,6 +115,7 @@ const accessElement = document.getElementById("access");
 const planetScore = {
   message: document.querySelector(".planet6"),
   window: window6,
+  music: rankingSound,
 };
 const planet2Button = {
   message: document.querySelector(".planet2"),
@@ -142,7 +147,7 @@ const planet3Button = {
   window: window3,
   action: action3,
   previous: "planet 1",
-  time: 25,
+  time: 30,
   succeededRace: false,
   minimum_score: false,
   scoreNeededPreviously: 2000,
@@ -196,6 +201,10 @@ messageButtons.forEach((button) => {
     if (button.action) button.action.style.display = "block";
     if (button.message.style.display === "block" && infoVisible) {
       button.window.style.display = "block";
+      if (button.music) {
+        button.music.play();
+        button.music.volume = 0.15;
+      }
       console.log("WTF");
     } else {
       button.window.style.display = "none";
@@ -208,6 +217,10 @@ closeButton.forEach((button) =>
     messageButtons.forEach((button) => {
       if (button.window.style.display !== "none") {
         button.window.style.display = "none";
+        if (button.music) {
+          button.music.pause();
+          button.music.currentTime = 0;
+        }
         sceneMusic.play();
         canClose = true;
         console.log("tried to click");
@@ -225,7 +238,7 @@ messageButtons.forEach((button) => {
       if (!button.minimum_score) {
         alertSound.play();
         alertSound.volume = 0.3;
-        accessElement.textContent = `Score ${button.scoreNeededPreviously} points in ${button.previous} to unlock access`;
+        accessElement.textContent = `Score ${button.scoreNeededPreviously} points in ${button.previous} to unlock access.\nYour highest score is ${highestScore} points`;
       } else if (
         button.minimum_score &&
         (!button.all_items || !button.succeededRace) &&
@@ -1679,7 +1692,7 @@ function galaxyThreejs() {
         .then((response) => response.json())
         .then((scoreData) => {
           // filter scores for map1 and find the highest score
-          const highestScore = scoreData
+          highestScore = scoreData
             .filter((score) => score.map === "map1")
             .reduce((max, score) => Math.max(max, score.score), 0);
           console.log(highestScore);
@@ -1698,7 +1711,7 @@ function galaxyThreejs() {
         .then((response) => response.json())
         .then((scoreData) => {
           // filter scores for map1 and find the highest score
-          const highestScore = scoreData
+          highestScore = scoreData
             .filter((score) => score.map === "map2")
             .reduce((max, score) => Math.max(max, score.score), 0);
           console.log(highestScore);

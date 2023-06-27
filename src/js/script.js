@@ -484,7 +484,7 @@ function galaxyThreejs() {
   const sphereGeometry5 = new THREE.SphereGeometry(100, 50, 50);
   const sphereMaterial5 = new THREE.MeshPhysicalMaterial({
     map: textureLoader.load(rocks3),
-    color: 0x262b2b,
+    color: 0x35090f,
   });
   const sphereGeometry6 = new THREE.SphereGeometry(100, 50, 50);
   const sphereMaterial6 = new THREE.MeshPhysicalMaterial({

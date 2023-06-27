@@ -367,7 +367,7 @@ function galaxyThreejs() {
   const orbit = new OrbitControls(camera, renderer.domElement);
   orbit.enableZoom = false;
   const axesHelper = new THREE.AxesHelper(2);
-  scene.add(axesHelper);
+  /* scene.add(axesHelper); */
   camera.position.set(0, 0, 100);
   orbit.update();
 

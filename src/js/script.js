@@ -203,10 +203,7 @@ messageButtons.forEach((button) => {
     if (button.action) button.action.style.display = "block";
     if (button.message.style.display === "block" && infoVisible) {
       button.window.style.display = "block";
-      if (button.music) {
-        button.music.play();
-        button.music.volume = 0.15;
-      }
+
       console.log("WTF");
     } else {
       button.window.style.display = "none";
@@ -219,10 +216,6 @@ closeButton.forEach((button) =>
     messageButtons.forEach((button) => {
       if (button.window.style.display !== "none") {
         button.window.style.display = "none";
-        if (button.music) {
-          button.music.pause();
-          button.music.currentTime = 0;
-        }
         sceneMusic.play();
         canClose = true;
         console.log("tried to click");
@@ -2000,7 +1993,7 @@ fetch("/game-2d/scoreboard")
 
     displayScores(map1Scores, map1ScoresDiv, "Elysir");
     displayScores(map2Scores, map2ScoresDiv, "Xerxes");
-    displayScores(map3Scores, map3ScoresDiv, "Planete 4");
+    displayScores(map3Scores, map3ScoresDiv, "Pyrothia");
   });
 
 function getTopScores(map, scoreData) {

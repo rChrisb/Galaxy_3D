@@ -116,7 +116,7 @@ ol {
   color: #0c0c0c;
 }
 .window.window4 {
-  background-color: #201a70;
+  background-color: #20135a;
   color: #ffbe00;
 }
 .window.window5 {
@@ -453,7 +453,7 @@ label {
 }
 .action-button.fourth {
   background-color: #101010;
-  color: #0529c9;
+  color: #4605c9;
   font-size: 14.5px;
   right: -10px;
 }
@@ -472,7 +472,7 @@ label {
   background-position: right center;
   position: absolute;
   top: 50%;
-  right: 10px; /* Adjust the right position */
+  right: 105px; /* Adjust the right position */
   transform: translateY(-50%);
   width: 20px;
   height: 20px;

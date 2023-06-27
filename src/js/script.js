@@ -1971,9 +1971,7 @@ function fadeIn() {
   fadeInLoop();
 }
 
-fetch("/game-2d/score/" + localStorage.getItem("sessionId"), {
-  method: "GET",
-})
+fetch("/game-2d/scoreboard.json")
   .then((response) => response.json())
   .then((scoreData) => {
     const map1ScoresDiv = document.getElementById("map1-scores");
@@ -2008,7 +2006,7 @@ function displayScores(scores, scoresDiv, mapName) {
 
   scores.forEach((score) => {
     const scoreItem = document.createElement("li");
-    scoreItem.textContent = score.score;
+    scoreItem.textContent = `${score.name}: ${score.score}`;
     scoresList.appendChild(scoreItem);
   });
 

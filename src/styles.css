@@ -3,12 +3,48 @@
   padding: 0;
   box-sizing: border-box;
 }
-h3 {
-  color: rgb(214, 146, 8);
-  font-size: 16px;
+.map-scores {
+  margin-bottom: 20px;
 }
-ul {
-  font-size: 12px;
+h2 {
+  color: rgb(13, 116, 116);
+  margin-left: 25px;
+  margin-bottom: 20px;
+  font-size: 28px;
+  opacity: 0.2;
+}
+h3 {
+  margin-bottom: 10px;
+  font-size: 26;
+}
+#map1-scores h3 {
+  color: rgb(6, 124, 34);
+}
+#map2-scores h3 {
+  color: rgb(214, 178, 17);
+}
+#map3-scores h3 {
+  color: rgb(41, 6, 124);
+}
+.session-id {
+  font-size: 14px;
+  color: gray;
+}
+.name {
+  color: rgb(165, 49, 68);
+}
+.map1-score {
+  color: rgb(6, 124, 34);
+}
+.map2-score {
+  color: rgb(214, 178, 17);
+}
+.map3-score {
+  color: rgb(41, 6, 124);
+}
+ol {
+  font-size: 18px;
+  margin-left: 5px;
 }
 .close-window {
   position: absolute;
@@ -59,6 +95,9 @@ ul {
 .window.window5 {
   background-color: #4f1a0d;
   color: #ffbe00;
+}
+.window.window6 {
+  background-color: #070707;
 }
 
 body {
@@ -114,6 +153,9 @@ p {
 .message-button.planet5 {
   color: #762713;
   background-color: rgba(6, 0, 0, 0.7);
+}
+.message-button.planet6 {
+  color: #ffffff;
 }
 
 .message-button::after {

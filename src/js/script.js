@@ -1919,7 +1919,7 @@ function showCursor() {
   }
 
   clearTimeout(cursorTimeout);
-  cursorTimeout = setTimeout(hideCursor, 1000); // Hide the cursor after 1 second of inactivity
+  cursorTimeout = setTimeout(hideCursor, 1000);
 }
 
 function hideCursor() {
@@ -1946,9 +1946,9 @@ function fadeOut() {
     if (opacity > 0.1) {
       requestAnimationFrame(fadeOutLoop);
     } else {
-      opacity = 1; // Set opacity back to 1
+      opacity = 1;
       renderer.domElement.style.opacity = opacity;
-      return; // Exit the function after opacity is reset
+      return;
     }
   };
 
@@ -1971,7 +1971,7 @@ function fadeIn() {
   fadeInLoop();
 }
 
-fetch("/game-2d/scoreboard.json")
+fetch("/game-2d/scoreboard")
   .then((response) => response.json())
   .then((scoreData) => {
     const map1ScoresDiv = document.getElementById("map1-scores");
@@ -1982,31 +1982,55 @@ fetch("/game-2d/scoreboard.json")
     const map2Scores = getTopScores("map2", scoreData);
     const map3Scores = getTopScores("map3", scoreData);
 
-    displayScores(map1Scores, map1ScoresDiv, "Elysir Top Scores");
-    displayScores(map2Scores, map2ScoresDiv, "Xerxes Top Scores");
-    displayScores(map3Scores, map3ScoresDiv, "Planete 4 Top Scores");
+    displayScores(map1Scores, map1ScoresDiv, "Elysir");
+    displayScores(map2Scores, map2ScoresDiv, "Xerxes");
+    displayScores(map3Scores, map3ScoresDiv, "Planete 4");
   });
 
 function getTopScores(map, scoreData) {
   return scoreData
     .filter((score) => score.map === map)
     .sort((a, b) => b.score - a.score)
-    .slice(0, 3);
+    .slice(0, 5);
 }
 
 function displayScores(scores, scoresDiv, mapName) {
   scoresDiv.style.display = "block";
-  scoresDiv.innerHTML = ""; // Clear the previous scores
+  scoresDiv.innerHTML = "";
 
   const mapTitle = document.createElement("h3");
   mapTitle.textContent = mapName;
   scoresDiv.appendChild(mapTitle);
 
-  const scoresList = document.createElement("ul");
+  const scoresList = document.createElement("ol");
 
   scores.forEach((score) => {
     const scoreItem = document.createElement("li");
-    scoreItem.textContent = `${score.name}: ${score.score}`;
+
+    const sessionIDSpan = document.createElement("span");
+    sessionIDSpan.textContent = score.sessionId.slice(-3) + " - ";
+    sessionIDSpan.classList.add("session-id");
+    scoreItem.appendChild(sessionIDSpan);
+
+    const nameSpan = document.createElement("span");
+    nameSpan.textContent = score.name + ": ";
+    nameSpan.classList.add("name");
+    scoreItem.appendChild(nameSpan);
+
+    const scoreSpan = document.createElement("span");
+    scoreSpan.textContent = score.score;
+    scoreSpan.classList.add("score");
+
+    if (score.map === "map1") {
+      scoreSpan.classList.add("map1-score");
+    } else if (score.map === "map2") {
+      scoreSpan.classList.add("map2-score");
+    } else if (score.map === "map3") {
+      scoreSpan.classList.add("map3-score");
+    }
+
+    scoreItem.appendChild(scoreSpan);
+
     scoresList.appendChild(scoreItem);
   });
 

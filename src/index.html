@@ -54,7 +54,23 @@
       src="./images/logo-v2.png"
       alt="GALAXY QUEST"
       class="intro"
-      onclick="toggleContainerVisibility()"
+      onclick='
+      menuContainer = document.getElementById("menu-container");
+      const hash = window.location.hash;
+
+      if (hash === "#MENU") {
+        hideContainer();
+      } else {
+        const introButton = document.querySelector(".intro");
+        const menuContainer = document.getElementById("menu-container");
+
+        introButton.style.display = "none";
+        menuContainer.style.display = "block";
+
+        history.pushState(null, "", "#MENU");
+        const menuMusic = document.getElementById("menuMusic");
+        menuMusic.play();
+      }'
       style="cursor: pointer"
     />
     <audio
@@ -67,7 +83,7 @@
       src="./background-music/fantasy_ui_button_6-102219.mp3"
     ></audio>
     <script>
-      const menuContainer = document.getElementById("menu-container");
+      let menuContainer = document.getElementById("menu-container");
       const introButton = document.querySelector(".intro");
       console.log(introButton);
       window.addEventListener("DOMContentLoaded", function () {
@@ -75,43 +91,22 @@
         menuMusic.volume = 0.1;
 
         if (hash === "#MENU") {
-          showContainer();
-          menuMusic.play();
-        } else {
-          hideContainer();
-        }
-      });
-
-      function toggleContainerVisibility() {
-        const menuContainer = document.getElementById("menu-container");
-        const hash = window.location.hash;
-
-        if (hash === "#MENU") {
-          hideContainer();
-        } else {
-          showContainer();
-          menuMusic.play();
-        }
-      }
-
-      function showContainer() {
-        const introButton = document.querySelector(".intro");
-        const menuContainer = document.getElementById("menu-container");
-
-        introButton.style.display = "none";
-        menuContainer.style.display = "block";
-
-        history.pushState(null, "", "#MENU");
-      }
-
-      function hideContainer() {
         const introButton = document.querySelector(".intro");
         const menuContainer = document.getElementById("menu-container");
 
         introButton.style.display = "block";
         menuContainer.style.display = "none";
-        history.pushState(null, "", "#GALAXYQUEST");
-      }
+        history.pushState(null, "", "#GALAXYQUEST");;
+          menuMusic.play();
+        } else {
+        const introButton = document.querySelector(".intro");
+        const menuContainer = document.getElementById("menu-container");
+
+        introButton.style.display = "block";
+        menuContainer.style.display = "none";
+        history.pushState(null, "", "#GALAXYQUEST");;
+        }
+      });
 
       const menuMusic = document.getElementById("menuMusic");
       const audioSources = [

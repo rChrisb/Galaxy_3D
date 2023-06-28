@@ -117,37 +117,6 @@ const accessElement = document.getElementById("access");
 let highestScoreMap1;
 let highestScoreMap2;
 
-function loadLevels() {
-  if (hasRun) return;
-
-  fetch("/game-2d/score/" + localStorage.getItem("sessionId"), {
-    method: "GET",
-  })
-    .then((response) => response.json())
-    .then((scoreData) => {
-      highestScoreMap1 = scoreData
-        .filter((score) => score.map === "map1")
-        .reduce((max, score) => Math.max(max, score.score), 0);
-
-      highestScoreMap2 = scoreData
-        .filter((score) => score.map === "map2")
-        .reduce((max, score) => Math.max(max, score.score), 0);
-
-      if (highestScoreMap1 >= planet3Button.scoreNeededPreviously) {
-        planet3Button.minimum_score = true;
-      }
-
-      if (highestScoreMap2 >= planet4Button.scoreNeededPreviously) {
-        planet4Button.minimum_score = true;
-      }
-    })
-    .catch((error) => console.error("Error:", error));
-
-  console.log("Loading levels");
-
-  hasRun = true;
-}
-
 const planetScore = {
   message: document.querySelector(".planet6"),
   window: window6,
@@ -1714,12 +1683,12 @@ function galaxyThreejs() {
 
     if (distance <= 400 && canClose) showMessageButton(planet1Button.message);
     else if (distance2 <= 400 && canClose) {
-      highestScore = highestScoreMap1;
       showMessageButton(planet2Button.message);
     } else if (distance3 <= 400 && canClose) {
-      highestScore = highestScoreMap2;
+      highestScore = highestScoreMap1;
       showMessageButton(planet3Button.message);
     } else if (distance4 <= 400 && canClose) {
+      highestScore = highestScoreMap2;
       showMessageButton(planet4Button.message);
     } else if (distance5 <= 400 && canClose)
       showMessageButton(planet5Button.message);
@@ -1983,6 +1952,10 @@ function fadeIn() {
   fadeInLoop();
 }
 
+///
+/// FETCHES
+///
+
 fetch("/game-2d/scoreboard")
   .then((response) => response.json())
   .then((scoreData) => {
@@ -2047,4 +2020,35 @@ function displayScores(scores, scoresDiv, mapName) {
   });
 
   scoresDiv.appendChild(scoresList);
+}
+
+function loadLevels() {
+  if (hasRun) return;
+
+  fetch("/game-2d/score/" + localStorage.getItem("sessionId"), {
+    method: "GET",
+  })
+    .then((response) => response.json())
+    .then((scoreData) => {
+      highestScoreMap1 = scoreData
+        .filter((score) => score.map === "map1")
+        .reduce((max, score) => Math.max(max, score.score), 0);
+
+      highestScoreMap2 = scoreData
+        .filter((score) => score.map === "map2")
+        .reduce((max, score) => Math.max(max, score.score), 0);
+
+      if (highestScoreMap1 >= planet3Button.scoreNeededPreviously) {
+        planet3Button.minimum_score = true;
+      }
+
+      if (highestScoreMap2 >= planet4Button.scoreNeededPreviously) {
+        planet4Button.minimum_score = true;
+      }
+    })
+    .catch((error) => console.error("Error:", error));
+
+  console.log("Loading levels");
+
+  hasRun = true;
 }

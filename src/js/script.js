@@ -90,7 +90,7 @@ const rankingSound = document.getElementById("rankingSound");
 
 // menuMusic.play();
 // menuMusic.volume = 0.05;
-
+let hasRun = false;
 let canClose = true;
 let infoVisible = true;
 let canOpenGUI = true;
@@ -113,6 +113,40 @@ const action3 = document.querySelector(".third");
 const action4 = document.querySelector(".fourth");
 const action5 = document.querySelector(".fifth");
 const accessElement = document.getElementById("access");
+
+let highestScoreMap1;
+let highestScoreMap2;
+
+function loadLevels() {
+  if (hasRun) return;
+
+  fetch("/game-2d/score/" + localStorage.getItem("sessionId"), {
+    method: "GET",
+  })
+    .then((response) => response.json())
+    .then((scoreData) => {
+      highestScoreMap1 = scoreData
+        .filter((score) => score.map === "map1")
+        .reduce((max, score) => Math.max(max, score.score), 0);
+
+      highestScoreMap2 = scoreData
+        .filter((score) => score.map === "map2")
+        .reduce((max, score) => Math.max(max, score.score), 0);
+
+      if (highestScoreMap1 >= planet3Button.scoreNeededPreviously) {
+        planet3Button.minimum_score = true;
+      }
+
+      if (highestScoreMap2 >= planet4Button.scoreNeededPreviously) {
+        planet4Button.minimum_score = true;
+      }
+    })
+    .catch((error) => console.error("Error:", error));
+
+  console.log("Loading levels");
+
+  hasRun = true;
+}
 
 const planetScore = {
   message: document.querySelector(".planet6"),
@@ -367,7 +401,7 @@ function galaxyThreejs() {
   const orbit = new OrbitControls(camera, renderer.domElement);
   orbit.enableZoom = false;
   const axesHelper = new THREE.AxesHelper(2);
-  /* scene.add(axesHelper); */
+  /*scene.add(axesHelper);*/
   camera.position.set(0, 0, 100);
   orbit.update();
 
@@ -420,6 +454,7 @@ function galaxyThreejs() {
       localStorage.setItem("sessionId", sessionId);
     }
     console.log("Current sessionId: " + localStorage.getItem("sessionId"));
+    loadLevels();
   };
 
   // PARTICLE SETUP
@@ -1679,44 +1714,12 @@ function galaxyThreejs() {
 
     if (distance <= 400 && canClose) showMessageButton(planet1Button.message);
     else if (distance2 <= 400 && canClose) {
+      highestScore = highestScoreMap1;
       showMessageButton(planet2Button.message);
     } else if (distance3 <= 400 && canClose) {
-      // this check for the current sessionID and if the score is good enough
-      fetch("/game-2d/score/" + localStorage.getItem("sessionId"), {
-        method: "GET",
-      })
-        .then((response) => response.json())
-        .then((scoreData) => {
-          // filter scores for map1 and find the highest score
-          highestScore = scoreData
-            .filter((score) => score.map === "map1")
-            .reduce((max, score) => Math.max(max, score.score), 0);
-          console.log(highestScore);
-          if (highestScore >= planet3Button.scoreNeededPreviously) {
-            planet3Button.minimum_score = true;
-          }
-        })
-        .catch((error) => console.error("Error:", error));
-      console.log("Loading level 2");
-
+      highestScore = highestScoreMap2;
       showMessageButton(planet3Button.message);
     } else if (distance4 <= 400 && canClose) {
-      fetch("/game-2d/score/" + localStorage.getItem("sessionId"), {
-        method: "GET",
-      })
-        .then((response) => response.json())
-        .then((scoreData) => {
-          // filter scores for map1 and find the highest score
-          highestScore = scoreData
-            .filter((score) => score.map === "map2")
-            .reduce((max, score) => Math.max(max, score.score), 0);
-          console.log(highestScore);
-          if (highestScore >= planet4Button.scoreNeededPreviously) {
-            planet4Button.minimum_score = true;
-          }
-        })
-        .catch((error) => console.error("Error:", error));
-      console.log("Loading level 3");
       showMessageButton(planet4Button.message);
     } else if (distance5 <= 400 && canClose)
       showMessageButton(planet5Button.message);

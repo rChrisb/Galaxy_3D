@@ -1189,6 +1189,7 @@ function galaxyThreejs() {
             messageElement.textContent = `Racetime: ${raceTime} seconds`;
             clearInterval(timerInterval);
             timerSound.pause();
+            timerSound.currentTime = 0;
             timeElement.style.display = "none";
             setTimeout(() => {
               messageElement.style.display = "none";
@@ -1428,6 +1429,7 @@ function galaxyThreejs() {
       const resultTime = raceTime;
       clearInterval(timerInterval);
       timerSound.pause();
+      timerSound.currentTime = 0;
       timeElement.style.display = "none";
       setTimeout(() => {
         messageElement.style.display = "none";

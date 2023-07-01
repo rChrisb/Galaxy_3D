@@ -392,7 +392,7 @@ function galaxyThreejs() {
     Math.random()
   );
 
-  // texture varaible that will allow to set textures of object
+  // texture variable that will allow to set textures of object
   const loadingManager = new THREE.LoadingManager();
   const textureLoader = new THREE.TextureLoader();
   const textureLoader2 = new THREE.TextureLoader(loadingManager);
@@ -466,12 +466,10 @@ function galaxyThreejs() {
   const sphereMaterial2 = new THREE.MeshPhysicalMaterial({
     map: textureLoader2.load(pink2),
     color: 0xef96e5,
-    /* color: 0x4b4e49, */
   });
   const sphereGeometry3 = new THREE.SphereGeometry(100, 50, 50);
   const sphereMaterial3 = new THREE.MeshPhysicalMaterial({
     map: textureLoader.load(rocks),
-    /* color: 0x4b4e49, */
   });
   const sphereGeometry4 = new THREE.SphereGeometry(100, 50, 50);
   const sphereMaterial4 = new THREE.MeshPhysicalMaterial({
@@ -682,13 +680,7 @@ function galaxyThreejs() {
       z: z1,
     });
   }
-  function inclinaisonContainer(x1, z1) {
-    gsap.to(spaceshipContainer.rotation, {
-      /* duration: 1.5, */
-      x: x1,
-      z: z1,
-    });
-  }
+
   window.addEventListener("keydown", function (event) {
     if (event.code === "KeyW") {
       ufoSound.play();

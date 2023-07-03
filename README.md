@@ -1,3 +1,3 @@
 # Galaxy_3D
 
-explore GALAXY QUEST now! : https://galaxyquest-1c824c4405df.herokuapp.com/
+Explore GALAXY QUEST now! : https://galaxyquest-1c824c4405df.herokuapp.com/

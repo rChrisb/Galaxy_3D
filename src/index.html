@@ -107,6 +107,7 @@
 
       if (hash === "#MENU") {
         hideContainer();
+        menuMusic.play();
       } else {
         const introButton = document.querySelector(".intro");
         const menuContainer = document.getElementById("menu-container");
@@ -116,7 +117,7 @@
 
         history.pushState(null, "", "#MENU");
         const menuMusic = document.getElementById("menuMusic");
-        menuMusic.play();
+        
       }'
       style="cursor: pointer"
     />

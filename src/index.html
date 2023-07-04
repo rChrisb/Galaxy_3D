@@ -104,12 +104,9 @@
       onclick='
       menuContainer = document.getElementById("menu-container");
       const hash = window.location.hash;
-      const menuMusic = document.getElementById("menuMusic");
-      
 
       if (hash === "#MENU") {
         hideContainer();
-        menuMusic.play();
       } else {
         const introButton = document.querySelector(".intro");
         const menuContainer = document.getElementById("menu-container");
@@ -118,7 +115,8 @@
         menuContainer.style.display = "block";
 
         history.pushState(null, "", "#MENU");
-
+        const menuMusic = document.getElementById("menuMusic");
+        menuMusic.play();
       }'
       style="cursor: pointer"
     />

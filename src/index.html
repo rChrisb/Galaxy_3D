@@ -49,7 +49,54 @@
           ><span>Start</span><i></i
         ></a>
       </div>
+      <div id="about">
+        <a href="https://holbertonblog.aafu1.repl.co/" style="--clr: #8a0806"
+          ><span>a b o u t</span><i></i
+        ></a>
+      </div>
+      <div id="how-button">
+        <a href="#" style="--clr: #8a0806"><span>How to PLay</span><i></i></a>
+      </div>
     </div>
+    <div class="info-window window windowHow">
+      <span class="close-window"><button>&times</button></span>
+      <p
+        style="
+          color: #e4d2d2;
+          text-align: center;
+          font-weight: bold;
+          opacity: 0.1;
+          margin-bottom: 20px;
+          font-size: 18px;
+        "
+      >
+        a z e r t y
+      </p>
+      <div class="how">
+        <p>
+          <strong>Drive the Spaceship</strong>
+        </p>
+        <ul>
+          <li><kbd>Z</kbd> to go forward</li>
+          <li><kbd>S</kbd> to go backward</li>
+          <li><kbd>Q</kbd> to go left</li>
+          <li><kbd>&larr;</kbd> to rotate left</li>
+          <li><kbd>D</kbd> to go right</li>
+          <li><kbd>&rarr;</kbd> to rotate right</li>
+          <li><kbd>Space</kbd> or <kbd>&uarr;</kbd> to go up</li>
+          <li><kbd>Left Shift</kbd> or <kbd>&darr;</kbd> to go down</li>
+        </ul>
+        <p><strong>Survive Monsters</strong></p>
+        <ul>
+          <li><kbd>Space</kbd> to attack</li>
+          <li><kbd>&uarr;</kbd> or <kbd>Z</kbd> to go up</li>
+          <li><kbd>&darr;</kbd> or <kbd>S</kbd> to go down</li>
+          <li><kbd>&larr;</kbd> or <kbd>Q</kbd> to go left</li>
+          <li><kbd>&rarr;</kbd> or <kbd>D</kbd> to go right</li>
+        </ul>
+      </div>
+    </div>
+
     <img
       src="./images/logo-v2.png"
       alt="GALAXY QUEST"
@@ -91,20 +138,20 @@
         menuMusic.volume = 0.1;
 
         if (hash === "#MENU") {
-        const introButton = document.querySelector(".intro");
-        const menuContainer = document.getElementById("menu-container");
+          const introButton = document.querySelector(".intro");
+          const menuContainer = document.getElementById("menu-container");
 
-        introButton.style.display = "block";
-        menuContainer.style.display = "none";
-        history.pushState(null, "", "#GALAXYQUEST");;
+          introButton.style.display = "block";
+          menuContainer.style.display = "none";
+          history.pushState(null, "", "#GALAXYQUEST");
           menuMusic.play();
         } else {
-        const introButton = document.querySelector(".intro");
-        const menuContainer = document.getElementById("menu-container");
+          const introButton = document.querySelector(".intro");
+          const menuContainer = document.getElementById("menu-container");
 
-        introButton.style.display = "block";
-        menuContainer.style.display = "none";
-        history.pushState(null, "", "#GALAXYQUEST");;
+          introButton.style.display = "block";
+          menuContainer.style.display = "none";
+          history.pushState(null, "", "#GALAXYQUEST");
         }
       });
 
@@ -135,12 +182,52 @@
         }
       }
       const startButton = document.getElementById("start-button");
-      console.log(startButton);
+      const howButton = document.getElementById("how-button");
+      const aboutButton = document.getElementById("about");
+      const windowHow = document.querySelector(".windowHow");
+      const closeButton = document.querySelector(".close-window");
+      const textIntro = document.getElementById("scrolling-text");
+
       startButton.addEventListener("mouseover", function () {
+        startSound.currentTime = 0;
+        startSound.play();
+        startSound.volume = 0.2;
+        closeButton.click();
+      });
+      howButton.addEventListener("mouseover", function () {
+        if (windowHow.style.display === "block") return;
+        startSound.currentTime = 0;
         startSound.play();
         startSound.volume = 0.2;
       });
+      aboutButton.addEventListener("mouseover", function () {
+        if (windowHow.style.display === "block") return;
+        startSound.currentTime = 0;
+        startSound.play();
+        startSound.volume = 0.2;
+      });
+      let open = 0;
+      howButton.addEventListener("click", function () {
+        windowHow.style.display = "block";
+        menuContainer.style.opacity = 0.3;
+        textIntro.classList.add("animation-paused");
+        setTimeout(() => {
+          open = 1;
+        }, 100);
+
+        windowHow.style.opacity = 1;
+      });
+      closeButton.addEventListener("click", function () {
+        windowHow.style.display = "none";
+        menuContainer.style.opacity = 1;
+        textIntro.classList.remove("animation-paused");
+        open = 0;
+      });
+      menuContainer.addEventListener("click", function () {
+        if (open === 1) closeButton.click();
+      });
       introButton.addEventListener("mouseover", function () {
+        startSound.currentTime = 0;
         startSound.play();
         startSound.volume = 0.2;
       });
@@ -155,6 +242,7 @@
         }
         if (event.code === "Enter" && menuContainer.style.display !== "block")
           introButton.click();
+        if (event.code === "Escape") closeButton.click();
       });
       document.addEventListener("mousemove", showCursor);
       document.addEventListener("mouseenter", showCursor);

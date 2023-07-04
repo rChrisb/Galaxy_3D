@@ -69,7 +69,8 @@ h3 {
   color: rgb(165, 49, 68);
 }
 
-ol {
+ol,
+ul {
   font-size: 18px;
   margin-left: 5px;
 }
@@ -125,6 +126,9 @@ ol {
 }
 .window.window6 {
   background-color: #070707;
+}
+.windowHow {
+  background-color: #242128;
 }
 
 body {
@@ -218,14 +222,13 @@ p {
 
 #scrolling-text {
   position: absolute;
-  /* bottom: 0; */
+
   top: 0;
   left: 13%;
   right: 13%;
-  /* width: 100%; */
+
   height: 100%;
-  /* overflow: hidden; */
-  /* white-space: nowrap; */
+
   animation: scrolling-text-animation 50s infinite;
 }
 
@@ -252,6 +255,9 @@ h1 {
     transform: rotateX(21deg) translateY(-280%);
     opacity: 0;
   }
+}
+#scrolling-text.animation-paused {
+  animation-play-state: paused;
 }
 /* .intro { */
 /* position: fixed; */
@@ -307,6 +313,17 @@ a {
   transition: 0.5s;
   display: inline-block;
   border: 3px solid rgb(75, 0, 130, 0.6);
+}
+#how-button a {
+  left: 20px;
+  right: unset;
+  font-size: 0.24em;
+}
+#about a {
+  left: 20px;
+  bottom: 70px;
+  right: unset;
+  font-size: 0.2em;
 }
 a:hover {
   background: rgba(105, 105, 105, 0);
@@ -556,4 +573,32 @@ label {
   color: rgb(12, 114, 145);
   font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
   font-weight: bold;
+}
+
+.how {
+  display: grid;
+  grid-template-columns: 0.1fr 1fr;
+  gap: 70px;
+}
+
+.how p {
+  font-weight: bold;
+  color: #a1802c;
+}
+
+.how ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.how li {
+  margin-bottom: 10px;
+}
+
+kbd {
+  background-color: #b03e15;
+  border: 1px solid #ccc;
+  padding: 2px 4px;
+  border-radius: 4px;
 }

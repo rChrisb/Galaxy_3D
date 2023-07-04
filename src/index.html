@@ -104,6 +104,8 @@
       onclick='
       menuContainer = document.getElementById("menu-container");
       const hash = window.location.hash;
+      const menuMusic = document.getElementById("menuMusic");
+      
 
       if (hash === "#MENU") {
         hideContainer();
@@ -116,8 +118,7 @@
         menuContainer.style.display = "block";
 
         history.pushState(null, "", "#MENU");
-        const menuMusic = document.getElementById("menuMusic");
-        
+
       }'
       style="cursor: pointer"
     />

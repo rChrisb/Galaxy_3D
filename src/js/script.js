@@ -462,28 +462,36 @@ function galaxyThreejs() {
     map: textureLoader.load(earth),
     color: 0x4d6839,
   });
+  sphereMaterial1.map.colorSpace = THREE.SRGBColorSpace;
   const sphereGeometry2 = new THREE.SphereGeometry(100, 50, 50);
   const sphereMaterial2 = new THREE.MeshPhysicalMaterial({
     map: textureLoader2.load(pink2),
     color: 0xef96e5,
   });
+  sphereMaterial2.map.colorSpace = THREE.SRGBColorSpace;
   const sphereGeometry3 = new THREE.SphereGeometry(100, 50, 50);
   const sphereMaterial3 = new THREE.MeshPhysicalMaterial({
     map: textureLoader.load(rocks),
   });
+  sphereMaterial3.map.colorSpace = THREE.SRGBColorSpace;
   const sphereGeometry4 = new THREE.SphereGeometry(100, 50, 50);
   const sphereMaterial4 = new THREE.MeshPhysicalMaterial({
     map: textureLoader.load(texture4),
     color: 0x201a70,
   });
+  sphereMaterial4.map.colorSpace = THREE.SRGBColorSpace;
   const sphereGeometry5 = new THREE.SphereGeometry(100, 50, 50);
   const sphereMaterial5 = new THREE.MeshPhysicalMaterial({
     map: textureLoader.load(rocks3),
     color: 0x35090f,
   });
-  const sphereGeometry6 = new THREE.SphereGeometry(100, 50, 50);
+  sphereMaterial5.map.colorSpace = THREE.SRGBColorSpace;
+  const texture0 = textureLoader.load(moon6);
+  texture0.colorSpace = THREE.SRGBColorSpace;
+  const sphereGeometry6 = new THREE.SphereGeometry(100, 100, 100);
   const sphereMaterial6 = new THREE.MeshPhysicalMaterial({
-    map: textureLoader.load(moon6),
+    map: texture0,
+    side: THREE.DoubleSide,
     /* color: 0x475b5b, */
   });
 

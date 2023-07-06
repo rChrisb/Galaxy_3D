@@ -4,7 +4,7 @@ import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import { GPUComputationRenderer } from "three/examples/jsm/misc/GPUComputationRenderer";
 import * as dat from "dat.gui";
 import moon from "../images/moon-inspired-textures (1).jpg";
-import moon6 from "../images/tree-bark.jpg";
+import moon6 from "../images/drops-paint-water.jpg";
 import moon7 from "../images/still-life-ashes-with-charcoal.jpg";
 import texture4 from "../images/painted-surface-with-holes.jpg";
 import earth from "../images/mud-water-surface.jpg";
@@ -484,7 +484,7 @@ function galaxyThreejs() {
   const sphereGeometry6 = new THREE.SphereGeometry(100, 50, 50);
   const sphereMaterial6 = new THREE.MeshPhysicalMaterial({
     map: textureLoader.load(moon6),
-    color: 0x475b5b,
+    /* color: 0x475b5b, */
   });
 
   const firstPlanet = new THREE.Mesh(sphereGeometry1, sphereMaterial1);
